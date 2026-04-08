@@ -1,0 +1,46 @@
+.section {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800') no-repeat center center/cover;
+  border-radius: 15px;
+  margin: 20px;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 40px;
+  border-radius: 20px;
+  color: white;
+  max-width: 600px;
+}
+
+h1 { font-size: 3rem; 
+    margin-bottom: 20px; 
+    text-shadow: 2px 2px 4px #000000;
+}
+
+p { font-size: 1.2rem; 
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.button-group { display: flex; gap: 20px; justify-content: center; }
+
+.btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+.btn-login { background-color: #007bff; color: white; }
+.btn-login:hover { background-color: #0056b3; }
+
+.btn-register { background-color: #28a745; color: white; }
+.btn-register:hover { background-color: #218838; }
