@@ -1,11 +1,22 @@
-<div class="section">
-  <div class="overlay">
-    <h1>Welcome to the Traveller</h1>
-    <p>Your journey begins here. To start exploring amazing tours and destinations, please join our community.</p>
-    
-    <div class="button-group">
-      <button routerLink="/login" class="btn btn-login">Sign In</button>
-      <button routerLink="/register" class="btn btn-register">Register</button>
+<div *ngIf="!isLoggedIn" class=".section">
+  <div class="section">
+    <div class="overlay">
+      <h1>Welcome to the Traveller</h1>
+      <p>Your journey begins here. To start exploring amazing tours and destinations, please join our community.</p>
+      
+      <div class="button-group">
+        <button routerLink="/login" class="btn btn-login">Sign In</button>
+        <button routerLink="/register" class="btn btn-register">Register</button>
+      </div>
     </div>
+  </div> 
+</div>
+
+<div *ngIf="isLoggedIn" class="dashboard-container">
+  <h2>Welcome back!</h2>
+  <p>You are now logged in. Here you will see your tours and activities soon.</p>
+  
+  <div class="placeholder-card">
+    <p>Tours coming soon...</p>
   </div>
 </div>
