@@ -20,13 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
-    @Autowired
     private TokenUtils tokenUtils;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UserService userService;
 
     public AuthenticationController(UserService userService, AuthenticationManager authenticationManager, TokenUtils tokenUtils) {
@@ -46,7 +41,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDto loginRequest, HttpServletRequest request) {
         try {
             User user = userService.findByUsername(loginRequest.getUsername());
