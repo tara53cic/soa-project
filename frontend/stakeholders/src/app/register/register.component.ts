@@ -13,8 +13,8 @@ export class RegisterComponent {
     username: '',
     email: '',
     password: '',
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     roleName: 'TOURIST'
   };
 
