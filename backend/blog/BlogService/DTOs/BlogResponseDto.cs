@@ -7,6 +7,6 @@ public class BlogResponseDto
     public string Description { get; set; } = string.Empty;
     public string DescriptionHtml { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
-    public long AuthorId { get; set; }
+    public string AuthorUsername { get; set; } = string.Empty;
     public List<string> ImageUrls { get; set; } = new();
 }

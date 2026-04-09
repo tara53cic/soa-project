@@ -8,7 +8,7 @@ public class Blog
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
-    public long AuthorId { get; set; }
+    public string AuthorUsername { get; set; } = string.Empty;
 
     public List<BlogImage> Images { get; set; } = new();
 

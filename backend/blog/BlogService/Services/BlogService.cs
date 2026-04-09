@@ -1,6 +1,5 @@
 ﻿using BlogService.DTOs;
 using BlogService.Models;
-using BlogService.Repositories;
 using BlogService.Repositories.Interfaces;
 using BlogService.Services.Interfaces;
 using Markdig;
@@ -41,7 +40,7 @@ public class BlogService : IBlogService
             Title = req.Title,
             Description = req.Description,
             CreatedAt = DateTime.UtcNow,
-            AuthorId = req.AuthorId,
+            AuthorUsername = req.AuthorUsername,
             Images = req.ImageUrls?.Select(url => new BlogImage
             {
                 Id = Guid.NewGuid(),
@@ -62,7 +61,7 @@ public class BlogService : IBlogService
             Description = blog.Description,
             DescriptionHtml = Markdown.ToHtml(blog.Description, Pipeline),
             CreatedAt = blog.CreatedAt,
-            AuthorId = blog.AuthorId,
+            AuthorUsername = blog.AuthorUsername,
             ImageUrls = blog.Images.Select(i => i.Url).ToList()
         };
     }

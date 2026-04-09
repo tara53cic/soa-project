@@ -13,9 +13,13 @@ public class BlogDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<BlogImage>()
-            .HasOne<Blog>()
-            .WithMany()
-            .HasForeignKey(i => i.BlogId);
+
+        modelBuilder.Entity<BlogImage>(entity =>
+        {
+            entity.HasOne(i => i.Blog)
+                .WithMany(b => b.Images)
+                .HasForeignKey(i => i.BlogId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }

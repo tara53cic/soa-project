@@ -4,13 +4,13 @@ export interface Blog {
   description: string;
   descriptionHtml: string;
   createdAt: string;
-  authorId: number;
-  authorUsername?: string;
+  authorUsername: string;
+  imageUrls: string[];
 }
 
 export interface CreateBlogRequest {
   title: string;
   description: string;
-  authorId: number;
+  authorUsername: string;
   imageUrls: string[];
 }
