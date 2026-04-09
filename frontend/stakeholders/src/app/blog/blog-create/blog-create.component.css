@@ -1,0 +1,222 @@
+:host {
+  display: block;
+  background-color: #fdfdfd;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+.canvas-wrapper {
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.editor-paper {
+  max-width: 800px;
+  width: 100%;
+  background: white;
+  padding: 40px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.clean-title-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  outline: none;
+  color: #000;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+
+.clean-title-input:focus {
+  border-color: #000;
+}
+
+.minimal-toolbar {
+  display: flex;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f5f5f5;
+  margin-bottom: 15px;
+}
+
+.tool-actions button {
+  background: none;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 5px 12px;
+  margin-right: 8px;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tool-actions button:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.tool-actions button.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.styled-editable-area {
+  min-height: 350px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  background: #fff;
+}
+
+.styled-editable-area:focus {
+  border-color: #000;
+}
+
+.styled-editable-area:empty:before {
+  content: attr(data-placeholder);
+  color: #aaa;
+}
+
+.media-section-footer {
+  margin-top: 30px;
+}
+
+.upload-link {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.image-preview-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.preview-square {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.preview-square img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-square button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 40px;
+  gap: 20px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-publish-styled:hover {
+  background-color: #333;
+}
+
+.minimal-toolbar {
+  display: flex;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 15px;
+}
+
+.tool-actions {
+  display: flex;
+  align-items: center;
+}
+
+.tool-actions button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin-right: 4px;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tool-actions button:hover {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+.tool-actions button.active {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.separator {
+  width: 1px;
+  height: 20px;
+  background: #eee;
+  margin: 0 10px 0 6px;
+}
+
+.styled-editable-area {
+  min-height: 300px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #333;
+  outline: none;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 15px;
+  background: #fff;
+}
+
+.btn-publish-styled {
+  background: #000;
+  border: 1px solid #000;
+  color: #fff;
+  padding: 6px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
