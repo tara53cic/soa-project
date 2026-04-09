@@ -83,9 +83,13 @@ export class AuthService {
     });
   }
 
-  getCurrentUser(): Observable<any> {
-    return this.http.get(this.config.whoami_url, { 
-      withCredentials: true 
+getCurrentUser(): Observable<any> {
+    const token = localStorage.getItem('jwt');
+    
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
     });
+
+    return this.http.get(this.config.whoami_url, { headers });
   }
 }
