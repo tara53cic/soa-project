@@ -9,6 +9,8 @@ import { RegisterComponent } from './register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { ProfileComponent } from './profile/profile.component';
     RegisterComponent,
     NavbarComponent,
     ProfileComponent,
+    AdminDashboardComponent,
+    UserDetailsComponent,
   ],
   imports: [
     BrowserModule,

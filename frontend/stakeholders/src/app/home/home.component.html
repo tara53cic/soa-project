@@ -14,9 +14,16 @@
 
 <div *ngIf="isLoggedIn" class="dashboard-container">
   <h2>Welcome back!</h2>
-  <p>You are now logged in. Here you will see your tours and activities soon.</p>
-  
-  <div class="placeholder-card">
-    <p>Tours coming soon...</p>
+  <div *ngIf="isAdmin; else normalUser">
+    <p>Here you can manage the users in the system. Use the dashboard below to block or unblock accounts.</p>
+    <div class="placeholder-card">
+      <app-admin-dashboard></app-admin-dashboard>
+    </div>
   </div>
+  <ng-template #normalUser>
+    <p>You are now logged in. Here you will see your tours and activities soon.</p>
+    <div class="placeholder-card">
+      <p>Tours coming soon...</p>
+    </div>
+  </ng-template>
 </div>
