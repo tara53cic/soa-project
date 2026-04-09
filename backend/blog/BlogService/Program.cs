@@ -1,5 +1,7 @@
 using BlogService.Data;
 using BlogService.Repositories;
+using BlogService.Services.Interfaces;
+using BlogService.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddDbContext<BlogDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<BlogRepository>();
+
+builder.Services.AddScoped<IBlogService, BlogService.Services.BlogService>();
 
 builder.Services.AddCors(opt =>
     opt.AddPolicy("AllowAll", p =>
