@@ -28,4 +28,27 @@ public class BlogRepository
 
         return blog;
     }
+
+    public async Task<Blog> CreateAsync(Blog blog)
+    {
+        await _db.Blogs.AddAsync(blog);
+        await _db.SaveChangesAsync();
+        return blog;
+    }
+
+    public async Task UpdateAsync(Blog blog)
+    {
+        _db.Blogs.Update(blog);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var blog = await _db.Blogs.FindAsync(id);
+        if (blog != null)
+        {
+            _db.Blogs.Remove(blog);
+            await _db.SaveChangesAsync();
+        }
+    }
 }
