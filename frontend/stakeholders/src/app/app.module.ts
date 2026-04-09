@@ -8,6 +8,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
+import { BlogListComponent } from './src/app/blog/blog-list/blog-list.component';
+import { BlogCreateComponent } from './blog/blog-create/blog-create.component';
+import { BlogDetailComponent } from './blog/blog-detail/blog-detail.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     LoginComponent,
     RegisterComponent,
     NavbarComponent,
+    BlogListComponent,
+    BlogCreateComponent,
+    BlogDetailComponent,
   ],
   imports: [
     BrowserModule,
