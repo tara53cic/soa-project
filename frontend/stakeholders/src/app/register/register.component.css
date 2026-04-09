@@ -1,0 +1,120 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: #f8f9fa; /* Čista svetla podloga */
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Skroz diskretna senka */
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+h2 {
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+p {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.85rem;
+}
+
+input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.btn-auth {
+  width: 100%;
+  padding: 12px;
+  background-color: #000; /* Crno dugme za moderan izgled */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-auth:hover {
+  background-color: #222;
+}
+
+.error-text {
+  color: #d93025;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.switch-auth {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.switch-auth a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.role-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  appearance: none; 
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+}
+
+.role-select:focus {
+  border-color: #007bff;
+  outline: none;
+}

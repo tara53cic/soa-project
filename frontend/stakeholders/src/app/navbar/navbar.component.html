@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <div class="nav-logo">
+    <a routerLink="/">Traveller</a>
+  </div>
+
+  <div class="nav-links">
+    <a routerLink="/">Home</a>
+
+    <ng-container *ngIf="!isLoggedIn">
+      <button (click)="goToLogin()" class="btn-nav">Sign In</button>
+      <button (click)="goToSignUp()" class="btn-nav btn-primary">Register</button>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn">
+      <a routerLink="/profile" class="profile-link">My Profile</a>
+      <button (click)="logout()" class="btn-logout">Logout</button>
+    </ng-container>
+  </div>
+</nav>

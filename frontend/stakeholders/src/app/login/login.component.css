@@ -1,0 +1,121 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background: #f8f9fa;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+h2 {
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.85rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+input:focus, select:focus {
+  border-color: #000;
+  outline: none;
+}
+
+.btn-auth {
+  width: 100%;
+  padding: 12px;
+  background-color: #000; /* Crno dugme kao na dashboardu */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-auth:hover {
+  opacity: 0.8;
+}
+
+.btn-auth:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-text {
+  color: #d93025;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.switch-auth {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.switch-auth a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Stil za poruke uspeha/greške */
+.alert {
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.alert-danger { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }

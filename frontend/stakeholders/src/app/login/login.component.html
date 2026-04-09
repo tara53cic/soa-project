@@ -1,0 +1,30 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Welcome Back</h2>
+    <p>Please sign in to your account</p>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" [(ngModel)]="username" required placeholder="Enter your username">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" [(ngModel)]="password" required placeholder="Enter your password">
+      </div>
+
+      <button type="submit" class="btn-auth" [disabled]="!loginForm.valid">Sign In</button>
+    </form>
+    
+    <p class="switch-auth">Don't have an account? <a routerLink="/register">Register here</a></p>
+  </div>
+</div>

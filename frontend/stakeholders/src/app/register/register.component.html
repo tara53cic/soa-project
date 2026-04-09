@@ -1,0 +1,56 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <p>Join our community and start your journey</p>
+
+    <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm" novalidate>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="firstName" [(ngModel)]="userData.firstName" required placeholder="John">
+        </div>
+
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="lastName" [(ngModel)]="userData.lastName" required placeholder="Doe">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" [(ngModel)]="userData.email" required email placeholder="name@example.com">
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" [(ngModel)]="userData.username" required placeholder="johndoe123">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" [(ngModel)]="userData.password" required minlength="6" placeholder="Min. 6 characters">
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" name="confirmPassword" [(ngModel)]="confirmPassword" required placeholder="Repeat password">
+        <small class="error-text" *ngIf="submitted && userData.password !== confirmPassword">
+          Passwords do not match!
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Register as:</label>
+        <select name="role" [(ngModel)]="userData.roleName" required class="role-select">
+          <option value="TOURIST">Tourist</option>
+          <option value="GUIDE">Tour Guide</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-auth" [disabled]="!registerForm.valid">Register</button>
+    </form>
+
+    <p class="switch-auth">Already have an account? <a routerLink="/login">Login here</a></p>
+  </div>
+</div>
