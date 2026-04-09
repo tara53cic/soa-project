@@ -1,7 +1,8 @@
 using BlogService.Data;
 using BlogService.Repositories;
-using BlogService.Services.Interfaces;
+using BlogService.Repositories.Interfaces;
 using BlogService.Services;
+using BlogService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BlogDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<BlogRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 
 builder.Services.AddScoped<IBlogService, BlogService.Services.BlogService>();
 

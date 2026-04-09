@@ -1,6 +1,7 @@
 ﻿using BlogService.DTOs;
 using BlogService.Models;
 using BlogService.Repositories;
+using BlogService.Repositories.Interfaces;
 using BlogService.Services.Interfaces;
 using Markdig;
 
@@ -8,12 +9,12 @@ namespace BlogService.Services;
 
 public class BlogService : IBlogService
 {
-    private readonly BlogRepository _blogRepo;
+    private readonly IBlogRepository _blogRepo;
 
     private static readonly MarkdownPipeline Pipeline =
         new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 
-    public BlogService(BlogRepository blogRepo)
+    public BlogService(IBlogRepository blogRepo)
     {
         _blogRepo = blogRepo;
     }

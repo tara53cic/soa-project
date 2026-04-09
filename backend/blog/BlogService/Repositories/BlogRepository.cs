@@ -1,10 +1,11 @@
 ﻿using BlogService.Data;
 using BlogService.Models;
+using BlogService.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogService.Repositories;
 
-public class BlogRepository
+public class BlogRepository : IBlogRepository
 {
     private readonly BlogDbContext _db;
 
