@@ -1,4 +1,4 @@
-<div *ngIf="!isLoggedIn" class=".section">
+<div *ngIf="!isLoggedIn" class="section">
   <div class="section">
     <div class="overlay">
       <h1>Welcome to the Traveller</h1>
@@ -13,11 +13,13 @@
 </div>
 
 <div *ngIf="isLoggedIn" class="dashboard-container">
-  <h2>Welcome back!</h2>
-  <p>You are now logged in. Here you will see your tours and activities soon.</p>
-  
-  <div class="action-bar" style="margin: 20px 0;">
-    <button routerLink="/create-blog" class="btn btn-create">Create New Blog</button>
+  <div class="dashboard-header">
+    <div class="text-group">
+      <h2>Welcome back!</h2>
+      <p>You are now logged in. Here you will see your tours and activities soon.</p>
+    </div>
+    
+    <button routerLink="/create-blog" class="btn-create-blog">+ Create New Post</button>
   </div>
 
   <div class="placeholder-card">

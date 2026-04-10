@@ -1,1 +1,55 @@
-<p>blog-detail works!</p>
+<div *ngIf="isLoading" class="state-container loading">Loading blog posts...</div>
+<div *ngIf="error" class="state-container error">{{ error }}</div>
+
+<div *ngIf="!isLoading && blog" class="page-wrapper">
+  <div class="main-content">
+    
+    <div class="action-bar">
+      <button class="back-btn" (click)="goBack()">← Back to Stories</button>
+    </div>
+
+    <div class="hero-container">
+      <div class="image-frame">
+        <img *ngIf="blog.imageUrls.length > 0" 
+             [src]="blog.imageUrls[currentImageIndex]" 
+             (click)="openGallery()"
+             class="hero-image">
+        
+        <div class="shadow-overlay"></div>
+        
+        <ng-container *ngIf="blog.imageUrls.length > 1">
+          <button class="hero-nav prev" (click)="prevImage($event)">❮</button>
+          <button class="hero-nav next" (click)="nextImage($event)">❯</button>
+          <div class="image-counter-pill">{{ currentImageIndex + 1 }} / {{ blog.imageUrls.length }}</div>
+        </ng-container>
+      </div>
+
+      <div class="hero-text-box">
+        <h1 class="blog-title">{{ blog.title }}</h1>
+        <div class="author-meta">
+          <div class="avatar-circle">{{ getInitials(blog.authorUsername) }}</div>
+          <div class="info">
+            <span class="author-name">{{ blog.authorUsername }}</span>
+            <span class="date">{{ blog.createdAt | date:'longDate' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <article class="content-body" [innerHTML]="blog.descriptionHtml"></article>
+  </div>
+</div>
+
+<div class="fullscreen-overlay" *ngIf="isGalleryOpen" (click)="closeGallery()">
+  <span class="close-gallery">&times;</span>
+  
+  <div class="gallery-wrapper" (click)="$event.stopPropagation()">
+    <img [src]="blog?.imageUrls?.[currentImageIndex]" class="gallery-img">
+    
+    <ng-container *ngIf="blog?.imageUrls && blog!.imageUrls.length > 1">
+      <button class="fs-nav fs-prev" (click)="prevImage($event)">❮</button>
+      <button class="fs-nav fs-next" (click)="nextImage($event)">❯</button>
+      <div class="fs-counter">{{ currentImageIndex + 1 }} / {{ blog?.imageUrls?.length }}</div>
+    </ng-container>
+  </div>
+</div>
