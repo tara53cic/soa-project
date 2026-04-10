@@ -10,7 +10,7 @@
 
     <div class="hero-container">
       <div class="image-frame">
-        <img *ngIf="blog.imageUrls.length > 0" 
+        <img *ngIf="blog.imageUrls && blog.imageUrls.length > 0; else noHeroImage"
              [src]="blog.imageUrls[currentImageIndex]" 
              (click)="openGallery()"
              class="hero-image">
@@ -22,6 +22,15 @@
           <button class="hero-nav next" (click)="nextImage($event)">❯</button>
           <div class="image-counter-pill">{{ currentImageIndex + 1 }} / {{ blog.imageUrls.length }}</div>
         </ng-container>
+
+        <ng-template #noHeroImage>
+          <div class="hero-default-placeholder">
+            <div class="placeholder-content">
+              <span class="fs-icon">🏔️</span>
+              <p>Adventure awaits, even without a photo.</p>
+            </div>
+          </div>
+        </ng-template>
       </div>
 
       <div class="hero-text-box">

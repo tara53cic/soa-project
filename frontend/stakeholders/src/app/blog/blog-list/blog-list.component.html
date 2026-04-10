@@ -20,9 +20,14 @@
     
     <div *ngFor="let blog of displayBlogs" class="blog-mini-card" (click)="goToBlog(blog.id)">
       <div class="image-placeholder">
-        <img *ngIf="blog.imageUrls && blog.imageUrls.length > 0; else noImg" 
+        <img *ngIf="blog.imageUrls && blog.imageUrls.length > 0; else noImage" 
              [src]="blog.imageUrls[0]" alt="Blog cover">
-        <ng-template #noImg><div class="no-image-text">No Image</div></ng-template>
+        <ng-template #noImage>
+          <div class="default-placeholder">
+            <span class="placeholder-icon">📸</span>
+            <p>No Image Available</p>
+          </div>
+        </ng-template>
       </div>
       
       <div class="card-content">
