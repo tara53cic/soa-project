@@ -92,3 +92,5 @@
   padding: 10px 25px;
   font-size: 0.9rem;
 }
+
+.blocked-indicator { color:#ff4d4f; font-weight:700; margin-left:8px; }

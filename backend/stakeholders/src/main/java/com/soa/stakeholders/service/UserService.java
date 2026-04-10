@@ -12,4 +12,5 @@ public interface UserService {
     User findByUsername(String username);
     List<User> findAll ();
     User save(UserRegistrationDto userRequest);
+    User save(User user);
 }

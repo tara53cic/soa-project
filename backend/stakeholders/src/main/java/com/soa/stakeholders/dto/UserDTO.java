@@ -1,51 +1,37 @@
-package com.soa.stakeholders.model;
+package com.soa.stakeholders.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.soa.stakeholders.model.Role;
+import com.soa.stakeholders.model.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
-import java.util.Collection;
-
-@Entity
-@Table(name = "USERS")
-public class User implements UserDetails {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Long id;
-
-    @Column(name = "username", unique = true)
     private String username;
-
-    @JsonIgnore
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "profilePicture")
     private String profilePicture;
-
-    @Column(name = "biography")
     private String biography;
-
-    @Column(name = "motto")
     private String motto;
-
-    @Column(name = "firstName")
     private String firstName;
-
-    @Column(name = "lastName")
     private String lastName;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
     private Role role;
+    private boolean blocked;
 
-    @Column(name = "blocked")
-    private boolean blocked = false;
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.role = user.getRole();
+        this.biography=user.getBiography();
+        this.motto=user.getMotto();
+        this.profilePicture=user.getProfilePicture();
+        this.blocked = user.isBlocked();
+    }
 
     public Long getId() {
         return id;
@@ -61,14 +47,6 @@ public class User implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
@@ -134,23 +112,4 @@ public class User implements UserDetails {
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
     }
-
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return java.util.Collections.singletonList(this.role);
-    }
-
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return !blocked; }
-
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
-
 }

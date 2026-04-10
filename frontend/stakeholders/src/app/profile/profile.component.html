@@ -11,7 +11,7 @@
       
       <div class="profile-data-area">
         <span class="role-badge">{{ user?.role?.name?.replace('ROLE_', '') }}</span>
-        <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
+        <h2>{{ user?.firstName }} {{ user?.lastName }} <span *ngIf="user?.blocked" class="blocked-indicator">(Blocked)</span></h2>
         <p class="username-text">@{{ user?.username }}</p>
         <p class="email-text">{{ user?.email }}</p>
       </div>
