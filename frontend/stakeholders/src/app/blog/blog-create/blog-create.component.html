@@ -1,0 +1,53 @@
+<div class="canvas-wrapper">
+  <div class="editor-paper">
+    
+    <div class="input-section">
+      <input type="text" [(ngModel)]="title" class="clean-title-input" placeholder="Blog Title..." />
+    </div>
+
+    <div class="minimal-toolbar">
+      <div class="tool-actions">
+        <button type="button" (mousedown)="$event.preventDefault(); execCommand('bold')" [class.active]="activeStyles.bold" title="Bold">B</button>
+        <button type="button" (mousedown)="$event.preventDefault(); execCommand('italic')" [class.active]="activeStyles.italic" title="Italic">I</button>
+        <button type="button" (mousedown)="$event.preventDefault(); execCommand('underline')" [class.active]="activeStyles.underline" title="Underline"><u>U</u></button>
+        <button type="button" (mousedown)="$event.preventDefault(); execCommand('strikeThrough')" [class.active]="activeStyles.strike" title="Strikethrough"><s>S</s></button>
+        <div class="separator"></div>
+        <button type="button" (mousedown)="$event.preventDefault(); execCommand('formatBlock', 'h2')" [class.active]="activeStyles.h2">H2</button>
+        <button type="button" (mousedown)="$event.preventDefault(); execCommand('insertUnorderedList')" [class.active]="activeStyles.ul">List</button>
+      </div>
+    </div>
+
+    <div class="editor-container-box">
+      <div #editor 
+           contenteditable="true" 
+           class="styled-editable-area" 
+           (keyup)="updateActiveStyles()" 
+           (mouseup)="updateActiveStyles()"
+           data-placeholder="Write your blog post here...">
+      </div>
+    </div>
+
+    <div class="media-section-footer">
+      <div class="media-meta">
+        <label class="upload-link">
+          <input type="file" (change)="onFilesSelected($event)" multiple accept="image/*" hidden>
+          + Add Images
+        </label>
+      </div>
+
+      <div class="image-preview-row" *ngIf="imageUrls.length > 0">
+        <div class="preview-square" *ngFor="let url of imageUrls; let i = index">
+          <img [src]="url">
+          <button (click)="removeImage(i)">×</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="link-btn" (click)="cancel()">Discard</button>
+      <button class="btn-publish-styled" (click)="submit()" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Publishing...' : 'Publish' }}
+      </button>
+    </div>
+  </div>
+</div>

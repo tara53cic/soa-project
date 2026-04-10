@@ -8,6 +8,9 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
+import { BlogListComponent } from './blog/blog-list/blog-list.component';
+import { BlogCreateComponent } from './blog/blog-create/blog-create.component';
+import { BlogDetailComponent } from './blog/blog-detail/blog-detail.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
@@ -19,6 +22,9 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     LoginComponent,
     RegisterComponent,
     NavbarComponent,
+    BlogListComponent,
+    BlogCreateComponent,
+    BlogDetailComponent,
     ProfileComponent,
     AdminDashboardComponent,
     UserDetailsComponent,

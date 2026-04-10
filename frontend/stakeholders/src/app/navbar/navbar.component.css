@@ -2,42 +2,75 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 10%;
+  padding: 1rem 10%;
   background-color: #ffffff;
-  border-bottom: 1px solid #eee; /* Samo tanka linija */
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
 }
 
 .nav-logo a {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  color: #000;
+  color: #007bff;
   text-decoration: none;
-  letter-spacing: -0.5px;
+  letter-spacing: -1px;
 }
 
 .nav-links {
   display: flex;
-  gap: 30px;
+  gap: 25px;
   align-items: center;
 }
 
 .nav-links a {
-  color: #555;
+  color: #666;
   text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: #007bff;
+}
+
+.btn-nav {
+  background: none;
+  border: none;
   font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white !important;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
 }
 
 .btn-logout {
   background: none;
-  border: 1px solid #000;
-  color: #000;
-  padding: 6px 16px;
-  border-radius: 4px;
+  border: 1.5px solid #eee;
+  color: #555;
+  padding: 7px 18px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .btn-logout:hover {
-  background-color: #000;
-  color: #fff;
+  border-color: #dc3545;
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.05);
 }

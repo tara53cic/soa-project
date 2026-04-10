@@ -1,0 +1,48 @@
+<div class="blogs-section" [ngClass]="{'full-page': limit === 0, 'home-section': limit > 0}">
+  <div *ngIf="limit === 0" class="back-nav">
+    <button class="btn-back" (click)="goBack()">
+      ← Back to Home
+    </button>
+  </div>
+  <div class="section-header">
+    <h2 class="section-title">{{ limit > 0 ? 'Latest Blog Posts' : 'All Blog Posts' }}</h2>
+    
+    <button *ngIf="limit > 0" class="btn-see-all" (click)="goToSeeAll()">
+      See All →
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="state-message">Loading blogs...</div>
+  <div *ngIf="error" class="state-message error">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error" 
+       [ngClass]="limit > 0 ? 'blog-scroll-wrapper' : 'blog-grid-layout'">
+    
+    <div *ngFor="let blog of displayBlogs" class="blog-mini-card" (click)="goToBlog(blog.id)">
+      <div class="image-placeholder">
+        <img *ngIf="blog.imageUrls && blog.imageUrls.length > 0; else noImage" 
+             [src]="blog.imageUrls[0]" alt="Blog cover">
+        <ng-template #noImage>
+          <div class="default-placeholder">
+            <span class="placeholder-icon">📸</span>
+            <p>No Image Available</p>
+          </div>
+        </ng-template>
+      </div>
+      
+      <div class="card-content">
+        <div class="meta">{{ formatDate(blog.createdAt) }}</div>
+        <h3 class="title">{{ blog.title }}</h3>
+        
+        <div class="author-info">
+          <div class="mini-avatar">{{ getInitials(blog.authorUsername) }}</div>
+          <span class="name">{{ blog.authorUsername }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && blogs.length === 0" class="empty-state">
+    No blogs published yet.
+  </div>
+</div>
