@@ -1,0 +1,96 @@
+.profile-card {
+  text-align: left;
+  padding: 40px; 
+}
+
+.profile-header-layout {
+  display: flex;
+  align-items: center; 
+  gap: 30px; 
+  margin-bottom: 35px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #f0f0f0; 
+}
+
+
+.profile-image-area {
+  flex-shrink: 0;
+}
+
+.profile-img {
+  width: 100px; 
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #000;
+  display: block; 
+}
+
+.profile-data-area h2 {
+  margin: 10px 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+.username-text {
+  color: #666;
+  font-size: 1rem;
+  margin: 2px 0 5px;
+  font-size: 1.2rem;
+}
+
+.email-text {
+  color: #888;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.role-badge {
+  background: #000;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profile-details-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-block label {
+  font-size: 1rem;
+  color: #aaa;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.motto-quote {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+}
+
+.bio-text {
+  color: #444;
+  margin: 0;
+  white-space: pre-line; 
+}
+
+.profile-actions {
+  margin-top: 25px;
+  text-align: right;
+}
+
+.btn-edit {
+  width: auto; 
+  padding: 10px 25px;
+  font-size: 0.9rem;
+}
+
+.blocked-indicator { color:#ff4d4f; font-weight:700; margin-left:8px; }

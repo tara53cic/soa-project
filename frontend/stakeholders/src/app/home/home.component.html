@@ -16,17 +16,31 @@
   <div class="dashboard-header">
     <div class="text-group">
       <h2>Welcome back!</h2>
-      <p>You are now logged in. Here you will see your tours and activities soon.</p>
+      
+      <div *ngIf="isAdmin; else normalUserText">
+        <p>Here you can manage the users in the system. Use the dashboard below to block or unblock accounts.</p>
+      </div>
+      <ng-template #normalUserText>
+        <p>You are now logged in. Here you will see your tours and activities soon.</p>
+      </ng-template>
     </div>
     
-    <button routerLink="/create-blog" class="btn-create-blog">+ Create New Post</button>
+    <button *ngIf="!isAdmin" routerLink="/create-blog" class="btn-create-blog">+ Create New Post</button>
   </div>
 
-  <div class="placeholder-card">
-    <p>Tours coming soon...</p>
+  <div *ngIf="isAdmin; else normalUserContent">
+    <div class="placeholder-card">
+      <app-admin-dashboard></app-admin-dashboard>
+    </div>
   </div>
 
-  <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
-
-  <app-blog-list [limit]="10"></app-blog-list>
+  <ng-template #normalUserContent>
+    <div class="placeholder-card">
+      <p>Tours coming soon...</p>
+    </div>
+    
+    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+    
+    <app-blog-list [limit]="10"></app-blog-list>
+  </ng-template>
 </div>

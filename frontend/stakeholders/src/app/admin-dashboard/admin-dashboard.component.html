@@ -1,0 +1,44 @@
+<div class="admin-dashboard">
+  <div class="tabs">
+    <button [class.active]="activeTab==='active'" (click)="toggleTab('active')">Active Users</button>
+    <button [class.active]="activeTab==='blocked'" (click)="toggleTab('blocked')">Blocked Users</button>
+  </div>
+
+  <div *ngIf="activeTab==='active'" class="users-list">
+    <div *ngFor="let u of activeUsers" class="user-row" (click)="openUser(u)">
+      <div class="left">
+        <div class="avatar">
+          <img *ngIf="u.profilePicture" [src]="u.profilePicture" alt="avatar" />
+          <div *ngIf="!u.profilePicture" class="initials">{{u.firstName?.charAt(0) || u.username.charAt(0)}}</div>
+        </div>
+        <div class="info">
+          <div class="name">{{u.firstName}} {{u.lastName}}</div>
+          <div class="meta">{{u.username}} · {{u.email}}</div>
+        </div>
+      </div>
+      <div class="right">
+        <button class="block-btn" (click)="changeBlock(u, true); $event.stopPropagation()">Block</button>
+      </div>
+    </div>
+    <div *ngIf="activeUsers.length===0" class="empty">No active users</div>
+  </div>
+
+  <div *ngIf="activeTab==='blocked'" class="users-list">
+    <div *ngFor="let u of blockedUsers" class="user-row" (click)="openUser(u)">
+      <div class="left">
+        <div class="avatar">
+          <img *ngIf="u.profilePicture" [src]="u.profilePicture" alt="avatar" />
+          <div *ngIf="!u.profilePicture" class="initials">{{u.firstName?.charAt(0) || u.username.charAt(0)}}</div>
+        </div>
+        <div class="info">
+          <div class="name">{{u.firstName}} {{u.lastName}}</div>
+          <div class="meta">{{u.username}} · {{u.email}}</div>
+        </div>
+      </div>
+      <div class="right">
+        <button class="unblock-btn" (click)="changeBlock(u, false); $event.stopPropagation()">Unblock</button>
+      </div>
+    </div>
+    <div *ngIf="blockedUsers.length===0" class="empty">No blocked users</div>
+  </div>
+</div>

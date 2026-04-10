@@ -30,4 +30,8 @@ export class NavbarComponent implements OnInit {
   goToSignUp(): void {
     this.router.navigate(['/register']);
   }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
 }

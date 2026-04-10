@@ -6,6 +6,8 @@ import { RegisterComponent } from './register/register.component';
 import { BlogCreateComponent } from './blog/blog-create/blog-create.component';
 import { BlogListComponent } from './blog/blog-list/blog-list.component';
 import { BlogDetailComponent } from './blog/blog-detail/blog-detail.component';
+import { ProfileComponent } from './profile/profile.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -14,7 +16,9 @@ const routes: Routes = [
   { path: 'create-blog', component: BlogCreateComponent },
   { path: 'blogs', component: BlogListComponent },
   { path: 'blogs/:id', component: BlogDetailComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'user/:id', component: UserDetailsComponent }
 ];
 
 @NgModule({

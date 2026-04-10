@@ -1,0 +1,44 @@
+<div class="auth-container">
+  <div class="auth-card profile-card">
+    
+    <div class="profile-header-layout">
+      
+      <div class="profile-image-area">
+        <img [src]="user?.profilePicture || 'assets/avatar.png'" 
+             alt="Profile Picture" 
+             class="profile-img">
+      </div>
+      
+      <div class="profile-data-area">
+        <span class="role-badge">{{ user?.role?.name?.replace('ROLE_', '') }}</span>
+        <h2>{{ user?.firstName }} {{ user?.lastName }} <span *ngIf="user?.blocked" class="blocked-indicator">(Blocked)</span></h2>
+        <p class="username-text">@{{ user?.username }}</p>
+        <p class="email-text">{{ user?.email }}</p>
+      </div>
+      
+    </div>
+
+    <div *ngIf="user" class="profile-details-layout">
+      
+      <div class="info-block">
+        <label>Motto</label>
+        <p class="motto-quote">
+          <em>{{ user?.motto ? '"' + user.motto + '"' : 'No motto added yet.' }}</em>
+        </p>
+      </div>
+
+      <div class="info-block">
+        <label>Biography</label>
+        <p class="bio-text">
+          {{ user.biography || 'No biography provided yet. Tell us something about yourself!' }}
+        </p>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn-auth btn-edit">Edit Profile</button>
+      </div>
+      
+    </div>
+
+  </div>
+</div>
