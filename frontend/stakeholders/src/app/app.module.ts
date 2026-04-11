@@ -14,6 +14,7 @@ import { BlogDetailComponent } from './blog/blog-detail/blog-detail.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     ProfileComponent,
     AdminDashboardComponent,
     UserDetailsComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
