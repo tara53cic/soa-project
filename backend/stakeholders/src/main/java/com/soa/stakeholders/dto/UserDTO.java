@@ -20,6 +20,8 @@ public class UserDTO {
     private Role role;
     private boolean blocked;
 
+    public UserDTO() {}
+
     public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
