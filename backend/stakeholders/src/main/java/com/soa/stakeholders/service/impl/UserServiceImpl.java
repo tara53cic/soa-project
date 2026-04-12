@@ -1,5 +1,6 @@
 package com.soa.stakeholders.service.impl;
 
+import com.soa.stakeholders.dto.UserDTO;
 import com.soa.stakeholders.dto.UserRegistrationDto;
 import com.soa.stakeholders.model.Role;
 import com.soa.stakeholders.model.User;
@@ -66,6 +67,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User update(Long id, UserDTO userDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setProfilePicture(userDto.getProfilePicture());
+        user.setBiography(userDto.getBiography());
+        user.setMotto(userDto.getMotto());
+        user.setEmail(userDto.getEmail());
+
         return userRepository.save(user);
     }
 }

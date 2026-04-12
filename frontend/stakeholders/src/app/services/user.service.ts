@@ -26,4 +26,8 @@ export class UserService {
     const url = `${this.config.users_url}/${id}/block?block=${block}`;
     return this.http.put(url, {}, { headers: this.headers(), responseType: 'text' });
   }
+
+  updateProfile(userData: any): Observable<any> {
+    return this.http.put(`${this.config.users_url}/profile`, userData, { headers: this.headers() });
+  }
 }

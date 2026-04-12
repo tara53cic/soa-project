@@ -8,6 +8,7 @@ import { BlogListComponent } from './blog/blog-list/blog-list.component';
 import { BlogDetailComponent } from './blog/blog-detail/blog-detail.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'blogs/:id', component: BlogDetailComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'profile', component: ProfileComponent },
-  { path: 'user/:id', component: UserDetailsComponent }
+  { path: 'user/:id', component: UserDetailsComponent },
+  { path: 'edit-profile', component: EditProfileComponent }
 ];
 
 @NgModule({

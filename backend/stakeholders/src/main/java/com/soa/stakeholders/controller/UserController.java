@@ -53,4 +53,10 @@ public class UserController {
         userService.save(user);
     }
 
+    @PutMapping("/profile")
+    public UserDTO updateMyProfile(@RequestBody UserDTO userDto, Principal principal) {
+        User currentUser = userService.findByUsername(principal.getName());
+        User updatedUser = userService.update(currentUser.getId(), userDto);
+        return new UserDTO(updatedUser);
+    }
 }

@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "profilePicture")
+    @Column(name = "profilePicture", columnDefinition = "TEXT")
     private String profilePicture;
 
     @Column(name = "biography")
