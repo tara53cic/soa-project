@@ -1,1 +1,58 @@
-<p>edit-profile works!</p>
+<div class="auth-container">
+  <div class="auth-card profile-card">
+    
+    <div class="edit-header">
+      <h2 class="logo-style">Edit Profile</h2>
+      <p class="subtitle">Update your personal information and profile picture</p>
+    </div>
+
+    <form [formGroup]="editForm" (ngSubmit)="save()">
+      
+      <div class="image-section">
+        <div class="image-container">
+          <img [src]="editForm.value.profilePicture || 'assets/avatar.png'" 
+               alt="Profile" 
+               class="profile-preview">
+          <label for="file-input" class="file-label">
+            Change Photo
+          </label>
+          <input id="file-input" type="file" (change)="onFileSelected($event)" hidden />
+        </div>
+      </div>
+
+      <div class="form-content">
+        <div class="form-grid">
+          <div class="input-group">
+            <label>First Name</label>
+            <input type="text" formControlName="firstName" class="custom-input" placeholder="First Name">
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" formControlName="lastName" class="custom-input" placeholder="Last Name">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" formControlName="email" class="custom-input" placeholder="Email">
+        </div>
+
+        <div class="input-group">
+          <label>Motto</label>
+          <input type="text" formControlName="motto" class="custom-input motto-style" placeholder="Your catchphrase...">
+        </div>
+
+        <div class="input-group">
+          <label>Biography</label>
+          <textarea formControlName="biography" class="custom-input bio-area" placeholder="Write something about yourself..."></textarea>
+        </div>
+
+        <div class="edit-actions">
+          <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+          <button type="submit" [disabled]="editForm.invalid" class="btn-submit">Save Changes</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

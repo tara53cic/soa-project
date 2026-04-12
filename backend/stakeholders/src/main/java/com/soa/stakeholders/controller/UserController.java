@@ -54,7 +54,6 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-    @PreAuthorize("hasAnyRole('TOURIST', 'GUIDE')")
     public UserDTO updateMyProfile(@RequestBody UserDTO userDto, Principal principal) {
         User currentUser = userService.findByUsername(principal.getName());
         User updatedUser = userService.update(currentUser.getId(), userDto);
