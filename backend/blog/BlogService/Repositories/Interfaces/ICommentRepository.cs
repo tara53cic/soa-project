@@ -4,9 +4,9 @@ namespace BlogService.Repositories.Interfaces;
 
 public interface ICommentRepository
 {
-    Comment Create(Comment comment);
-    Comment? GetById(Guid id);
-    List<Comment> GetByBlogId(Guid blogId);
-    Comment Update(Comment comment);
-    void Delete(Guid id);
+    Task<Comment> CreateAsync(Comment comment);
+    Task<Comment?> GetByIdAsync(Guid id);
+    Task<List<Comment>> GetByBlogIdAsync(Guid blogId);
+    Task UpdateAsync(Comment comment);
+    Task DeleteAsync(Guid id);
 }
