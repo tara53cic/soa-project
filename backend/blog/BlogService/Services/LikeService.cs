@@ -16,54 +16,25 @@ public class LikeService : ILikeService
         _likeRepository = likeRepository;
     }
 
-    public async Task<LikeResponseDto> AddLikeAsync(Guid blogId, string currentUsername)
+    public async Task ToggleLikeAsync(Guid blogId, string username)
     {
-        Blog? blog = await _blogRepository.GetByIdAsync(blogId);
-        if (blog == null)
-            return null;
+        var existingLike = await _likeRepository
+            .IsLikedByUserAsync(blogId, username);
 
-        Like? existingLike = await _likeRepository.GetByBlogIdAndUsernameAsync(blogId, currentUsername);
         if (existingLike != null)
-            throw new Exception("You have already liked this blog.");
-
-        Like like = new Like
         {
-            Id = Guid.NewGuid(),
-            BlogId = blogId,
-            Username = currentUsername
-        };
-
-        await _likeRepository.CreateAsync(like);
-
-        int likesCount = await _likeRepository.GetLikesCountByBlogIdAsync(blogId);
-
-        return new LikeResponseDto
+            await _likeRepository.RemoveLikeAsync(blogId, username);
+        }
+        else
         {
-            BlogId = blogId,
-            LikesCount = likesCount,
-            IsLikedByCurrentUser = true
-        };
-    }
+            var like = new Like
+            {
+                Id = Guid.NewGuid(),
+                BlogId = blogId,
+                Username = username
+            };
 
-    public async Task<LikeResponseDto> RemoveLikeAsync(Guid blogId, string currentUsername)
-    {
-        Blog? blog = await _blogRepository.GetByIdAsync(blogId);
-        if (blog == null)
-            return null;
-
-        Like? existingLike = await _likeRepository.GetByBlogIdAndUsernameAsync(blogId, currentUsername);
-        if (existingLike == null)
-            return null;
-
-        await _likeRepository.DeleteAsync(existingLike.Id);
-
-        int likesCount = await _likeRepository.GetLikesCountByBlogIdAsync(blogId);
-
-        return new LikeResponseDto
-        {
-            BlogId = blogId,
-            LikesCount = likesCount,
-            IsLikedByCurrentUser = false
-        };
+            await _likeRepository.AddLikeAsync(like);
+        }
     }
 }

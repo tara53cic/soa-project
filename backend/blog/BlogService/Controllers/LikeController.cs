@@ -18,29 +18,12 @@ public class LikeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddLike(Guid blogId)
+    public async Task<IActionResult> ToggleLike(Guid blogId)
     {
-        string currentUsername = GetCurrentUsername();
-        var result = await _likeService.AddLikeAsync(blogId, currentUsername);
-        return Ok(result);
-    }
+        string username = User.Identity.Name;
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveLike(Guid blogId)
-    {
-        string currentUsername = GetCurrentUsername();
-        var result = await _likeService.RemoveLikeAsync(blogId, currentUsername);
-        return Ok(result);
-    }
+        await _likeService.ToggleLikeAsync(blogId, username);
 
-    private string GetCurrentUsername()
-    {
-        string? username = User.FindFirst(ClaimTypes.Name)?.Value
-                           ?? User.FindFirst("sub")?.Value;
-
-        if (string.IsNullOrWhiteSpace(username))
-            throw new Exception("Username claim not found.");
-
-        return username;
+        return Ok();
     }
 }

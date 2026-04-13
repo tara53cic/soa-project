@@ -18,6 +18,7 @@ public class BlogRepository : IBlogRepository
     {
         return await _db.Blogs
             .Include(b => b.Images)
+            .Include(b => b.Comments)
             .ToListAsync();
     }
 
@@ -25,6 +26,7 @@ public class BlogRepository : IBlogRepository
     {
         var blog = await _db.Blogs
             .Include(b => b.Images)
+            .Include(b => b.Comments)
             .FirstOrDefaultAsync(b => b.Id == id);
 
         return blog;

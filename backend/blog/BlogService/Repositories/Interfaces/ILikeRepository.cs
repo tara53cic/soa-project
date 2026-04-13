@@ -4,8 +4,8 @@ namespace BlogService.Repositories.Interfaces;
 
 public interface ILikeRepository
 {
-    Task<Like> CreateAsync(Like like);
-    Task<Like?> GetByBlogIdAndUsernameAsync(Guid blogId, string username);
+    Task<Like> AddLikeAsync(Like like);
+    Task<bool> IsLikedByUserAsync(Guid blogId, string username);
     Task<int> GetLikesCountByBlogIdAsync(Guid blogId);
-    Task DeleteAsync(Guid id);
+    Task RemoveLikeAsync(Guid blogId, string username);
 }

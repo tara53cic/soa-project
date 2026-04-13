@@ -14,17 +14,17 @@ public class LikeRepository : ILikeRepository
         _db = db;
     }
 
-    public async Task<Like> CreateAsync(Like like)
+    public async Task<Like> AddLikeAsync(Like like)
     {
         await _db.Likes.AddAsync(like);
         await _db.SaveChangesAsync();
         return like;
     }
 
-    public async Task<Like?> GetByBlogIdAndUsernameAsync(Guid blogId, string username)
+    public async Task<bool> IsLikedByUserAsync(Guid blogId, string username)
     {
         return await _db.Likes
-            .FirstOrDefaultAsync(l => l.BlogId == blogId && l.Username == username);
+            .AnyAsync(l => l.BlogId == blogId && l.Username == username);
     }
 
     public async Task<int> GetLikesCountByBlogIdAsync(Guid blogId)
@@ -33,15 +33,15 @@ public class LikeRepository : ILikeRepository
             .CountAsync(l => l.BlogId == blogId);
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task RemoveLikeAsync(Guid blogId, string username)
     {
-        Like? like = await _db.Likes
-            .FirstOrDefaultAsync(l => l.Id == id);
+        var like = await _db.Likes
+            .FirstOrDefaultAsync(l => l.BlogId == blogId && l.Username == username);
 
-        if (like == null)
-            return;
-
-        _db.Likes.Remove(like);
-        await _db.SaveChangesAsync();
+        if (like != null)
+        {
+            _db.Likes.Remove(like);
+            await _db.SaveChangesAsync();
+        }
     }
 }

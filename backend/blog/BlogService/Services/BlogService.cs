@@ -62,7 +62,20 @@ public class BlogService : IBlogService
             DescriptionHtml = Markdown.ToHtml(blog.Description, Pipeline),
             CreatedAt = blog.CreatedAt,
             AuthorUsername = blog.AuthorUsername,
-            ImageUrls = blog.Images.Select(i => i.Url).ToList()
+            ImageUrls = blog.Images.Select(i => i.Url).ToList(),
+
+            Comments = blog.Comments.Select(c => new CommentResponseDto
+            {
+                Id = c.Id,
+                BlogId = c.BlogId,
+                Text = c.Text,
+                AuthorUsername = c.AuthorUsername,
+                CreatedAt = c.CreatedAt
+            }).ToList(),
+
+            LikesCount = blog.Likes.Count
         };
+
+
     }
 }
