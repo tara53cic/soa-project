@@ -1,11 +1,11 @@
-﻿namespace BlogService.Models;
+﻿namespace BlogService.DTOs;
 
-public class Comment
+public class CommentDto
 {
     public Guid Id { get; set; }
     public Guid BlogId { get; set; }
+    public string AuthorUsername { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
-    public string AuthorName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime? EditedAt { get; set; }
 }
