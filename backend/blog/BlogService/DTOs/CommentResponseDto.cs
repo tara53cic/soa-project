@@ -1,6 +1,6 @@
 ﻿namespace BlogService.DTOs;
 
-public class CommentDto
+public class CommentResponseDto
 {
     public Guid Id { get; set; }
     public Guid BlogId { get; set; }

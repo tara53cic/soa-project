@@ -1,6 +1,6 @@
 ﻿namespace BlogService.DTOs;
 
-public class IsBlogLikedByUserDto
+public class LikeResponseDto
 {
     public Guid BlogId { get; set; }
     public int LikesCount { get; set; }
