@@ -4,6 +4,6 @@ namespace BlogService.Services.Interfaces;
 
 public interface ILikeService
 {
-    Task<LikeResponseDto> AddLikeAsync(Guid blogId, Guid currentUserId);
-    Task<LikeResponseDto> RemoveLikeAsync(Guid blogId, Guid currentUserId);
+    Task<LikeResponseDto> AddLikeAsync(Guid blogId, string currentUsername);
+    Task<LikeResponseDto> RemoveLikeAsync(Guid blogId, string currentUsername);
 }

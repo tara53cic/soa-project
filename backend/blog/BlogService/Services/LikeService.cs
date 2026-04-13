@@ -16,13 +16,13 @@ public class LikeService : ILikeService
         _likeRepository = likeRepository;
     }
 
-    public async Task<LikeResponseDto> AddLikeAsync(Guid blogId, Guid currentUserId)
+    public async Task<LikeResponseDto> AddLikeAsync(Guid blogId, string currentUsername)
     {
         Blog? blog = await _blogRepository.GetByIdAsync(blogId);
         if (blog == null)
             return null;
 
-        Like? existingLike = await _likeRepository.GetByBlogIdAndUserIdAsync(blogId, currentUserId);
+        Like? existingLike = await _likeRepository.GetByBlogIdAndUsernameAsync(blogId, currentUsername);
         if (existingLike != null)
             throw new Exception("You have already liked this blog.");
 
@@ -30,7 +30,7 @@ public class LikeService : ILikeService
         {
             Id = Guid.NewGuid(),
             BlogId = blogId,
-            UserId = currentUserId
+            Username = currentUsername
         };
 
         await _likeRepository.CreateAsync(like);
@@ -45,13 +45,13 @@ public class LikeService : ILikeService
         };
     }
 
-    public async Task<LikeResponseDto> RemoveLikeAsync(Guid blogId, Guid currentUserId)
+    public async Task<LikeResponseDto> RemoveLikeAsync(Guid blogId, string currentUsername)
     {
         Blog? blog = await _blogRepository.GetByIdAsync(blogId);
         if (blog == null)
             return null;
 
-        Like? existingLike = await _likeRepository.GetByBlogIdAndUserIdAsync(blogId, currentUserId);
+        Like? existingLike = await _likeRepository.GetByBlogIdAndUsernameAsync(blogId, currentUsername);
         if (existingLike == null)
             return null;
 

@@ -21,10 +21,10 @@ public class LikeRepository : ILikeRepository
         return like;
     }
 
-    public async Task<Like?> GetByBlogIdAndUserIdAsync(Guid blogId, Guid userId)
+    public async Task<Like?> GetByBlogIdAndUsernameAsync(Guid blogId, string username)
     {
         return await _db.Likes
-            .FirstOrDefaultAsync(l => l.BlogId == blogId && l.UserId == userId);
+            .FirstOrDefaultAsync(l => l.BlogId == blogId && l.Username == username);
     }
 
     public async Task<int> GetLikesCountByBlogIdAsync(Guid blogId)
