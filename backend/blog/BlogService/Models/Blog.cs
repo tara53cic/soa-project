@@ -12,4 +12,8 @@ public class Blog
 
     public List<BlogImage> Images { get; set; } = new();
 
+    public List<Comment> Comments { get; set; } = new();
+    public List<Like> Likes { get; set; } = new();
+    public int LikesCount { get; set; }
+
 }
