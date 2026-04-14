@@ -48,10 +48,11 @@
     <article class="content-body" [innerHTML]="blog.descriptionHtml"></article>
 
     <div class="engagement-bar">
-      <div class="likes-box">
-        <span class="engagement-label">Likes</span>
-        <span class="engagement-value">{{ blog.likesCount }}</span>
-      </div>
+      <button class="like-pill" [class.liked]="isLiked" (click)="onToggleLike()">
+        <span class="like-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
+        <span class="like-divider"></span>
+        <span class="like-count">{{ blog.likesCount }}</span>
+      </button>
     </div>
 
     <div class="comments-section">
@@ -61,7 +62,7 @@
       </div>
 
       <div class="comment-form-card">
-        <label class="comment-label">Share your thoughts</label>
+        
         <textarea
           [(ngModel)]="newComment"
           class="comment-textarea"

@@ -8,6 +8,7 @@ export interface Blog {
   imageUrls: string[];
   comments: Comments[];
   likesCount: number;
+  isLikedByCurrentUser: boolean;
 }
 
 export interface CreateBlogRequest {
@@ -33,3 +34,4 @@ export interface CreateCommentRequest {
 export interface EditCommentRequest {
   text: string;
 }
+

@@ -24,6 +24,9 @@ export class BlogDetailComponent implements OnInit {
   commentsError = '';
   authorUsername: string = '';
 
+  isLiked: boolean = false;
+  likesCount: number = 0;
+
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
@@ -60,10 +63,15 @@ export class BlogDetailComponent implements OnInit {
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.blogService.getById(id).subscribe({
+      this.blogService.getById(id, this.authorUsername).subscribe({
         next: (data) => {
+          console.log('blog data:', data);
+      console.log('isLikedByCurrentUser:', data.isLikedByCurrentUser);
+      console.log('authorUsername:', this.authorUsername);
           this.blog = data;
           this.isLoading = false;
+          this.isLiked = data.isLikedByCurrentUser;
+          this.loadComments(id);
         },
         error: () => {
           this.error = 'Blog post not found.';
@@ -71,18 +79,6 @@ export class BlogDetailComponent implements OnInit {
         }
       });
     }
-
-    this.blogService.getById(id!).subscribe({
-      next: (data) => {
-        this.blog = data;
-        this.isLoading = false;
-        this.loadComments(id!);
-      },
-      error: () => {
-        this.error = 'Blog post not found.';
-        this.isLoading = false;
-      }
-    });
   }
 
   nextImage(event?: Event): void {
@@ -194,6 +190,23 @@ export class BlogDetailComponent implements OnInit {
       error: (err) => {
         console.error(err);
       }
+    });
+  }
+
+  onToggleLike() {
+    if (!this.blog?.id) return;
+    if (!this.authorUsername) return;
+
+    this.blogService.toggleLike(this.blog.id, this.authorUsername).subscribe({
+      next: ({ liked }) => {
+        this.isLiked = liked;
+        this.blog!.likesCount += liked ? 1 : -1;
+        
+      },
+      error: (err) => {
+        console.error('Toggle like failed:', err);
+      }
+      
     });
   }
 }

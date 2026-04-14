@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: maindb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  blog-service:
+    build:
+      context: ./backend/blog
+    container_name: blog_service
+    environment:
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
+      - ASPNETCORE_URLS=http://+:44307
+    ports:
+      - "44307:44307"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  stakeholders-service:
+    build:
+      context: ./backend/stakeholders
+    container_name: stakeholders_service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/maindb
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend/stakeholders
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - blog-service
+      - stakeholders-service
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge
