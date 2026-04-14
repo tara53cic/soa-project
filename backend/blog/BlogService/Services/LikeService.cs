@@ -7,34 +7,32 @@ namespace BlogService.Services;
 
 public class LikeService : ILikeService
 {
-    private readonly IBlogRepository _blogRepository;
     private readonly ILikeRepository _likeRepository;
 
-    public LikeService(IBlogRepository blogRepository, ILikeRepository likeRepository)
+    public LikeService(ILikeRepository likeRepository)
     {
-        _blogRepository = blogRepository;
         _likeRepository = likeRepository;
     }
 
-    public async Task ToggleLikeAsync(Guid blogId, string username)
+    public async Task<bool> ToggleLikeAsync(Guid blogId, string username)
     {
         var existingLike = await _likeRepository
-            .IsLikedByUserAsync(blogId, username);
+        .IsLikedByUserAsync(blogId, username);
 
-        if (existingLike != null)
+        if (existingLike)
         {
             await _likeRepository.RemoveLikeAsync(blogId, username);
+            return false; 
         }
-        else
-        {
-            var like = new Like
-            {
-                Id = Guid.NewGuid(),
-                BlogId = blogId,
-                Username = username
-            };
 
-            await _likeRepository.AddLikeAsync(like);
-        }
+        var like = new Like
+        {
+            Id = Guid.NewGuid(),
+            BlogId = blogId,
+            Username = username
+        };
+
+        await _likeRepository.AddLikeAsync(like);
+        return true; 
     }
 }

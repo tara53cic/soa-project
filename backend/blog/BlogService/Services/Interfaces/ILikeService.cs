@@ -4,5 +4,5 @@ namespace BlogService.Services.Interfaces;
 
 public interface ILikeService
 {
-    Task ToggleLikeAsync(Guid blogId, string username);
+    Task<bool> ToggleLikeAsync(Guid blogId, string username);
 }

@@ -18,18 +18,25 @@ public class BlogService : IBlogService
         _blogRepo = blogRepo;
     }
 
-    public async Task<List<BlogResponseDto>> GetAllAsync()
+    public async Task<List<BlogResponseDto>> GetAllAsync(string? username = null)
     {
         var blogs = await _blogRepo.GetAllAsync();
-        return blogs.Select(ToResponse).ToList();
+        return blogs.Select(blog =>
+        {
+            var dto = ToResponse(blog);
+            dto.IsLikedByCurrentUser = username != null && blog.Likes.Any(l => l.Username == username);
+            return dto;
+        }).ToList();
     }
 
-    public async Task<BlogResponseDto?> GetByIdAsync(Guid id)
+    public async Task<BlogResponseDto?> GetByIdAsync(Guid id, string? username = null)
     {
         var blog = await _blogRepo.GetByIdAsync(id);
         if (blog == null) return null;
 
-        return ToResponse(blog);
+        var dto = ToResponse(blog);
+        dto.IsLikedByCurrentUser = username != null && blog.Likes.Any(l => l.Username == username);
+        return dto;
     }
 
     public async Task<BlogResponseDto> CreateAsync(CreateBlogDto req)

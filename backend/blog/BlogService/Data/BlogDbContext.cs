@@ -38,6 +38,9 @@ public class BlogDbContext : DbContext
                 .WithMany(b => b.Likes)
                 .HasForeignKey(l => l.BlogId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(l => new { l.BlogId, l.Username })
+                  .IsUnique();
         });
     }
 }

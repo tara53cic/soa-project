@@ -1,6 +1,5 @@
-﻿using BlogService.DTOs;
-using BlogService.Repositories.Interfaces;
-using BlogService.Services.Interfaces;
+﻿using BlogService.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 namespace BlogService.Controllers;
@@ -18,12 +17,10 @@ public class LikeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> ToggleLike(Guid blogId)
-    {
-        string username = User.Identity.Name;
+    public async Task<IActionResult> ToggleLike(Guid blogId, [FromQuery] string username)
+    {  
+        bool isLiked = await _likeService.ToggleLikeAsync(blogId, username);
 
-        await _likeService.ToggleLikeAsync(blogId, username);
-
-        return Ok();
+        return Ok(new { liked = isLiked });
     }
 }
