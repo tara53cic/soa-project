@@ -1,3 +1,5 @@
+version: "3.7"
+
 services:
 
   postgres:
@@ -20,7 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: blog_service
     environment:
-      ConnectionStrings__Default: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
       ASPNETCORE_URLS: http://+:44307
     ports:
       - "44307:44307"
