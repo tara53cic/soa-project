@@ -9,12 +9,16 @@ export class BlogService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(`${this.baseUrl}/blogs`);
+  getAll(username?: string): Observable<Blog[]> {
+    return username
+      ? this.http.get<Blog[]>(`${this.baseUrl}/blogs`, { params: { username } })
+      : this.http.get<Blog[]>(`${this.baseUrl}/blogs`);
   }
 
-  getById(id: string): Observable<Blog> {
-    return this.http.get<Blog>(`${this.baseUrl}/blogs/${id}`);
+  getById(id: string, username?: string): Observable<Blog> {
+    return username
+      ? this.http.get<Blog>(`${this.baseUrl}/blogs/${id}`, { params: { username } })
+      : this.http.get<Blog>(`${this.baseUrl}/blogs/${id}`);
   }
 
   create(request: CreateBlogRequest): Observable<Blog> {
@@ -31,6 +35,10 @@ export class BlogService {
 
   editComment(commentId: string, request: EditCommentRequest): Observable<Comments> {
     return this.http.put<Comments>(`${this.baseUrl}/comments/${commentId}`, request);
+  }
+
+  toggleLike(blogId: string, username: string): Observable<{ liked: boolean }> {
+    return this.http.post<{ liked: boolean }>(`${this.baseUrl}/blogs/${blogId}/likes?username=${username}`, {});
   }
 
 }
