@@ -16,16 +16,16 @@ public class BlogController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? username = null)
     {
-        var blogs = await _blogService.GetAllAsync();
+        var blogs = await _blogService.GetAllAsync(username);
         return Ok(blogs);
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> GetById(Guid id, [FromQuery] string? username = null)
     {
-        var blog = await _blogService.GetByIdAsync(id);
+        var blog = await _blogService.GetByIdAsync(id, username);
 
         if (blog == null)
         {

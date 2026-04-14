@@ -46,6 +46,93 @@
     </div>
 
     <article class="content-body" [innerHTML]="blog.descriptionHtml"></article>
+
+    <div class="engagement-bar">
+      <div class="likes-box">
+        <span class="engagement-label">Likes</span>
+        <span class="engagement-value">{{ blog.likesCount }}</span>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <div class="comments-header">
+        <h2 class="comments-title">Comments</h2>
+        <span class="comments-count">{{ comments.length }}</span>
+      </div>
+
+      <div class="comment-form-card">
+        <label class="comment-label">Share your thoughts</label>
+        <textarea
+          [(ngModel)]="newComment"
+          class="comment-textarea"
+          rows="4"
+          placeholder="Write a comment...">
+        </textarea>
+
+        <div class="comment-form-actions">
+          <button class="comment-btn primary" (click)="addComment()" [disabled]="!newComment.trim()">
+            Add Comment
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="commentsLoading" class="comment-state loading-state">
+        Loading comments...
+      </div>
+
+      <div *ngIf="commentsError" class="comment-state error-state">
+        {{ commentsError }}
+      </div>
+
+      <div *ngIf="!commentsLoading && !commentsError && comments.length === 0" class="empty-comments">
+        No comments yet. Be the first to leave one.
+      </div>
+
+      <div class="comments-list" *ngIf="!commentsLoading && comments.length > 0">
+        <div class="comment-card" *ngFor="let comment of comments">
+          
+          <div class="comment-top-row">
+            <div class="comment-author-block">
+              <div class="comment-avatar">{{ getInitials(comment.authorUsername) }}</div>
+              <div class="comment-meta">
+                <span class="comment-author">{{ comment.authorUsername }}</span>
+                <span class="comment-date">{{ comment.createdAt | date:'medium' }}</span>
+              </div>
+            </div>
+
+            <button
+              *ngIf="comment.authorUsername === authorUsername"
+              class="edit-comment-btn"
+              (click)="startEditComment(comment)">
+              Edit
+            </button>
+          </div>
+
+          <div *ngIf="editingCommentId !== comment.id" class="comment-content">
+            {{ comment.text }}
+          </div>
+
+          <div *ngIf="editingCommentId === comment.id" class="edit-comment-box">
+            <textarea
+              [(ngModel)]="editedCommentText"
+              class="comment-textarea edit-mode"
+              rows="3">
+            </textarea>
+
+            <div class="edit-actions">
+              <button class="comment-btn primary" (click)="saveCommentEdit(comment.id)">
+                Save
+              </button>
+              <button class="comment-btn secondary" (click)="cancelEditComment()">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
   </div>
 </div>
 

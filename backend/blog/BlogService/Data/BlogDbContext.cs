@@ -9,6 +9,8 @@ public class BlogDbContext : DbContext
 
     public DbSet<Blog> Blogs => Set<Blog>();
     public DbSet<BlogImage> BlogImages => Set<BlogImage>();
+    public DbSet<Comment> Comments => Set<Comment>();
+    public DbSet<Like> Likes => Set<Like>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,6 +22,25 @@ public class BlogDbContext : DbContext
                 .WithMany(b => b.Images)
                 .HasForeignKey(i => i.BlogId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasOne(c => c.Blog)
+                .WithMany(b => b.Comments)
+                .HasForeignKey(c => c.BlogId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Like>(entity =>
+        {
+            entity.HasOne(l => l.Blog)
+                .WithMany(b => b.Likes)
+                .HasForeignKey(l => l.BlogId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(l => new { l.BlogId, l.Username })
+                  .IsUnique();
         });
     }
 }

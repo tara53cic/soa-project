@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Blog, CreateBlogRequest } from '../models/blog.model';
+import { Blog, CreateBlogRequest, Comments, CreateCommentRequest, EditCommentRequest } from '../models/blog.model';
 
 @Injectable({ providedIn: 'root' })
 export class BlogService {
-  private baseUrl = 'https://localhost:44307/api';
+  private baseUrl = 'http://localhost:5048/api';
 
   constructor(private http: HttpClient) {}
 
@@ -20,4 +20,17 @@ export class BlogService {
   create(request: CreateBlogRequest): Observable<Blog> {
     return this.http.post<Blog>(`${this.baseUrl}/blogs`, request);
   }
+
+  getComments(blogId: string): Observable<Comments[]> {
+    return this.http.get<Comments[]>(`${this.baseUrl}/blogs/${blogId}/comments`);
+  }
+
+  addComment(blogId: string, request: CreateCommentRequest): Observable<Comments> {
+    return this.http.post<Comments>(`${this.baseUrl}/blogs/${blogId}/comments`, request);
+  }
+
+  editComment(commentId: string, request: EditCommentRequest): Observable<Comments> {
+    return this.http.put<Comments>(`${this.baseUrl}/comments/${commentId}`, request);
+  }
+
 }

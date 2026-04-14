@@ -9,4 +9,9 @@ public class BlogResponseDto
     public DateTime CreatedAt { get; set; }
     public string AuthorUsername { get; set; } = string.Empty;
     public List<string> ImageUrls { get; set; } = new();
+
+    public int LikesCount { get; set; }
+    public bool IsLikedByCurrentUser { get; set; }
+
+    public List<CommentResponseDto> Comments { get; set; } = new();
 }
