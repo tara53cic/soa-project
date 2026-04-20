@@ -79,5 +79,16 @@ namespace ToursService.Services
             return _repository.GetByAuthorId(authorId).Select(MapToDto).ToList();
         }
 
+        public TourDto AddDuration(long tourId, TourDurationDto dto)
+        {
+            var tour = _repository.GetById(tourId);
+            if (tour == null) throw new Exception("Tour not found");
+
+            tour.AddDuration(dto.Minutes, (TravelType)dto.TravelType);
+
+            _repository.Update(tour);
+
+            return MapToDto(tour);
+        }
     }
 }

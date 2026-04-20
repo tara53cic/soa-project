@@ -100,5 +100,11 @@
             Status = TourStatus.CONFIRMED;
             ArchivedDateTime = DateTime.UtcNow;
         }
+
+        public void AddDuration(double minutes, TravelType type)
+        {
+            if (minutes <= 0) throw new ArgumentException("Time must be positive.");
+            Durations.Add(new TourDuration(minutes, type));
+        }
     }
 }

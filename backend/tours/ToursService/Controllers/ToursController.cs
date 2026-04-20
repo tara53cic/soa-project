@@ -62,5 +62,19 @@ namespace ToursService.Controllers
             var result = _tourService.GetByAuthorId(authorId);
             return Ok(result);
         }
+
+        [HttpPost("{id}/duration")]
+        public ActionResult<TourDto> AddDuration(long id, [FromBody] TourDurationDto durationDto)
+        {
+            try
+            {
+                var result = _tourService.AddDuration(id, durationDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
