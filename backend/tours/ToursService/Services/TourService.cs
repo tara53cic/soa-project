@@ -51,9 +51,26 @@ namespace ToursService.Services
                 Id = tour.Id,
                 Name = tour.Name,
                 Description = tour.Description,
+                Difficulty = (TourDifficultyDto)tour.Difficulty,
+                Tags = tour.Tags,
+                Price = tour.Price,
                 DistanceInKm = tour.DistanceInKm,
                 Status = (TourStatusDto)tour.Status,
-                AuthorId = tour.AuthorId
+                AuthorId = tour.AuthorId,
+                KeyPoints = tour.KeyPoints?.Select(kp => new KeyPointDto
+                {
+                    Name = kp.Name,
+                    Description = kp.Description,
+                    Latitude = kp.Latitude,
+                    Longitude = kp.Longitude,
+                    ImagePath = kp.ImagePath
+                }).ToList(),
+
+                Duration = tour.Durations?.Select(d => new TourDurationDto
+                {
+                    TravelType = (TravelTypeDto)d.TravelType,
+                    Minutes = d.Minutes
+                }).ToList()
             };
         }
 

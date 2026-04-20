@@ -14,7 +14,7 @@
 
         public KeyPoint(long tourId, string name, string description, double longitude, double latitude, string imagePath)
         {
-            if (tourId <= 0) throw new ArgumentException("Invalid TourId.");
+            if (tourId < 0) throw new ArgumentException("Invalid TourId.");
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Invalid name.");
             if (longitude < -180 || longitude > 180) throw new ArgumentException("Invalid Longitude");
             if (latitude < -90 || latitude > 90) throw new ArgumentException("Invalid Latitude");

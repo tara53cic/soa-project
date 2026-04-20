@@ -7,6 +7,10 @@ builder.Services.AddDbContext<ToursDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ToursService.Repositories.Interfaces.ITourRepository, ToursService.Repositories.TourRepository>();
+builder.Services.AddScoped<ToursService.Services.Interfaces.ITourService, ToursService.Services.TourService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
