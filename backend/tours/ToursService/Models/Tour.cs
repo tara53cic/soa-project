@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace ToursService.Models
+﻿namespace ToursService.Models
 {
     public class Tour
     {
