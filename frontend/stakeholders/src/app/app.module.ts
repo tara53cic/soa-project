@@ -17,6 +17,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MyToursComponent } from './my-tours/my-tours.component';
+import { CreateTourComponent } from './create-tour/create-tour.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MyToursComponent } from './my-tours/my-tours.component';
     UserDetailsComponent,
     EditProfileComponent,
     MyToursComponent,
+    CreateTourComponent,
   ],
   imports: [
     BrowserModule,

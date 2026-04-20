@@ -17,10 +17,11 @@ export class MyToursComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
-    })
-    if(this.currentUser) {
-      this.loadTours();
-    }
+
+      if(this.currentUser) {
+        this.loadTours();
+      }
+    });
   }
 
   loadTours(): void {
@@ -40,5 +41,34 @@ export class MyToursComponent implements OnInit {
 
   onViewTour(id: number): void {
     this.router.navigate(['/tour-details', id]);
+  }
+
+  getStatusLabel(status: any): string {
+  // Proveravamo i broj i string za svaki slučaj
+  if (status === 0 || status === 'DRAFT') return 'DRAFT';
+  if (status === 1 || status === 'PUBLISHED') return 'PUBLISHED';
+  if (status === 2 || status === 'ARCHIVED') return 'ARCHIVED';
+  return 'UNKNOWN';
+}
+
+  getStatusClass(status: any): string {
+    if (status === 0 || status === 'DRAFT') return 'status-draft';
+    if (status === 1 || status === 'PUBLISHED') return 'status-published';
+    if (status === 2 || status === 'ARCHIVED') return 'status-archived';
+    return '';
+  }
+
+  getDifficultyLabel(difficulty: any): string {
+    if (difficulty === 0 || difficulty === 'EASY') return 'EASY';
+    if (difficulty === 1 || difficulty === 'MEDIUM') return 'MEDIUM';
+    if (difficulty === 2 || difficulty === 'HARD') return 'HARD';
+    return 'UNKNOWN';
+  }
+
+  getDifficultyClass(difficulty: any): string {
+    if (difficulty === 0 || difficulty === 'EASY') return 'diff-easy';
+    if (difficulty === 1 || difficulty === 'MEDIUM') return 'diff-medium';
+    if (difficulty === 2 || difficulty === 'HARD') return 'diff-hard';
+    return '';
   }
 }

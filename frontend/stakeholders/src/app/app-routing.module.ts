@@ -10,6 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { MyToursComponent } from './my-tours/my-tours.component';
+import { CreateTourComponent } from './create-tour/create-tour.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'user/:id', component: UserDetailsComponent },
   { path: 'edit-profile', component: EditProfileComponent },
-  { path: 'my-tours', component: MyToursComponent }
+  { path: 'my-tours', component: MyToursComponent },
+  { path: 'create-tour', component: CreateTourComponent }
 ];
 
 @NgModule({

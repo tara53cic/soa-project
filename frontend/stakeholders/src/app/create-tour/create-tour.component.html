@@ -1,0 +1,39 @@
+<div class="create-tour-container">
+  <div class="form-card">
+    <h2>Create New Tour</h2>
+    <p class="subtitle">Enter basic information to start your draft.</p>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Tour Name</label>
+        <input type="text" [(ngModel)]="tour.name" name="name" placeholder="e.g. Sunny Mountain Trail" required>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="tour.description" name="description" rows="4" placeholder="Describe the experience..."></textarea>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Difficulty</label>
+          <select [(ngModel)]="tour.difficulty" name="difficulty">
+            <option [ngValue]="0">Easy</option>
+            <option [ngValue]="1">Medium</option>
+            <option [ngValue]="2">Hard</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tags (comma separated)</label>
+          <input type="text" [(ngModel)]="tour.tags" name="tags" placeholder="hiking, nature, view">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn-submit">Next: Add Key Points</button>
+      </div>
+    </form>
+  </div>
+</div>

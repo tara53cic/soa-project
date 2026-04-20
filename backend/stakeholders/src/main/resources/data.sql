@@ -16,7 +16,7 @@ VALUES (
 INSERT INTO users (username, password, email, "first_name", "last_name", blocked, role_id)
 VALUES (
            'pera',
-           '$2a$10$f9Y.Sj3On6D7T9Z6KzUu/.M6v1E3Q7P6fVvM7F7G7vG7vG7vG7vG', //pera123
+           '$2a$10$osFzLsQCiaEhIemHIFPNf.w1g48hKI0WDJxTInRxqIO0k2m886pcu',
            'pera@example.com',
            'Pera',
            'Peric',
@@ -27,7 +27,7 @@ VALUES (
 INSERT INTO users (username, password, email, "first_name", "last_name", blocked, role_id)
 VALUES (
            'MARE',
-           '$2a$10$w8T.Gj3On6D7T9Z6KzUu/.L6v1E3Q7P6fVvM7F7G7vG7vG7vG7vG', //marko123
+           '$2a$10$osFzLsQCiaEhIemHIFPNf.w1g48hKI0WDJxTInRxqIO0k2m886pcu',
            'turista@example.com',
            'Marko',
            'Markovic',
