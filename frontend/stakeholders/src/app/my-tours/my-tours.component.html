@@ -1,0 +1,27 @@
+<div class="my-tours-container">
+  <div class="header">
+    <h1>My Tours</h1>
+    <button class="btn-add" (click)="onCreateTour()">
+      <span class="plus-icon">+</span> Create New Tour
+    </button>
+  </div>
+
+  <div class="tour-grid">
+    <div *ngFor="let tour of tours" class="tour-card" (click)="onViewTour(tour.id)">
+      <div class="status-badge" [ngClass]="tour.status.toLowerCase()">
+        {{ tour.status }}
+      </div>
+      <div class="tour-info">
+        <h3>{{ tour.name }}</h3>
+        <p>Distance: <strong>{{ tour.distanceInKm }} km</strong></p>
+      </div>
+      <div class="card-footer">
+        <span>Click to manage points &rarr;</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="tours.length === 0" class="empty-state">
+    <p>You haven't created any tours yet. Click the button above to start!</p>
+  </div>
+</div>

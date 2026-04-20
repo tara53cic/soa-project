@@ -16,6 +16,7 @@ import { UserDetailsComponent } from './user-details/user-details.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MyToursComponent } from './my-tours/my-tours.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AdminDashboardComponent,
     UserDetailsComponent,
     EditProfileComponent,
+    MyToursComponent,
   ],
   imports: [
     BrowserModule,

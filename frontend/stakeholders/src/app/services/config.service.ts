@@ -12,4 +12,5 @@ export class ConfigService {
   get whoami_url() { return `${this._base_url}/users/whoami`; }
   get logout_url() { return `${this._api_url}/logout`; }
   get users_url() { return `${this._base_url}/users`; }
+  get tours_url() { return `${this._api_url}/tours`; }
 }
