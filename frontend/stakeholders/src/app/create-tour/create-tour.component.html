@@ -3,7 +3,7 @@
     <h2>Create New Tour</h2>
     <p class="subtitle">Enter basic information to start your draft.</p>
 
-    <form (ngSubmit)="onSubmit()">
+    <form>
       <div class="form-group">
         <label>Tour Name</label>
         <input type="text" [(ngModel)]="tour.name" name="name" placeholder="e.g. Sunny Mountain Trail" required>
@@ -32,7 +32,8 @@
 
       <div class="actions">
         <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
-        <button type="submit" class="btn-submit">Next: Add Key Points</button>
+        <button type="button" class="btn-save" (click)="create(false)">Save Draft</button>
+        <button type="submit" class="btn-submit" (click)="create(true)">Next: Add More Details</button>
       </div>
     </form>
   </div>

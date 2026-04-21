@@ -24,7 +24,12 @@ export class CreateTourComponent {
     });
   }
 
-  onSubmit(): void {
+  create(shouldRedirectToDetails: boolean): void {
+    if (!this.tour.name || !this.tour.description || !this.tour.tags) {
+      alert("All fields should be filled before saving.");
+      return;
+    }
+
     const tourData = {
       ...this.tour,
       tags: this.tour.tags.split(',').map(t => t.trim())
@@ -32,7 +37,11 @@ export class CreateTourComponent {
 
     this.tourService.createTour(tourData).subscribe({
       next: (createdTour) => {
-        this.router.navigate(['/my-tours']);
+        if (shouldRedirectToDetails) {
+          this.router.navigate(['/tour-details']);          
+        } else {
+          this.router.navigate(['/my-tours']);
+        }
       },
       error: (err) => {
         console.log("Error during tour creation:", err);
@@ -43,4 +52,5 @@ export class CreateTourComponent {
   cancel(): void {
     this.router.navigate(['/my-tours']);
   }
+
 }
