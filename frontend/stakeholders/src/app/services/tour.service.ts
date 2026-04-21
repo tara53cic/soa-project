@@ -58,4 +58,8 @@ export class TourService {
     archiveTour(tourId: number): Observable<any> {
         return this.http.patch(`${this.config.tours_url}/${tourId}/archive`, {});
     }
+
+    unarchiveTour(tourId: number): Observable<any> {
+        return this.http.patch(`${this.config.tours_url}/${tourId}/unarchive`, {});
+    }
 }

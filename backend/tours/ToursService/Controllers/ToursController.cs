@@ -129,12 +129,26 @@ namespace ToursService.Controllers
             }
         }
 
-        [HttpPatch("{id}/arhive")]
+        [HttpPatch("{id}/archive")]
         public ActionResult<TourDto> Archive(long id)
         {
             try
             {
                 var result = _tourService.Archive(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/unarchive")]
+        public ActionResult<TourDto> Unarchive(long id)
+        {
+            try
+            {
+                var result = _tourService.Unarchive(id);
                 return Ok(result);
             }
             catch (Exception ex)

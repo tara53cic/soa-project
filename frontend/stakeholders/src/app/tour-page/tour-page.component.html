@@ -17,9 +17,12 @@
                 Buy Full Tour for {{ tour.price }} €
             </button>
 
-            <button *ngIf="user?.role?.name === 'ROLE_GUIDE' && tour.authorId === user.id" 
-                    class="btn-archive" (click)="onArchive()">
-                Archive Tour
+            <button *ngIf="tour.status === 1" class="btn-archive" (click)="onArchive()">
+                    Archive Tour
+            </button>
+
+            <button *ngIf="tour.status === 2" class="btn-unarchive" (click)="onUnarchive()">
+                    Unarchive Tour
             </button>
         </div>
     </div>

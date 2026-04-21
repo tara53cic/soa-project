@@ -119,5 +119,16 @@ namespace ToursService.Services
 
             return MapToDto(tour);
         }
+
+        public TourDto Unarchive(long tourId)
+        {
+            var tour = _repository.GetById(tourId);
+            if (tour == null) throw new Exception("Tour not found");
+
+            tour.Status = TourStatus.CONFIRMED;
+            _repository.Update(tour);
+
+            return MapToDto(tour);
+        }
     }
 }

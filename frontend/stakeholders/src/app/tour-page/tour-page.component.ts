@@ -89,4 +89,11 @@ export class TourPageComponent implements OnInit {
       error: (err) => console.error(err)
     });
   }
+
+  onUnarchive(): void {
+    this.tourService.unarchiveTour(this.tourId).subscribe({
+      next: () => this.router.navigate(['/my-tours']),
+      error: (err) => console.error(err)
+    });
+  }
 }
