@@ -32,4 +32,22 @@ export class TourService {
             headers: this.getHeaders() 
         });
     }
+
+    addKeyPoint(tourId: number, keyPoint: any): Observable<any> {
+        return this.http.post<any>(`${this.config.tours_url}/${tourId}/keypoint`, keyPoint, {
+            headers: this.getHeaders()
+        });
+    }
+
+    addDuration(tourId: number, newDuration: any): Observable<any> {
+        return this.http.post<any>(`${this.config.tours_url}/${tourId}/duration`, newDuration, {
+            headers: this.getHeaders()
+        });
+    }
+
+    getTourById(id: number): Observable<any> {
+        return this.http.get<any>(`${this.config.tours_url}/${id}`, {
+            headers: this.getHeaders()
+        });
+    }
 }

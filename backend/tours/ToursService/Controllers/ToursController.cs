@@ -76,5 +76,20 @@ namespace ToursService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<TourDto> Get(long id)
+        {
+            try
+            {
+                var result = _tourService.GetById(id);
+                if (result ==  null) return NotFound();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace ToursService.Services.Interfaces
         TourDto Publish(long tourId, long authorId);
         List<TourDto> GetByAuthorId(long authorId);
         TourDto AddDuration(long tourId, TourDurationDto durationDto);
+        TourDto GetById(long tourId);
     }
 }

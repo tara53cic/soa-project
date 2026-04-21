@@ -1,1 +1,54 @@
-<p>tour-details works!</p>
+<div class="management-container">
+  <div class="side-panel">
+    <h2>Manage Tour: {{ tour.name }}</h2>
+    
+    <div class="info-section">
+      <p><strong>Description:</strong> {{ tour.description }}</p>
+      <p><strong>Distance:</strong> {{ tour.distanceInKm }} km</p>
+      
+      <div class="form-group">
+        <label>Price (€)</label>
+        <input type="number" [(ngModel)]="tour.price" name="price">
+      </div>
+    </div>
+
+    <hr>
+
+    <h3>Add Transport & Duration</h3>
+    <div class="duration-form">
+      <select [(ngModel)]="newDuration.transportType">
+        <option [ngValue]="0">Walking</option>
+        <option [ngValue]="1">Bicycle</option>
+        <option [ngValue]="2">Car</option>
+      </select>
+      <input type="number" [(ngModel)]="newDuration.timeInMinutes" placeholder="Minutes">
+      <button (click)="addDuration()">Add Time</button>
+    </div>
+
+    <ul class="duration-list">
+      <li *ngFor="let d of tour.durations">
+        {{ d.transportType === 0 ? 'Walking' : 'Bicycle' }}: {{ d.timeInMinutes }} min
+      </li>
+    </ul>
+
+    <button class="btn-publish" *ngIf="canPublish()" (click)="publish()">
+      PUBLISH TOUR
+    </button>
+  </div>
+
+  <div class="map-panel">
+    <div id="map"></div>
+
+    <div class="keypoint-form">
+      <h3>New Key Point</h3>
+      <input [(ngModel)]="newKeyPoint.name" placeholder="Name (e.g. Spomenik)">
+      <textarea [(ngModel)]="newKeyPoint.description" placeholder="Description"></textarea>
+      <div class="form-group">
+        <label>Key point image</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" class="file-input">
+      </div>
+      <p>Coordinates: {{ newKeyPoint.latitude | number }}, {{ newKeyPoint.longitude | number }}</p>
+      <button (click)="addKeyPoint()" [disabled]="!newKeyPoint.latitude">Save Key Point</button>
+    </div>
+  </div>
+</div>

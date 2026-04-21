@@ -90,5 +90,12 @@ namespace ToursService.Services
 
             return MapToDto(tour);
         }
+
+        public TourDto GetById(long tourId)
+        {
+            var tour = _repository.GetById(tourId);
+            if (tour == null) throw new Exception("Tour not found");
+            return MapToDto(tour);
+        }
     }
 }
