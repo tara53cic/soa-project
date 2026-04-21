@@ -10,5 +10,7 @@ namespace ToursService.Services.Interfaces
         List<TourDto> GetByAuthorId(long authorId);
         TourDto AddDuration(long tourId, TourDurationDto durationDto);
         TourDto GetById(long tourId);
+        TourDto UpdatePrice(long tourId, float price);
+        TourDto Archive(long tourId);
     }
 }

@@ -59,7 +59,7 @@ namespace ToursService.Controllers
                 var result = _tourService.AddKeyPoint(id, keyPointDto);
                 return Ok(result);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -106,7 +106,35 @@ namespace ToursService.Controllers
             try
             {
                 var result = _tourService.GetById(id);
-                if (result ==  null) return NotFound();
+                if (result == null) return NotFound();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/price")]
+        public ActionResult<TourDto> UpdatePrice(long id, [FromBody] float price)
+        {
+            try
+            {
+                var result = _tourService.UpdatePrice(id, price);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/arhive")]
+        public ActionResult<TourDto> Archive(long id)
+        {
+            try
+            {
+                var result = _tourService.Archive(id);
                 return Ok(result);
             }
             catch (Exception ex)

@@ -97,5 +97,27 @@ namespace ToursService.Services
             if (tour == null) throw new Exception("Tour not found");
             return MapToDto(tour);
         }
+
+        public TourDto UpdatePrice(long tourId, float price)
+        {
+            var tour = _repository.GetById(tourId);
+            if (tour == null) throw new Exception("Tour not found");
+
+            tour.Price = price;
+            _repository.Update(tour);
+
+            return MapToDto(tour);
+        }
+
+        public TourDto Archive(long tourId)
+        {
+            var tour = _repository.GetById(tourId);
+            if (tour == null) throw new Exception("Tour not found");
+
+            tour.Status = TourStatus.ARCHIVED;
+            _repository.Update(tour);
+
+            return MapToDto(tour);
+        }
     }
 }

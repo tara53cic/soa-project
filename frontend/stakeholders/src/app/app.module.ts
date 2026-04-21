@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MyToursComponent } from './my-tours/my-tours.component';
 import { CreateTourComponent } from './create-tour/create-tour.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
+import { TourPageComponent } from './tour-page/tour-page.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { TourDetailsComponent } from './tour-details/tour-details.component';
     MyToursComponent,
     CreateTourComponent,
     TourDetailsComponent,
+    TourPageComponent,
   ],
   imports: [
     BrowserModule,

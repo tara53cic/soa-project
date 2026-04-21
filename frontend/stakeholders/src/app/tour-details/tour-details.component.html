@@ -8,7 +8,7 @@
       
       <div class="form-group">
         <label>Price (€)</label>
-        <input type="number" [(ngModel)]="tour.price" name="price">
+        <input type="number" [(ngModel)]="tour.price" name="price" (change)="savePrice()">
       </div>
     </div>
 

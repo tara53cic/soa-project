@@ -166,4 +166,11 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
       });
     }
   }
+
+  savePrice() {
+    this.tourService.updatePrice(this.tourId, this.tour.price).subscribe({
+      next: (val) => console.log('Price update.', val),
+      error: (err) => console.error('Error saving price', err)
+    });
+  }
 }

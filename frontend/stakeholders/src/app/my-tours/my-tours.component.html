@@ -7,7 +7,7 @@
   </div>
 
   <div class="tour-grid">
-    <div *ngFor="let tour of tours" class="tour-card" (click)="onViewTour(tour.id)">
+    <div *ngFor="let tour of tours" class="tour-card" (click)="onViewTour(tour)">
     <div class="status-badge" [ngClass]="getStatusClass(tour.status)">
       {{ getStatusLabel(tour.status) }}
     </div>
@@ -21,7 +21,7 @@
         </span>
       </div>
 
-        <p>Distance: <strong>{{ tour.distanceInKm }} km</strong></p>
+        <p>Distance: <strong>{{ tour.distanceInKm | number:'1.2-2' }} km</strong></p>
         <p>Price: <strong>{{ tour.price }} €</strong></p>
       </div>
       <div class="card-footer">

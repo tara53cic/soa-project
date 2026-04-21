@@ -39,12 +39,16 @@ export class MyToursComponent implements OnInit {
     this.router.navigate(['/create-tour']);
   }
 
-  onViewTour(id: number): void {
-    this.router.navigate(['/tour-details', id]);
+  onViewTour(tour: any): void {
+    if (tour.status === 0) {
+      this.router.navigate(['/tour-details', tour.id]);
+    }
+    else {
+      this.router.navigate(['/tour-page', tour.id]);
+    }
   }
 
   getStatusLabel(status: any): string {
-  // Proveravamo i broj i string za svaki slučaj
   if (status === 0 || status === 'DRAFT') return 'DRAFT';
   if (status === 1 || status === 'PUBLISHED') return 'PUBLISHED';
   if (status === 2 || status === 'ARCHIVED') return 'ARCHIVED';
