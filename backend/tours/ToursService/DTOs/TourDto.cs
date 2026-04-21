@@ -16,6 +16,7 @@
         public double? MarkerLng { get; set; }
         public List<TourDurationDto>? Duration { get; set; }
         public DateTime? PublishedDateTime { get; set; }
+        public DateTime? ArchivedDateTime { get; set; }
 
     }
 }

@@ -57,6 +57,8 @@ namespace ToursService.Services
                 DistanceInKm = tour.DistanceInKm,
                 Status = (TourStatusDto)tour.Status,
                 AuthorId = tour.AuthorId,
+                PublishedDateTime = tour.PublishedDateTime,
+                ArchivedDateTime = tour.ArchivedDateTime,
                 KeyPoints = tour.KeyPoints?.Select(kp => new KeyPointDto
                 {
                     Name = kp.Name,
@@ -115,6 +117,7 @@ namespace ToursService.Services
             if (tour == null) throw new Exception("Tour not found");
 
             tour.Status = TourStatus.ARCHIVED;
+            tour.ArchivedDateTime = DateTime.Now;
             _repository.Update(tour);
 
             return MapToDto(tour);

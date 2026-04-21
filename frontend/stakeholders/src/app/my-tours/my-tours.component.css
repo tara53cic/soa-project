@@ -86,3 +86,27 @@ h1 { font-weight: 300; color: #333; }
   border-top: 1px solid #f9f9f9;
   padding-top: 10px;
 }
+
+.price-date-row {
+  display: flex;
+  justify-content: space-between; 
+  margin-top: 10px;
+}
+
+.price-date-row p {
+  margin: 0; 
+}
+
+.date-info {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.card-footer {
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #3498db; 
+}
