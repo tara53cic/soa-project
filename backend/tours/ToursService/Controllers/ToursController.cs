@@ -9,9 +9,11 @@ namespace ToursService.Controllers
     public class ToursController : ControllerBase
     {
         private readonly ITourService _tourService;
-        public ToursController(ITourService tourService)
+        private readonly IWebHostEnvironment _env;
+        public ToursController(ITourService tourService, IWebHostEnvironment env)
         {
             _tourService = tourService;
+            _env = env;
         }
 
         [HttpPost]
@@ -29,10 +31,31 @@ namespace ToursService.Controllers
         }
 
         [HttpPost("{id}/keypoint")]
-        public ActionResult<TourDto> AddKeyPoint(long id, [FromBody] KeyPointDto keyPointDto)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<TourDto>> AddKeyPoint(long id, [FromForm] KeyPointDto keyPointDto)
         {
             try
             {
+                if (keyPointDto.Image == null || keyPointDto.Image.Length == 0)
+                {
+                    return BadRequest("Bad image.");
+                }
+
+                string wwwRootPath = _env.WebRootPath;
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(keyPointDto.Image.FileName);
+
+                string imagesPath = Path.Combine(wwwRootPath, "images");
+                if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
+
+                string fullPath = Path.Combine(imagesPath, fileName);
+
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await keyPointDto.Image.CopyToAsync(fileStream);
+                }
+
+                keyPointDto.ImagePath = "images/" + fileName;
+
                 var result = _tourService.AddKeyPoint(id, keyPointDto);
                 return Ok(result);
             }
@@ -88,7 +111,7 @@ namespace ToursService.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
     }

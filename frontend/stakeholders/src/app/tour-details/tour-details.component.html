@@ -4,7 +4,7 @@
     
     <div class="info-section">
       <p><strong>Description:</strong> {{ tour.description }}</p>
-      <p><strong>Distance:</strong> {{ tour.distanceInKm }} km</p>
+      <p><strong>Distance:</strong> {{ tour.distanceInKm | number:'1.2-2' }} km</p>
       
       <div class="form-group">
         <label>Price (€)</label>
@@ -16,18 +16,18 @@
 
     <h3>Add Transport & Duration</h3>
     <div class="duration-form">
-      <select [(ngModel)]="newDuration.transportType">
+      <select [(ngModel)]="newDuration.travelType">
         <option [ngValue]="0">Walking</option>
         <option [ngValue]="1">Bicycle</option>
         <option [ngValue]="2">Car</option>
       </select>
-      <input type="number" [(ngModel)]="newDuration.timeInMinutes" placeholder="Minutes">
+      <input type="number" [(ngModel)]="newDuration.minutes" placeholder="Minutes">
       <button (click)="addDuration()">Add Time</button>
     </div>
 
     <ul class="duration-list">
-      <li *ngFor="let d of tour.durations">
-        {{ d.transportType === 0 ? 'Walking' : 'Bicycle' }}: {{ d.timeInMinutes }} min
+      <li *ngFor="let d of tour.duration">
+        {{ d.travelType === 0 ? 'Walking' : 'Bicycle' }}: {{ d.minutes }} min
       </li>
     </ul>
 
@@ -41,14 +41,22 @@
 
     <div class="keypoint-form">
       <h3>New Key Point</h3>
-      <input [(ngModel)]="newKeyPoint.name" placeholder="Name (e.g. Spomenik)">
-      <textarea [(ngModel)]="newKeyPoint.description" placeholder="Description"></textarea>
+      <input [(ngModel)]="newKeyPoint.name" name="kpName" placeholder="Name (e.g. Spomenik)">
+      
+      <textarea [(ngModel)]="newKeyPoint.description" name="kpDescription" placeholder="Description"></textarea>
+      
       <div class="form-group">
         <label>Key point image</label>
         <input type="file" (change)="onFileSelected($event)" accept="image/*" class="file-input">
+        <small *ngIf="selectedFile" style="color: green; display: block;">Selected: {{ selectedFile.name }}</small>
       </div>
-      <p>Coordinates: {{ newKeyPoint.latitude | number }}, {{ newKeyPoint.longitude | number }}</p>
-      <button (click)="addKeyPoint()" [disabled]="!newKeyPoint.latitude">Save Key Point</button>
+      
+      <p>Coordinates: {{ newKeyPoint.latitude | number:'1.1-4' }}, {{ newKeyPoint.longitude | number:'1.1-4' }}</p>
+      
+      <button (click)="addKeyPoint()" [disabled]="!newKeyPoint.latitude || !selectedFile || !newKeyPoint.name">
+        Save Key Point
+      </button>
     </div>
   </div>
+
 </div>

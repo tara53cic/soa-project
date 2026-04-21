@@ -33,8 +33,8 @@ export class TourService {
         });
     }
 
-    addKeyPoint(tourId: number, keyPoint: any): Observable<any> {
-        return this.http.post<any>(`${this.config.tours_url}/${tourId}/keypoint`, keyPoint, {
+    addKeyPoint(tourId: number, formData: any): Observable<any> {
+        return this.http.post<any>(`${this.config.tours_url}/${tourId}/keypoint`, formData, {
             headers: this.getHeaders()
         });
     }
