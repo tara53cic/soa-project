@@ -53,5 +53,13 @@ namespace ToursService.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public List<Tour> GetAll()
+        {
+            return _context.Tours
+                .Include(t => t.KeyPoints)
+                .Include(t => t.Durations)
+                .ToList();
+        }
     }
 }

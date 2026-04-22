@@ -96,4 +96,11 @@ export class TourPageComponent implements OnInit {
       error: (err) => console.error(err)
     });
   }
+
+  getDifficultyLabel(difficulty: any): string {
+    if (difficulty === 0 || difficulty === 'EASY') return 'EASY';
+    if (difficulty === 1 || difficulty === 'MEDIUM') return 'MEDIUM';
+    if (difficulty === 2 || difficulty === 'HARD') return 'HARD';
+    return 'UNKNOWN';
+  }
 }

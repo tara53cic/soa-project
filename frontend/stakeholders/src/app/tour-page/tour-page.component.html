@@ -6,7 +6,7 @@
       
       <div class="meta-tags">
         <span class="badge diff" [ngClass]="'diff-' + tour.difficulty">
-          Difficulty: {{ tour.difficulty }}
+          Difficulty: {{ getDifficultyLabel(tour.difficulty) }}
         </span>
         <span class="badge dist">Length: {{ tour.distanceInKm | number:'1.1-2' }} km</span>
         <span class="badge price">Price: {{ tour.price }} €</span>
@@ -17,7 +17,7 @@
                 Buy Full Tour for {{ tour.price }} €
             </button>
 
-            <button *ngIf="tour.status === 1" class="btn-archive" (click)="onArchive()">
+            <button *ngIf="tour.status === 1 && user?.role?.name === 'ROLE_GUIDE'" class="btn-archive" (click)="onArchive()">
                     Archive Tour
             </button>
 

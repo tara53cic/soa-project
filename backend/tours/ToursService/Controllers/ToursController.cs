@@ -189,5 +189,12 @@ namespace ToursService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public ActionResult<List<TourDto>> GetAll()
+        {
+            var result = _tourService.GetAll();
+            return Ok(result);
+        }
     }
 }

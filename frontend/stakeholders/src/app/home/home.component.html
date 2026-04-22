@@ -35,8 +35,31 @@
   </div>
 
   <ng-template #normalUserContent>
-    <div class="placeholder-card">
-      <p>Tours coming soon...</p>
+    <div class="home-tours-section">
+      <div class="section-header">
+        <h3>Recommended Tours</h3>
+        <button routerLink="/tours" class="btn-view-all">View All Tures &rarr;</button>
+      </div>
+
+      <div class="tour-grid-home" *ngIf="featuredTours.length > 0; else noTours">
+        <div class="tour-card-mini" *ngFor="let tour of featuredTours" [routerLink]="['/tour-page', tour.id]">
+          <div class="card-img-container">
+            <img *ngIf="tour.keyPoints && tour.keyPoints[0]?.imagePath" 
+                [src]="'https://localhost:44345/' + tour.keyPoints[0].imagePath">
+            <span class="price-badge">{{ tour.price }} €</span>
+          </div>
+          <div class="card-info">
+            <h4>{{ tour.name }}</h4>
+            <p>Distance: {{ tour.distanceInKm | number:'1.1-1' }} km | Difficulty: {{ getDifficultyLabel(tour.difficulty) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noTours>
+        <div class="placeholder-card">
+          <p>No tours available at the moment. Explore our blogs while we prepare new adventures!</p>
+        </div>
+      </ng-template>
     </div>
     
     <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">

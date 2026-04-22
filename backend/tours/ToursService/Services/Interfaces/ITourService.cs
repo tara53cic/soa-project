@@ -14,5 +14,6 @@ namespace ToursService.Services.Interfaces
         TourDto Archive(long tourId);
         TourDto Unarchive(long tourId);
         TourDto UpdateKeyPoint(long keyPointId, KeyPointDto keyPointDto);
+        List<TourDto> GetAll();
     }
 }

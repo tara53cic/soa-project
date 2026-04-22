@@ -66,4 +66,8 @@ export class TourService {
     updateKeyPoint(tourId: number, formData: FormData) {
         return this.http.put(`${this.config.tours_url}/${tourId}`, formData);
     }
+
+    getTours(): Observable<any[]> {
+        return this.http.get<any[]>(this.config.tours_url);
+    }
 }

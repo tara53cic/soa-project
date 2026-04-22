@@ -13,6 +13,7 @@ import { MyToursComponent } from './my-tours/my-tours.component';
 import { CreateTourComponent } from './create-tour/create-tour.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
+import { ToursComponent } from './tours/tours.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -28,7 +29,8 @@ const routes: Routes = [
   { path: 'my-tours', component: MyToursComponent },
   { path: 'create-tour', component: CreateTourComponent },
   { path: 'tour-details/:id', component: TourDetailsComponent },
-  { path: 'tour-page/:id', component: TourPageComponent }
+  { path: 'tour-page/:id', component: TourPageComponent },
+  { path: 'tours', component: ToursComponent }
 ];
 
 @NgModule({

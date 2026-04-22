@@ -156,5 +156,11 @@ namespace ToursService.Services
 
             return MapToDto(tour);
         }
+
+        public List<TourDto> GetAll()
+        {
+            var tours = _repository.GetAll();
+            return tours.Select(MapToDto).ToList();
+        }
     }
 }

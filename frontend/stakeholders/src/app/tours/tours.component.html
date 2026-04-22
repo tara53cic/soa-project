@@ -1,0 +1,35 @@
+<div class="explore-container">
+  <header class="explore-header">
+    <h1>Explore New Adventures</h1>
+    <p>Discover professional tours guided by experts</p>
+  </header>
+
+  <div class="tour-grid">
+    <div class="tour-card" *ngFor="let tour of tours" (click)="viewTourDetails(tour.id)">
+      <div class="card-image">
+        <img *ngIf="tour.keyPoints && tour.keyPoints[0]?.imagePath" 
+             [src]="'https://localhost:44345/' + tour.keyPoints[0].imagePath" 
+             alt="Tour preview">
+        <div class="price-tag">{{ tour.price }} €</div>
+      </div>
+
+      <div class="card-content">
+        <h3>{{ tour.name }}</h3>
+        <p class="description">{{ tour.description | slice:0:80 }}...</p>
+        
+        <div class="card-meta">
+          <span class="difficulty">Difficulty: {{ getDifficultyLabel(tour.difficulty) }}</span>
+          <span class="distance">{{ tour.distanceInKm | number:'1.1-1' }} km</span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        View Preview &rarr;
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="tours.length === 0">
+    <p>No tours available at the moment. Check back later!</p>
+  </div>
+</div>

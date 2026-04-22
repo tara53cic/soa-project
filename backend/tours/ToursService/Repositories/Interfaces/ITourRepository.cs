@@ -9,5 +9,6 @@ namespace ToursService.Repositories.Interfaces
         Tour Create(Tour tour);
         Tour Update(Tour tour);
         void Delete(long id);
+        List<Tour> GetAll();
     }
 }

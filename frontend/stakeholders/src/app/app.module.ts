@@ -20,6 +20,7 @@ import { MyToursComponent } from './my-tours/my-tours.component';
 import { CreateTourComponent } from './create-tour/create-tour.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
+import { ToursComponent } from './tours/tours.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { TourPageComponent } from './tour-page/tour-page.component';
     CreateTourComponent,
     TourDetailsComponent,
     TourPageComponent,
+    ToursComponent,
   ],
   imports: [
     BrowserModule,
