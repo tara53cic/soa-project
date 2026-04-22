@@ -110,3 +110,46 @@ h1 { font-weight: 300; color: #333; }
   font-weight: 500;
   color: #3498db; 
 }
+
+.my-tours-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.btn-create-main {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-create-main:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+}
+
+.btn-create-secondary {
+  background-color: transparent;
+  border: 2px solid #2ecc71;
+  color: #2ecc71;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  border: 2px dashed #ddd;
+}

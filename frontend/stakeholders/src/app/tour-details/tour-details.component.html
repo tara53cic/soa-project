@@ -40,40 +40,50 @@
     <div id="map"></div>
 
     <div class="keypoint-form">
-      <h3>New Key Point</h3>
-      <input [(ngModel)]="newKeyPoint.name" name="kpName" placeholder="Name (e.g. Spomenik)">
-      
-      <textarea [(ngModel)]="newKeyPoint.description" name="kpDescription" placeholder="Description"></textarea>
-      
-      <div class="form-group">
-        <label>Key point image</label>
-        <input type="file" (change)="onFileSelected($event)" accept="image/*" class="file-input">
-        <small *ngIf="selectedFile" style="color: green; display: block;">Selected: {{ selectedFile.name }}</small>
-      </div>
-      
-      <p>Coordinates: {{ newKeyPoint.latitude | number:'1.1-4' }}, {{ newKeyPoint.longitude | number:'1.1-4' }}</p>
-      
-      <button (click)="addKeyPoint()" [disabled]="!newKeyPoint.latitude || !selectedFile || !newKeyPoint.name">
-        Save Key Point
-      </button>
-    </div>
+      <h3 *ngIf="!isEditing">New Key Point</h3>
+      <h3 *ngIf="isEditing">Edit Key Point</h3>
 
-    <div *ngIf="isEditing" class="keypoint-form">
-      <h3>Edit Key Point</h3>
+      <input *ngIf="isEditing"
+        [(ngModel)]="editingKeyPoint.name"
+        placeholder="Name">
 
-      <input [(ngModel)]="editingKeyPoint.name" placeholder="Name">
+      <input *ngIf="!isEditing"
+        [(ngModel)]="newKeyPoint.name"
+        placeholder="Name">
 
-      <textarea [(ngModel)]="editingKeyPoint.description"></textarea>
+      <textarea *ngIf="isEditing"
+        [(ngModel)]="editingKeyPoint.description">
+      </textarea>
+
+      <textarea *ngIf="!isEditing"
+        [(ngModel)]="newKeyPoint.description">
+      </textarea>
 
       <input type="file" (change)="onFileSelected($event)">
 
       <p>
         Coordinates:
-        {{ editingKeyPoint.latitude }},
-        {{ editingKeyPoint.longitude }}
+        {{ isEditing ? editingKeyPoint.latitude : newKeyPoint.latitude }},
+        {{ isEditing ? editingKeyPoint.longitude : newKeyPoint.longitude }}
       </p>
 
-      <button (click)="updateKeyPoint()">Save Changes</button>
+      <button *ngIf="!isEditing"
+              (click)="addKeyPoint()"
+              [disabled]="!newKeyPoint.latitude || !newKeyPoint.name">
+        Save Key Point
+      </button>
+
+      <button *ngIf="isEditing"
+              (click)="updateKeyPoint()">
+        Save Changes
+      </button>
+
+      <button *ngIf="isEditing"
+              (click)="cancelEditing()"
+              class="btn-cancel">
+        Cancel
+      </button>
+
     </div>
   </div>
 

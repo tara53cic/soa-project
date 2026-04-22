@@ -61,5 +61,11 @@ namespace ToursService.Repositories
                 .Include(t => t.Durations)
                 .ToList();
         }
+
+        public void UpdateKeyPoint(KeyPoint kp)
+        {
+            _context.KeyPoints.Update(kp);
+            _context.SaveChanges();
+        }
     }
 }

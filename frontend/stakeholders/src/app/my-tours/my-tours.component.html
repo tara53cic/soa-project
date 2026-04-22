@@ -1,4 +1,10 @@
 <div class="my-tours-container">
+  <div class="my-tours-header">
+    <h2>My Created Tours</h2>
+    <button class="btn-create-main" (click)="onCreateTour()">
+      + Create New Tour
+    </button>
+  </div>
   <div class="tour-grid">
     <div *ngFor="let tour of tours" class="tour-card" (click)="onViewTour(tour)">
       <div class="status-badge" [ngClass]="getStatusClass(tour.status)">

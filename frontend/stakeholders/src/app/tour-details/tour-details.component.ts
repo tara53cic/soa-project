@@ -4,6 +4,14 @@ import { TourService } from '../services/tour.service';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 
+const myIcon = L.icon({
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
+});
+
 @Component({
   selector: 'app-tour-details',
   templateUrl: './tour-details.component.html',
@@ -16,6 +24,7 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
   map!: L.Map;
   tempMarker: L.Marker | null = null;
   selectedFile: File | null = null;
+  private markers: L.Marker[] = [];
 
   editingKeyPoint: any = null;
   isEditing: boolean = false;
@@ -54,10 +63,25 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
         this.newKeyPoint.longitude = e.latlng.lng;
       }
 
-      this.tempMarker = L.marker([e.latlng.lat, e.latlng.lng])
+      this.tempMarker = L.marker([e.latlng.lat, e.latlng.lng], { icon: myIcon })
         .addTo(this.map)
         .bindPopup("Location selected")
         .openPopup();
+
+        this.tempMarker.on('popupclose', () => {
+          if (this.tempMarker) {
+            this.map.removeLayer(this.tempMarker);
+            this.tempMarker = null;
+            
+            if (this.isEditing) {
+              this.editingKeyPoint.latitude = 0;
+              this.editingKeyPoint.longitude = 0;
+            } else {
+              this.newKeyPoint.latitude = 0;
+              this.newKeyPoint.longitude = 0;
+            }
+          }
+        });
     });
   }
 
@@ -88,7 +112,6 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
         next: (updatedTour) => {
           console.log('Added keypoint', updatedTour);
           this.loadTour();
-          this.renderKeyPoints();
 
           this.newKeyPoint = { name: '', description: '', image: '', latitude: 0, longitude: 0 };
           this.selectedFile = null;
@@ -131,26 +154,51 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
   }
 
   private renderKeyPoints(): void {
-    const myIcon = L.icon({
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-        iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41]
+    this.markers.forEach(m => this.map.removeLayer(m));
+    this.markers = [];
+
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+      this.routingControl = null;
+    }
+
+    if (!this.tour || !this.tour.keyPoints || this.tour.keyPoints.length === 0) {
+      return;
+    }
+
+    this.tour.keyPoints.forEach((kp: any) => {
+      const marker = L.marker([kp.latitude, kp.longitude], { icon: myIcon })
+        .addTo(this.map)
+        .bindPopup(`
+          <div class="popup-custom-content">
+            <b>${kp.name}</b>
+            <div class="popup-btn-wrapper">
+              <button class="btn-edit-popup" id="edit-${kp.id}">Edit</button>
+              <button class="btn-delete-popup" id="delete-${kp.id}">Delete</button>
+            </div>
+          </div>
+        `);
+
+      (marker as any).id = kp.id; 
+      this.markers.push(marker);
+
+      marker.on('popupopen', () => {
+        setTimeout(() => {
+          const editBtn = document.getElementById(`edit-${kp.id}`);
+          const deleteBtn = document.getElementById(`delete-${kp.id}`);
+          if (editBtn) editBtn.onclick = () => this.startEditing(kp);
+          if (deleteBtn) deleteBtn.onclick = () => this.deleteKeyPoint(kp.id);
+        }, 100);
       });
+    });
 
-    if (this.tour && this.tour.keyPoints && this.tour.keyPoints.length > 0) {
-      
-      if (this.routingControl) {
-        this.map.removeControl(this.routingControl);
-      }
-
+    if (this.tour.keyPoints.length >= 2) {
       const waypoints = this.tour.keyPoints.map((kp: any) => L.latLng(kp.latitude, kp.longitude));
 
       this.routingControl = L.Routing.control({
         waypoints: waypoints,
         routeWhileDragging: false,
-        addWaypoints: false, 
+        addWaypoints: false,
         show: false,
         lineOptions: {
           styles: [{ color: 'blue', opacity: 0.6, weight: 6 }],
@@ -158,34 +206,20 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
           missingRouteTolerance: 10
         },
         createMarker: () => null 
-      } as any).addTo(this.map); 
-
-    this.tour.keyPoints.forEach((kp: any) => {
-      const marker = L.marker([kp.latitude, kp.longitude], { icon: myIcon })
-        .addTo(this.map)
-        .bindPopup(`<b>${kp.name}</b><br><button id="edit-${kp.id}">Edit</button>`);
-
-      marker.on('popupopen', () => {
-        setTimeout(() => {
-          const btn = document.getElementById(`edit-${kp.id}`);
-          if (btn) {
-            btn.onclick = () => this.startEditing(kp);
-          }
-        }, 100);
-      });
-    });
+      } as any).addTo(this.map);
     }
   }
 
   startEditing(kp: any) {
     this.isEditing = true;
     this.editingKeyPoint = { ...kp };
+    setTimeout(() => this.map.invalidateSize(), 200);
 
     if (this.tempMarker) {
       this.map.removeLayer(this.tempMarker);
     }
 
-    this.tempMarker = L.marker([kp.latitude, kp.longitude])
+    this.tempMarker = L.marker([kp.latitude, kp.longitude], { icon: myIcon })
       .addTo(this.map)
       .bindPopup("Editing location")
       .openPopup();
@@ -200,6 +234,9 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
 
   updateKeyPoint() {
     const formData = new FormData();
+
+    formData.append('Id', this.editingKeyPoint.id);
+    formData.append('TourId', this.tourId.toString());
 
     formData.append('Name', this.editingKeyPoint.name);
     formData.append('Description', this.editingKeyPoint.description);
@@ -224,6 +261,35 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
         this.loadTour();
       },
       error: (err) => console.error('Update error', err)
+    });
+  }
+
+  cancelEditing() {
+    this.isEditing = false;
+    this.editingKeyPoint = null;
+    this.selectedFile = null;
+    setTimeout(() => this.map.invalidateSize(), 200);
+
+    if (this.tempMarker) {
+      this.map.removeLayer(this.tempMarker);
+      this.tempMarker = null;
+    }
+  }
+
+  deleteKeyPoint(id: number) {
+    if (!confirm('Are you sure you want to delete this key point?')) return;
+
+    this.tourService.deleteKeyPoint(id).subscribe({
+      next: () => {
+        const markerIndex = this.markers.findIndex(m => (m as any).id === id);
+        if (markerIndex !== -1) {
+          this.map.removeLayer(this.markers[markerIndex]);
+          this.markers.splice(markerIndex, 1);
+        }
+
+        this.loadTour();
+      },
+      error: (err) => console.error('Delete error', err)
     });
   }
 }

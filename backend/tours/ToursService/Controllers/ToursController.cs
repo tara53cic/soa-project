@@ -196,5 +196,12 @@ namespace ToursService.Controllers
             var result = _tourService.GetAll();
             return Ok(result);
         }
+
+        [HttpDelete("{keyPointId}")]
+        public IActionResult DeleteKeyPoint(long keyPointId)
+        {
+            _tourService.DeleteKeyPoint(keyPointId);
+            return Ok();
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace ToursService.Repositories.Interfaces
         Tour Update(Tour tour);
         void Delete(long id);
         List<Tour> GetAll();
+        void UpdateKeyPoint(KeyPoint kp);
     }
 }

@@ -135,11 +135,11 @@ namespace ToursService.Services
             return MapToDto(tour);
         }
 
-        public TourDto UpdateKeyPoint(long tourId, KeyPointDto kpDto)
+        public TourDto UpdateKeyPoint(long keyPointId, KeyPointDto kpDto)
         {
-            var tour = _repository.GetById(tourId);
+            var tour = _repository.GetById(kpDto.TourId);
 
-            var kp = tour.KeyPoints.FirstOrDefault(x => x.Id == kpDto.Id);
+            var kp = tour.KeyPoints.FirstOrDefault(x => x.Id == keyPointId);
             if (kp == null) throw new Exception("KeyPoint not found");
 
             kp.Name = kpDto.Name;
@@ -152,7 +152,7 @@ namespace ToursService.Services
                 kp.ImagePath = kpDto.ImagePath;
             }
 
-            _repository.Update(tour);
+            _repository.UpdateKeyPoint(kp);
 
             return MapToDto(tour);
         }
@@ -161,6 +161,21 @@ namespace ToursService.Services
         {
             var tours = _repository.GetAll();
             return tours.Select(MapToDto).ToList();
+        }
+
+        public void DeleteKeyPoint(long keyPointId)
+        {
+            var tour = _repository.GetAll()
+                .FirstOrDefault(t => t.KeyPoints.Any(k => k.Id == keyPointId));
+
+            if (tour == null) throw new Exception("Tour not found");
+
+            var kp = tour.KeyPoints.FirstOrDefault(k => k.Id == keyPointId);
+            if (kp == null) throw new Exception("KeyPoint not found");
+
+            tour.KeyPoints.Remove(kp);
+
+            _repository.Update(tour);
         }
     }
 }
