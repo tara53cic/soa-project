@@ -9,10 +9,28 @@
   position: relative;
 }
 
+h4 {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
 .hero-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 0px;
+}
+
+h1 {
+  margin-bottom: 0px;
+}
+
+.description {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.4;
 }
 
 .tour-actions {
@@ -25,8 +43,14 @@
 
 .meta-tags {
   display: flex;
-  gap: 15px;
-  margin-top: 15px;
+  align-items: center; 
+  gap: 12px;
+}
+
+.tags-group {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .badge {
@@ -34,6 +58,11 @@
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: bold;
+  color: white;
+}
+
+.tag {
+  background: #3498db;
   color: white;
 }
 
@@ -56,7 +85,7 @@
 
 .keypoints-timeline {
   position: relative;
-  padding-left: 30px;
+  padding-left: 35px;
 }
 
 .timeline-item {
@@ -66,8 +95,8 @@
 
 .kp-dot {
   position: absolute;
-  left: -38px;
-  top: 5px;
+  left: -32px;
+  top: 2px;
   width: 16px;
   height: 16px;
   background: #3498db;
@@ -79,6 +108,10 @@
 .kp-dot.locked {
   background: #bdc3c7;
   box-shadow: 0 0 0 2px #bdc3c7;
+}
+
+h3 {
+  margin-top: 35px;
 }
 
 .kp-img {

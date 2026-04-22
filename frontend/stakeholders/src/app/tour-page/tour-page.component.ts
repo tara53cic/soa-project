@@ -34,7 +34,6 @@ export class TourPageComponent implements OnInit {
   loadTour(): void {
     this.tourService.getTourById(this.tourId).subscribe(data => {
       this.tour = data;
-      
       setTimeout(() => {
         const mapElement = document.getElementById('map');
         if (mapElement) {

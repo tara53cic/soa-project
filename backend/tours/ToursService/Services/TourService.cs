@@ -118,7 +118,7 @@ namespace ToursService.Services
             if (tour == null) throw new Exception("Tour not found");
 
             tour.Status = TourStatus.ARCHIVED;
-            tour.ArchivedDateTime = DateTime.Now;
+            tour.ArchivedDateTime = DateTime.UtcNow;
             _repository.Update(tour);
 
             return MapToDto(tour);
