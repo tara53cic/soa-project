@@ -61,6 +61,7 @@ namespace ToursService.Services
                 ArchivedDateTime = tour.ArchivedDateTime,
                 KeyPoints = tour.KeyPoints?.Select(kp => new KeyPointDto
                 {
+                    Id = kp.Id,
                     Name = kp.Name,
                     Description = kp.Description,
                     Latitude = kp.Latitude,
@@ -129,6 +130,28 @@ namespace ToursService.Services
             if (tour == null) throw new Exception("Tour not found");
 
             tour.Status = TourStatus.CONFIRMED;
+            _repository.Update(tour);
+
+            return MapToDto(tour);
+        }
+
+        public TourDto UpdateKeyPoint(long tourId, KeyPointDto kpDto)
+        {
+            var tour = _repository.GetById(tourId);
+
+            var kp = tour.KeyPoints.FirstOrDefault(x => x.Id == kpDto.Id);
+            if (kp == null) throw new Exception("KeyPoint not found");
+
+            kp.Name = kpDto.Name;
+            kp.Description = kpDto.Description;
+            kp.Latitude = kpDto.Latitude;
+            kp.Longitude = kpDto.Longitude;
+
+            if (!string.IsNullOrEmpty(kpDto.ImagePath))
+            {
+                kp.ImagePath = kpDto.ImagePath;
+            }
+
             _repository.Update(tour);
 
             return MapToDto(tour);

@@ -17,6 +17,9 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
   tempMarker: L.Marker | null = null;
   selectedFile: File | null = null;
 
+  editingKeyPoint: any = null;
+  isEditing: boolean = false;
+
   newKeyPoint = { name: '', description: '', image: '', latitude: 0, longitude: 0 };
   newDuration = { minutes: 0, travelType: 0 };
 
@@ -38,25 +41,23 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.map.invalidateSize(), 200);
 
     this.map.on('click', (e: L.LeafletMouseEvent) => {
+
       if (this.tempMarker) {
         this.map.removeLayer(this.tempMarker);
       }
 
-      this.newKeyPoint.latitude = e.latlng.lat;
-      this.newKeyPoint.longitude = e.latlng.lng;
+      if (this.isEditing) {
+        this.editingKeyPoint.latitude = e.latlng.lat;
+        this.editingKeyPoint.longitude = e.latlng.lng;
+      } else {
+        this.newKeyPoint.latitude = e.latlng.lat;
+        this.newKeyPoint.longitude = e.latlng.lng;
+      }
 
-      this.tempMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(this.map)
-        .bindPopup(`<b>New Location Selected</b><br>Lat: ${e.latlng.lat.toFixed(4)}`)
+      this.tempMarker = L.marker([e.latlng.lat, e.latlng.lng])
+        .addTo(this.map)
+        .bindPopup("Location selected")
         .openPopup();
-
-      this.tempMarker.on('popupclose', () => {
-        if (this.tempMarker) {
-          this.map.removeLayer(this.tempMarker);
-          this.tempMarker = null;
-        }
-        this.newKeyPoint.latitude = 0;
-        this.newKeyPoint.longitude = 0;
-      });
     });
   }
 
@@ -159,18 +160,70 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
         createMarker: () => null 
       } as any).addTo(this.map); 
 
-      this.tour.keyPoints.forEach((kp: any) => {
-        L.marker([kp.latitude, kp.longitude], { icon: myIcon })
-          .addTo(this.map)
-          .bindPopup(`<b>${kp.name}</b>`);
+    this.tour.keyPoints.forEach((kp: any) => {
+      const marker = L.marker([kp.latitude, kp.longitude], { icon: myIcon })
+        .addTo(this.map)
+        .bindPopup(`<b>${kp.name}</b><br><button id="edit-${kp.id}">Edit</button>`);
+
+      marker.on('popupopen', () => {
+        setTimeout(() => {
+          const btn = document.getElementById(`edit-${kp.id}`);
+          if (btn) {
+            btn.onclick = () => this.startEditing(kp);
+          }
+        }, 100);
       });
+    });
     }
+  }
+
+  startEditing(kp: any) {
+    this.isEditing = true;
+    this.editingKeyPoint = { ...kp };
+
+    if (this.tempMarker) {
+      this.map.removeLayer(this.tempMarker);
+    }
+
+    this.tempMarker = L.marker([kp.latitude, kp.longitude])
+      .addTo(this.map)
+      .bindPopup("Editing location")
+      .openPopup();
   }
 
   savePrice() {
     this.tourService.updatePrice(this.tourId, this.tour.price).subscribe({
       next: (val) => console.log('Price update.', val),
       error: (err) => console.error('Error saving price', err)
+    });
+  }
+
+  updateKeyPoint() {
+    const formData = new FormData();
+
+    formData.append('Name', this.editingKeyPoint.name);
+    formData.append('Description', this.editingKeyPoint.description);
+    formData.append('Longitude', this.editingKeyPoint.longitude.toString());
+    formData.append('Latitude', this.editingKeyPoint.latitude.toString());
+
+    if (this.selectedFile) {
+      formData.append('Image', this.selectedFile, this.selectedFile.name);
+    }
+
+    this.tourService.updateKeyPoint(this.editingKeyPoint.id, formData).subscribe({
+      next: () => {
+        this.isEditing = false;
+        this.editingKeyPoint = null;
+        this.selectedFile = null;
+
+        if (this.tempMarker) {
+          this.map.removeLayer(this.tempMarker);
+          this.tempMarker = null;
+        }
+
+        this.loadTour();
+      },
+      error: (err) => console.error('Update error', err)
     });
   }
 }

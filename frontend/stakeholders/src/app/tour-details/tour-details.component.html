@@ -57,6 +57,24 @@
         Save Key Point
       </button>
     </div>
+
+    <div *ngIf="isEditing" class="keypoint-form">
+      <h3>Edit Key Point</h3>
+
+      <input [(ngModel)]="editingKeyPoint.name" placeholder="Name">
+
+      <textarea [(ngModel)]="editingKeyPoint.description"></textarea>
+
+      <input type="file" (change)="onFileSelected($event)">
+
+      <p>
+        Coordinates:
+        {{ editingKeyPoint.latitude }},
+        {{ editingKeyPoint.longitude }}
+      </p>
+
+      <button (click)="updateKeyPoint()">Save Changes</button>
+    </div>
   </div>
 
 </div>

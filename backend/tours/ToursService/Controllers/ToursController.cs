@@ -156,5 +156,38 @@ namespace ToursService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("keypoint/{keyPointId}")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<TourDto>> UpdateKeyPoint(long keyPointId, [FromForm] KeyPointDto keyPointDto)
+        {
+            try
+            {
+                if (keyPointDto.Image != null && keyPointDto.Image.Length > 0)
+                {
+                    string wwwRootPath = _env.WebRootPath;
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(keyPointDto.Image.FileName);
+
+                    string imagesPath = Path.Combine(wwwRootPath, "images");
+                    if (!Directory.Exists(imagesPath)) Directory.CreateDirectory(imagesPath);
+
+                    string fullPath = Path.Combine(imagesPath, fileName);
+
+                    using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await keyPointDto.Image.CopyToAsync(fileStream);
+                    }
+
+                    keyPointDto.ImagePath = "images/" + fileName;
+                }
+
+                var result = _tourService.UpdateKeyPoint(keyPointId, keyPointDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

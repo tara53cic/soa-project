@@ -62,4 +62,8 @@ export class TourService {
     unarchiveTour(tourId: number): Observable<any> {
         return this.http.patch(`${this.config.tours_url}/${tourId}/unarchive`, {});
     }
+
+    updateKeyPoint(tourId: number, formData: FormData) {
+        return this.http.put(`${this.config.tours_url}/${tourId}`, formData);
+    }
 }

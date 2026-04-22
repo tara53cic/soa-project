@@ -13,5 +13,6 @@ namespace ToursService.Services.Interfaces
         TourDto UpdatePrice(long tourId, float price);
         TourDto Archive(long tourId);
         TourDto Unarchive(long tourId);
+        TourDto UpdateKeyPoint(long keyPointId, KeyPointDto keyPointDto);
     }
 }
