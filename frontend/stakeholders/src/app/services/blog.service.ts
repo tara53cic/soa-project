@@ -5,7 +5,7 @@ import { Blog, CreateBlogRequest, Comments, CreateCommentRequest, EditCommentReq
 
 @Injectable({ providedIn: 'root' })
 export class BlogService {
-  private baseUrl = 'http://localhost:5048/api';
+  private baseUrl = 'http://localhost:44307/api';
 
   constructor(private http: HttpClient) {}
 
