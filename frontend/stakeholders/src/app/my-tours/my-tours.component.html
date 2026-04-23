@@ -1,0 +1,43 @@
+<div class="my-tours-container">
+  <div class="my-tours-header">
+    <h2>My Created Tours</h2>
+    <button class="btn-create-main" (click)="onCreateTour()">
+      + Create New Tour
+    </button>
+  </div>
+  <div class="tour-grid">
+    <div *ngFor="let tour of tours" class="tour-card" (click)="onViewTour(tour)">
+      <div class="status-badge" [ngClass]="getStatusClass(tour.status)">
+        {{ getStatusLabel(tour.status) }}
+      </div>
+
+      <div class="tour-info">
+        <h3>{{ tour.name }}</h3>
+
+        <div class="difficulty-wrapper">
+          <span class="difficulty-badge" [ngClass]="getDifficultyClass(tour.difficulty)">
+            {{ getDifficultyLabel(tour.difficulty) }}
+          </span>
+        </div>
+
+        <p>Distance: <strong>{{ tour.distanceInKm | number:'1.2-2' }} km</strong></p>
+        
+        <div class="price-date-row">
+          <p class="price">Price: <strong>{{ tour.price }} €</strong></p>
+          
+          <p class="date-info">
+            <span *ngIf="tour.status === 1">Published: <strong>{{ tour.publishedDateTime | date:'dd.MM.yyyy.' }}</strong></span>
+            <span *ngIf="tour.status === 2">Archived: <strong>{{ tour.archivedDateTime | date:'dd.MM.yyyy.' }}</strong></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span *ngIf="tour.status === 0">Click to manage key points &rarr;</span>
+        <span *ngIf="tour.status === 1">Click to view public page &rarr;</span>
+        <span *ngIf="tour.status === 2">Tour is archived &rarr;</span>
+      </div>
+    </div>
+  </div>
+
+  </div>

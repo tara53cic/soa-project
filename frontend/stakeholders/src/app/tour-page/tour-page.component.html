@@ -1,0 +1,67 @@
+<div class="tour-page-wrapper" *ngIf="tour">
+  <div class="tour-hero">
+    <div class="hero-content">
+      <h1>{{ tour.name }}</h1>
+      <p class="description">{{ tour.description }}</p>
+      
+      <div class="meta-tags">
+        <span class="badge diff" [ngClass]="'diff-' + tour.difficulty">
+          Difficulty: {{ getDifficultyLabel(tour.difficulty) }}
+        </span>
+        <span class="badge dist">Length: {{ tour.distanceInKm | number:'1.1-2' }} km</span>
+        <span class="badge price">Price: {{ tour.price }} €</span>
+        <div class="tags-group" *ngIf="tour.tags && tour.tags.length > 0">
+          <span *ngFor="let tag of tour.tags" class="badge tag">
+            #{{ tag }}
+          </span>
+        </div>
+      </div>
+
+      <div class="tour-actions">
+            <button *ngIf="user?.role?.name === 'ROLE_TOURIST'" class="btn-buy">
+                Buy Full Tour for {{ tour.price }} €
+            </button>
+
+            <button *ngIf="tour.status === 1 && user?.role?.name === 'ROLE_GUIDE'" class="btn-archive" (click)="onArchive()">
+                    Archive Tour
+            </button>
+
+            <button *ngIf="tour.status === 2" class="btn-unarchive" (click)="onUnarchive()">
+                    Unarchive Tour
+            </button>
+        </div>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="map-section">
+      <div id="map"></div>
+    </div>
+
+    <div class="details-section">
+      <h3>Tour Itinerary</h3>
+      
+      <div class="keypoints-timeline">
+        <div *ngFor="let kp of tour.keyPoints; let i = index" class="timeline-item">
+          <ng-container *ngIf="user?.role?.name !== 'ROLE_TOURIST' || i === 0">
+            <div class="kp-dot"></div>
+            <div class="kp-content">
+              <h4>{{ kp.name }}</h4>
+              <p>{{ kp.description }}</p>
+              <img *ngIf="kp.imagePath" [src]="'https://localhost:44345/' + kp.imagePath" class="kp-img">
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="user?.role?.name === 'ROLE_TOURIST' && i > 0">
+            <div class="kp-dot locked"></div>
+            <div class="kp-content locked">
+              <h4>Point {{ i + 1 }} - Locked</h4>
+              <p>Buy the tour to unlock details about this location.</p>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

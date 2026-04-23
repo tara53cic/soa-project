@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit { 
-
+  user: any;
   isLoggedIn = false;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -17,6 +17,14 @@ export class NavbarComponent implements OnInit {
     this.authService.isLoggedIn().subscribe(
       loggedIn => this.isLoggedIn = loggedIn
     );
+    this.authService.getCurrentUser().subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => {
+        console.log("Error loading user.", err);
+      }
+    })
   }
 
   logout(): void {

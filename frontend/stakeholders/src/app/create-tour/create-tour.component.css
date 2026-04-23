@@ -1,0 +1,78 @@
+.create-tour-container {
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: #fcfcfc;
+  min-height: 80vh;
+}
+
+.form-card {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #f0f0f0;
+}
+
+h2 { font-weight: 400; margin-bottom: 10px; color: #333; }
+.subtitle { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+.form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+label { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #555; }
+
+input, textarea, select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  transition: border 0.2s;
+}
+
+input:focus, textarea:focus { outline: none; border-color: #3498db; }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-submit {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-cancel {
+  background: none;
+  border: 1px solid #ddd;
+  color: #777;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-submit:hover { background: #2980b9; }
+
+.btn-save {
+  background-color: white;
+  color: #3498db;
+  border: 1px solid #3498db;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-save:hover {
+  background-color: #ebf5fb;
+}

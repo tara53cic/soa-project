@@ -83,7 +83,7 @@ export class AuthService {
     });
   }
 
-getCurrentUser(): Observable<any> {
+  getCurrentUser(): Observable<any> {
     const token = localStorage.getItem('jwt');
     
     const headers = new HttpHeaders({

@@ -31,6 +31,21 @@ services:
     networks:
       - app-network
 
+  tours-service:
+    build:
+      context: ./backend/tours/ToursService  
+      dockerfile: Dockerfile
+    container_name: tours_service
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
+      ASPNETCORE_URLS: http://+:44345
+    ports:
+      - "44345:44345"
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
   stakeholders-service:
     build:
       context: ./backend/stakeholders

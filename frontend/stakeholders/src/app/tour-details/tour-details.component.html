@@ -1,0 +1,90 @@
+<div class="management-container">
+  <div class="side-panel">
+    <h2>Manage Tour: {{ tour.name }}</h2>
+    
+    <div class="info-section">
+      <p><strong>Description:</strong> {{ tour.description }}</p>
+      <p><strong>Distance:</strong> {{ tour.distanceInKm | number:'1.2-2' }} km</p>
+      
+      <div class="form-group">
+        <label>Price (€)</label>
+        <input type="number" [(ngModel)]="tour.price" name="price" (change)="savePrice()">
+      </div>
+    </div>
+
+    <hr>
+
+    <h3>Add Transport & Duration</h3>
+    <div class="duration-form">
+      <select [(ngModel)]="newDuration.travelType">
+        <option [ngValue]="0">Walking</option>
+        <option [ngValue]="1">Bicycle</option>
+        <option [ngValue]="2">Car</option>
+      </select>
+      <input type="number" [(ngModel)]="newDuration.minutes" placeholder="Minutes">
+      <button (click)="addDuration()">Add Time</button>
+    </div>
+
+    <ul class="duration-list">
+      <li *ngFor="let d of tour.duration">
+        {{ d.travelType === 0 ? 'Walking' : 'Bicycle' }}: {{ d.minutes }} min
+      </li>
+    </ul>
+
+    <button class="btn-publish" *ngIf="canPublish()" (click)="publish()">
+      PUBLISH TOUR
+    </button>
+  </div>
+
+  <div class="map-panel">
+    <div id="map"></div>
+
+    <div class="keypoint-form">
+      <h3 *ngIf="!isEditing">New Key Point</h3>
+      <h3 *ngIf="isEditing">Edit Key Point</h3>
+
+      <input *ngIf="isEditing"
+        [(ngModel)]="editingKeyPoint.name"
+        placeholder="Name">
+
+      <input *ngIf="!isEditing"
+        [(ngModel)]="newKeyPoint.name"
+        placeholder="Name">
+
+      <textarea *ngIf="isEditing"
+        [(ngModel)]="editingKeyPoint.description">
+      </textarea>
+
+      <textarea *ngIf="!isEditing"
+        [(ngModel)]="newKeyPoint.description">
+      </textarea>
+
+      <input type="file" (change)="onFileSelected($event)">
+
+      <p>
+        Coordinates:
+        {{ isEditing ? editingKeyPoint.latitude : newKeyPoint.latitude }},
+        {{ isEditing ? editingKeyPoint.longitude : newKeyPoint.longitude }}
+      </p>
+
+      <button *ngIf="!isEditing"
+              (click)="addKeyPoint()"
+              [disabled]="!newKeyPoint.latitude || !newKeyPoint.name">
+        Save Key Point
+      </button>
+
+      <button *ngIf="isEditing"
+              (click)="updateKeyPoint()">
+        Save Changes
+      </button>
+
+      <button *ngIf="isEditing"
+              (click)="cancelEditing()"
+              class="btn-cancel">
+        Cancel
+      </button>
+
+    </div>
+  </div>
+
+</div>
