@@ -15,6 +15,14 @@ export class TourPageComponent implements OnInit {
   user: any;
   map!: L.Map; 
 
+  reviews: any[] = [];
+  selectedFiles: File[] = [];
+  newReview = {
+    grade: 5,
+    comment: '',
+    attendanceDate: ''
+  };
+
   constructor(
     private route: ActivatedRoute,
     private tourService: TourService,
@@ -28,6 +36,7 @@ export class TourPageComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(data => {
       this.user = data;
       this.loadTour();
+      this.loadReviews();
     });
   }
 
@@ -101,5 +110,56 @@ export class TourPageComponent implements OnInit {
     if (difficulty === 1 || difficulty === 'MEDIUM') return 'MEDIUM';
     if (difficulty === 2 || difficulty === 'HARD') return 'HARD';
     return 'UNKNOWN';
+  }
+
+  loadReviews(): void {
+    this.tourService.getReviewsByTour(this.tourId).subscribe(data => {
+      this.reviews = data;
+    });
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFiles = Array.from(event.target.files);
+  }
+
+  onSubmitReview(): void {
+    const formData = new FormData();
+
+    const dateValue = new Date(this.newReview.attendanceDate);
+    const utcDate = dateValue.toISOString();
+
+    formData.append('grade', this.newReview.grade.toString());
+    formData.append('comment', this.newReview.comment);
+    formData.append('touristId', this.user.id.toString());
+    formData.append('tourId', this.tourId.toString());
+    formData.append('attendanceDate', utcDate);
+
+    this.selectedFiles.forEach(file => {
+      formData.append('imageFiles', file, file.name);
+    });
+
+    this.tourService.createReview(formData).subscribe({
+      next: () => {
+        this.loadReviews();
+        this.resetReviewForm();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  getRatingDescription(grade: number): string {
+    const descriptions: { [key: number]: string } = {
+      1: 'Poor - Not worth it',
+      2: 'Fair - Could be better',
+      3: 'Good - Enjoyable experience',
+      4: 'Very Good - Highly recommended',
+      5: 'Excellent - Absolutely amazing!'
+    };
+    return descriptions[grade] || 'Select your rating';
+  }
+
+  private resetReviewForm(): void {
+    this.newReview = { grade: 5, comment: '', attendanceDate: '' };
+    this.selectedFiles = [];
   }
 }
