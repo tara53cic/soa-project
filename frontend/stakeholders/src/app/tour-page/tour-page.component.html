@@ -126,7 +126,7 @@
           <img *ngFor="let img of r.images" [src]="'https://localhost:44345/' + img" class="review-photo">
         </div>
         <div class="review-footer">
-          <span>Posted by User #{{ r.touristId }}</span>
+          <span>Posted by: {{ r.touristUsername }}</span>
         </div>
       </div>
       <div *ngIf="reviews.length === 0" class="no-reviews">

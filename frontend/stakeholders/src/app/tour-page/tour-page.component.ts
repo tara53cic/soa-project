@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../services/tour.service';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 import * as L from 'leaflet';
 
 @Component({
@@ -14,6 +15,7 @@ export class TourPageComponent implements OnInit {
   tour: any;
   user: any;
   map!: L.Map; 
+  usernames: { [key: number]: string } = {};
 
   reviews: any[] = [];
   selectedFiles: File[] = [];
@@ -25,6 +27,7 @@ export class TourPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private userService: UserService,
     private tourService: TourService,
     private authService: AuthService,
     private router: Router
@@ -133,6 +136,7 @@ export class TourPageComponent implements OnInit {
     formData.append('touristId', this.user.id.toString());
     formData.append('tourId', this.tourId.toString());
     formData.append('attendanceDate', utcDate);
+    formData.append('touristUsername', this.user.username);
 
     this.selectedFiles.forEach(file => {
       formData.append('imageFiles', file, file.name);

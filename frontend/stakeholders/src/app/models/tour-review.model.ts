@@ -8,4 +8,5 @@ export interface TourReview {
     reviewDate?: string;
     images?: string[];
     imageFiles?: File[];
+    touristUsername?: string;
 }

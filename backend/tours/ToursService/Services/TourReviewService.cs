@@ -21,6 +21,7 @@ namespace ToursService.Services
                 reviewDto.Comment,
                 reviewDto.TouristId,
                 reviewDto.TourId,
+                reviewDto.TouristUsername,
                 reviewDto.AttendanceDate,
                 reviewDto.Images
             );
@@ -46,7 +47,8 @@ namespace ToursService.Services
                 AttendanceDate = review.AttendanceDate,
                 ReviewDate = review.ReviewDate,
                 Images = review.Images,
-                TourId = review.TourId
+                TourId = review.TourId,
+                TouristUsername = review.TouristUsername
             };
         }
     }

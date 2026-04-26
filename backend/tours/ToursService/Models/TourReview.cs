@@ -10,10 +10,11 @@
         public DateTime AttendanceDate { get; set; }
         public DateTime ReviewDate { get; set; }
         public List<string> Images { get; set; }
+        public string TouristUsername { get; set; }
 
         public TourReview() { }
 
-        public TourReview(int grade, string comment, long touristId, long tourId, DateTime attendanceDate, List<string>? images)
+        public TourReview(int grade, string comment, long touristId, long tourId, string touristUsername, DateTime attendanceDate, List<string>? images)
         {
             if (grade < 1 || grade > 5) throw new ArgumentException("Grade must be between 1 and 5.");
             if (string.IsNullOrWhiteSpace(comment)) throw new ArgumentNullException("Comment cannot be empty.");
@@ -22,6 +23,7 @@
             Comment = comment;
             TouristId = touristId;
             TourId = tourId;
+            TouristUsername = touristUsername;
             AttendanceDate = attendanceDate;
             ReviewDate = DateTime.UtcNow;
             Images = images ?? new List<string>();

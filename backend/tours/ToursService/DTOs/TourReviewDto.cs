@@ -11,5 +11,6 @@
         public DateTime ReviewDate { get; set; }
         public List<string>? Images { get; set; }
         public List<IFormFile>? ImageFiles { get; set; }
+        public string TouristUsername { get; set; }
     }
 }
