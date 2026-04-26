@@ -21,6 +21,9 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<ToursService.Repositories.Interfaces.ITourRepository, ToursService.Repositories.TourRepository>();
 builder.Services.AddScoped<ToursService.Services.Interfaces.ITourService, ToursService.Services.TourService>();
 
+builder.Services.AddScoped<ToursService.Repositories.Interfaces.ITourReviewRepository, ToursService.Repositories.TourReviewRepository>();
+builder.Services.AddScoped<ToursService.Services.Interfaces.ITourReviewService, ToursService.Services.TourReviewService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
