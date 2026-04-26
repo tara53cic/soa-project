@@ -20,7 +20,7 @@ namespace ToursService.Repositories
             return review;
         }
 
-        public List<TourReview> getByTourId(long tourId)
+        public List<TourReview> GetByTourId(long tourId)
         {
             return _context.TourReviews.Where(r => r.TourId == tourId).ToList();
         }
