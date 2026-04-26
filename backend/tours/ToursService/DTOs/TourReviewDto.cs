@@ -10,5 +10,6 @@
         public DateTime AttendanceDate { get; set; }
         public DateTime ReviewDate { get; set; }
         public List<string>? Images { get; set; }
+        public List<IFormFile>? ImageFiles { get; set; }
     }
 }
