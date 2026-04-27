@@ -16,6 +16,7 @@ export class TourPageComponent implements OnInit {
   user: any;
   map!: L.Map; 
   usernames: { [key: number]: string } = {};
+  averageRating: number = 0;
 
   reviews: any[] = [];
   selectedFiles: File[] = [];
@@ -118,6 +119,13 @@ export class TourPageComponent implements OnInit {
   loadReviews(): void {
     this.tourService.getReviewsByTour(this.tourId).subscribe(data => {
       this.reviews = data;
+
+      if (this.reviews && this.reviews.length > 0) {
+        const sum = this.reviews.reduce((acc, review) => acc + review.grade, 0);
+        this.averageRating = sum / this.reviews.length;
+      } else {
+        this.averageRating = 0;
+      }
     });
   }
 

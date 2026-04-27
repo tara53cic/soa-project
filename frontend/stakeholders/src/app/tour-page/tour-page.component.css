@@ -317,3 +317,7 @@ h3 {
   display: flex;
   justify-content: space-between;
 }
+
+.badge.rating {
+  background-color: #f6cf31;
+}

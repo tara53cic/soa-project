@@ -10,6 +10,7 @@
         </span>
         <span class="badge dist">Length: {{ tour.distanceInKm | number:'1.1-2' }} km</span>
         <span class="badge price">Price: {{ tour.price }} €</span>
+        <span class="badge rating" *ngIf="averageRating > 0">Rating: {{ averageRating | number:'1.1-1' }} ({{ reviews.length }})</span>
         <div class="tags-group" *ngIf="tour.tags && tour.tags.length > 0">
           <span *ngFor="let tag of tour.tags" class="badge tag">
             #{{ tag }}
