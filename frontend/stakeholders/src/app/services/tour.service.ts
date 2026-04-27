@@ -74,4 +74,16 @@ export class TourService {
     deleteKeyPoint(id: number) {
         return this.http.delete(`${this.config.tours_url}/${id}`);
     }
+
+    getReviewsByTour(tourId: number): Observable<any[]> {
+        return this.http.get<any[]>(`${this.config.tours_url}/${tourId}/reviews`, {
+            headers: this.getHeaders()
+        });
+    }
+
+    createReview(formData: FormData): Observable<any> {
+        return this.http.post<any>(`${this.config.tours_url}/reviews`, formData, {
+            headers: this.getHeaders()
+        });
+    }
 }

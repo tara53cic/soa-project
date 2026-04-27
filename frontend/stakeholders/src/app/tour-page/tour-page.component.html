@@ -10,6 +10,7 @@
         </span>
         <span class="badge dist">Length: {{ tour.distanceInKm | number:'1.1-2' }} km</span>
         <span class="badge price">Price: {{ tour.price }} €</span>
+        <span class="badge rating" *ngIf="averageRating > 0">Rating: {{ averageRating | number:'1.1-1' }} ({{ reviews.length }})</span>
         <div class="tags-group" *ngIf="tour.tags && tour.tags.length > 0">
           <span *ngFor="let tag of tour.tags" class="badge tag">
             #{{ tag }}
@@ -61,7 +62,77 @@
           </ng-container>
         </div>
       </div>
+    </div>
+  </div>
+  
+  <div class="reviews-section">
+    <h2>Tour Reviews</h2>
 
+    <div class="add-review-card" *ngIf="user?.role?.name === 'ROLE_TOURIST'">
+      <h3 class="form-title">Share Your Experience</h3>
+      <p class="form-subtitle">Help other travelers by providing feedback on this tour.</p>
+
+      <div class="review-form-container">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="field-label">Overall Rating</label>
+            <div class="star-rating">
+              <span *ngFor="let s of [1,2,3,4,5]" 
+                    (click)="newReview.grade = s"
+                    [class.active]="s <= newReview.grade">★</span>
+            </div>
+            <span class="rating-text-desc">{{ getRatingDescription(newReview.grade) }}</span>
+          </div>
+
+          <div class="form-group">
+            <label class="field-label" for="visit-date">Tour Execution Date</label>
+            <input type="date" id="visit-date" [(ngModel)]="newReview.attendanceDate" class="modern-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label" for="comment">Your Review</label>
+          <textarea id="comment" [(ngModel)]="newReview.comment" 
+                    placeholder="Describe your experience..." 
+                    class="modern-input text-area"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="field-label">Attachments</label>
+          <div class="custom-file-wrapper">
+            <input type="file" (change)="onFileSelected($event)" multiple id="file-input">
+            <label for="file-input" class="file-drop-zone">
+              {{ selectedFiles.length > 0 ? selectedFiles.length + ' files attached' : 'Upload tour photos' }}
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-primary-action" (click)="onSubmitReview()">Submit Review</button>
+      </div>
+    </div>
+
+    <div class="reviews-list">
+      <div *ngFor="let r of reviews" class="review-card">
+        <div class="review-header">
+          <span class="stars-display">★ {{ r.grade }} / 5</span>
+          <div class="review-meta-info">
+            <span class="review-date">Posted: {{ r.reviewDate | date:'dd.MM.yyyy.' }}</span>
+          </div>
+        </div>
+        <span class="tour-execution-info">
+          Visited on: {{ r.attendanceDate | date:'dd.MM.yyyy.' }}
+        </span>
+        <p class="review-comment">{{ r.comment }}</p>
+        <div class="review-images" *ngIf="r.images && r.images.length > 0">
+          <img *ngFor="let img of r.images" [src]="'https://localhost:44345/' + img" class="review-photo">
+        </div>
+        <div class="review-footer">
+          <span>Posted by: {{ r.touristUsername }}</span>
+        </div>
+      </div>
+      <div *ngIf="reviews.length === 0" class="no-reviews">
+        <p>No reviews yet. Be the first to share your experience!</p>
+      </div>
     </div>
   </div>
 </div>

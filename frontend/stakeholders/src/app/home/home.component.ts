@@ -38,14 +38,28 @@ export class HomeComponent implements OnInit {
   loadFeaturedTours(): void {
     this.tourService.getTours().subscribe({
       next: (data) => {
-        this.featuredTours = data
+        const filtered = data
           .filter((t: any) => t.status === 1)
           .slice(0, 3);
+        this.featuredTours = filtered;
+        this.featuredTours.forEach(tour => {
+          this.tourService.getReviewsByTour(tour.id).subscribe({
+            next: (reviews) => {
+              tour.reviews = reviews;
+              if (reviews && reviews.length > 0) {
+                const sum = reviews.reduce((acc: number, r: any) => acc + r.grade, 0);
+                tour.averageRating = sum / reviews.length;
+              } else {
+                tour.averageRating = 0;
+              }
+            }
+          });
+        });
       },
       error: (err) => {
         console.log("Error loading tours:", err);
       }
-    })
+    });
   }
 
   getDifficultyLabel(difficulty: any): string {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../services/tour.service';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 import * as L from 'leaflet';
 
 @Component({
@@ -14,9 +15,20 @@ export class TourPageComponent implements OnInit {
   tour: any;
   user: any;
   map!: L.Map; 
+  usernames: { [key: number]: string } = {};
+  averageRating: number = 0;
+
+  reviews: any[] = [];
+  selectedFiles: File[] = [];
+  newReview = {
+    grade: 5,
+    comment: '',
+    attendanceDate: ''
+  };
 
   constructor(
     private route: ActivatedRoute,
+    private userService: UserService,
     private tourService: TourService,
     private authService: AuthService,
     private router: Router
@@ -28,6 +40,7 @@ export class TourPageComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(data => {
       this.user = data;
       this.loadTour();
+      this.loadReviews();
     });
   }
 
@@ -101,5 +114,64 @@ export class TourPageComponent implements OnInit {
     if (difficulty === 1 || difficulty === 'MEDIUM') return 'MEDIUM';
     if (difficulty === 2 || difficulty === 'HARD') return 'HARD';
     return 'UNKNOWN';
+  }
+
+  loadReviews(): void {
+    this.tourService.getReviewsByTour(this.tourId).subscribe(data => {
+      this.reviews = data;
+
+      if (this.reviews && this.reviews.length > 0) {
+        const sum = this.reviews.reduce((acc, review) => acc + review.grade, 0);
+        this.averageRating = sum / this.reviews.length;
+      } else {
+        this.averageRating = 0;
+      }
+    });
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFiles = Array.from(event.target.files);
+  }
+
+  onSubmitReview(): void {
+    const formData = new FormData();
+
+    const dateValue = new Date(this.newReview.attendanceDate);
+    const utcDate = dateValue.toISOString();
+
+    formData.append('grade', this.newReview.grade.toString());
+    formData.append('comment', this.newReview.comment);
+    formData.append('touristId', this.user.id.toString());
+    formData.append('tourId', this.tourId.toString());
+    formData.append('attendanceDate', utcDate);
+    formData.append('touristUsername', this.user.username);
+
+    this.selectedFiles.forEach(file => {
+      formData.append('imageFiles', file, file.name);
+    });
+
+    this.tourService.createReview(formData).subscribe({
+      next: () => {
+        this.loadReviews();
+        this.resetReviewForm();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  getRatingDescription(grade: number): string {
+    const descriptions: { [key: number]: string } = {
+      1: 'Poor - Not worth it',
+      2: 'Fair - Could be better',
+      3: 'Good - Enjoyable experience',
+      4: 'Very Good - Highly recommended',
+      5: 'Excellent - Absolutely amazing!'
+    };
+    return descriptions[grade] || 'Select your rating';
+  }
+
+  private resetReviewForm(): void {
+    this.newReview = { grade: 5, comment: '', attendanceDate: '' };
+    this.selectedFiles = [];
   }
 }
