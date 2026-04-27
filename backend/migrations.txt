@@ -1,0 +1,5 @@
+Add-Migration -Name Init -Context BlogDbContext -Project BlogService -StartupProject BlogService
+Update-Database -Context BlogDbContext -Project BlogService -StartupProject BlogService
+
+Add-Migration -Name InitialCreate -Context ToursDbContext -Project ToursService -StartupProject ToursService
+Update-Database -Context ToursDbContext -Project ToursService -StartupProject ToursService
