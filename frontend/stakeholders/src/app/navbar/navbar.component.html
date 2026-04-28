@@ -15,6 +15,9 @@
       <a routerLink="/tours">All Tours</a>
 
       <a *ngIf="user?.role?.name === 'ROLE_GUIDE'" routerLink="/my-tours" class="author-link">My Tours</a>
+
+      <a *ngIf="user?.role?.name === 'ROLE_TOURIST'" routerLink="/position-simulator" class="simulator-link">Simulator</a>
+
       <a routerLink="/profile" class="profile-link">My Profile</a>
       <button (click)="logout()" class="btn-logout">Logout</button>
     </ng-container>
