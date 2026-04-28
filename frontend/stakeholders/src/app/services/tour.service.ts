@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
+import { TouristPosition } from '../models/tourist-position.model';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +85,20 @@ export class TourService {
     createReview(formData: FormData): Observable<any> {
         return this.http.post<any>(`${this.config.tours_url}/reviews`, formData, {
             headers: this.getHeaders()
+        });
+    }
+
+    updateTouristPosition(position: TouristPosition): Observable<TouristPosition> {
+        const url = this.config.tours_url.replace('/tours', '/tourist/position');
+        return this.http.post<TouristPosition>(url, position, { 
+            headers: this.getHeaders() 
+        });
+    }
+
+    getTouristPosition(touristId: number): Observable<TouristPosition> {
+        const url = this.config.tours_url.replace('/tours', '/tourist/position');
+        return this.http.get<TouristPosition>(`${url}/${touristId}`, { 
+            headers: this.getHeaders() 
         });
     }
 }
