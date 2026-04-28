@@ -22,6 +22,7 @@ import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PositionSimulatorComponent } from './position-simulator/position-simula
     PositionSimulatorComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,

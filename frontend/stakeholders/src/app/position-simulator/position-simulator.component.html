@@ -1,1 +1,40 @@
-<p>position-simulator works!</p>
+<div class="page-wrapper">
+  <div class="main-content">
+    
+    <div class="action-bar">
+      <h2 class="section-title">Position Simulator</h2>
+    </div>
+
+    <div class="simulator-container">
+      <div class="info-banner">
+        <p>Click anywhere on the map to simulate your real-time location for tour tracking.</p>
+      </div>
+
+      <div class="map-frame">
+        <div id="map"></div>
+        
+        <div class="map-overlay-card" *ngIf="currentPosition">
+          <div class="status-indicator">
+            <span class="pulse-dot"></span>
+            Current Position
+          </div>
+          <div class="coord-display">
+            <div class="coord-group">
+              <label>LATITUDE</label>
+              <span>{{ currentPosition.latitude | number:'1.4-4' }}</span>
+            </div>
+            <div class="coord-divider"></div>
+            <div class="coord-group">
+              <label>LONGITUDE</label>
+              <span>{{ currentPosition.longitude | number:'1.4-4' }}</span>
+            </div>
+          </div>
+          <div class="timestamp-footer">
+            Last sync: {{ currentPosition.lastActivity | date:'HH:mm:ss' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
