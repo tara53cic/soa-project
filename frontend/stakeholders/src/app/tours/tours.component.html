@@ -16,6 +16,10 @@
       <div class="card-content">
         <h3>{{ tour.name }}</h3>
         <p class="description">{{ tour.description | slice:0:80 }}...</p>
+
+        <div class="card-rating-text" *ngIf="tour.averageRating > 0">
+          Rating: {{ tour.averageRating | number:'1.1-1' }} ({{ tour.reviews?.length }} reviews)
+        </div>
         
         <div class="card-meta">
           <span class="difficulty">Difficulty: {{ getDifficultyLabel(tour.difficulty) }}</span>

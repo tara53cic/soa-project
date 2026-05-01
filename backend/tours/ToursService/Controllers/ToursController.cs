@@ -11,10 +11,13 @@ namespace ToursService.Controllers
     {
         private readonly ITourService _tourService;
         private readonly IWebHostEnvironment _env;
-        public ToursController(ITourService tourService, IWebHostEnvironment env)
+        private readonly ITourReviewService _reviewService;
+
+        public ToursController(ITourService tourService, IWebHostEnvironment env, ITourReviewService reviewService)
         {
             _tourService = tourService;
             _env = env;
+            _reviewService = reviewService;
         }
 
         [HttpPost]
@@ -215,6 +218,62 @@ namespace ToursService.Controllers
         {
             _tourService.DeleteKeyPoint(keyPointId);
             return Ok();
+        }
+
+        [HttpPost("reviews")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<TourReviewDto>> CreateReview([FromForm] TourReviewDto reviewDto)
+        {
+            try
+            {
+                reviewDto.Images = new List<string>();
+
+                if (reviewDto.ImageFiles != null && reviewDto.ImageFiles.Count > 0)
+                {
+                    string wwwRootPath = _env.WebRootPath;
+                    string imagesPath = Path.Combine(wwwRootPath, "images", "reviews");
+
+                    if (!Directory.Exists(imagesPath))
+                        Directory.CreateDirectory(imagesPath);
+
+                    foreach (var file in reviewDto.ImageFiles)
+                    {
+                        if (file.Length > 0)
+                        {
+                            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                            string fullPath = Path.Combine(imagesPath, fileName);
+
+                            using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                            }
+
+                            reviewDto.Images.Add("images/reviews/" + fileName);
+                        }
+                    }
+                }
+
+                var result = _reviewService.CreateReview(reviewDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{tourId}/reviews")]
+        public ActionResult<List<TourReviewDto>> GetReviewsByTour(long tourId)
+        {
+            try
+            {
+                var result = _reviewService.GetByTourId(tourId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

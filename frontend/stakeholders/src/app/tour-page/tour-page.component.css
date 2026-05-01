@@ -151,3 +151,173 @@ h3 {
   font-weight: bold;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.reviews-section {
+  margin-top: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.add-review-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+  border: 1px solid #eee;
+}
+
+.add-review-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.star-rating {
+  font-size: 42px;
+  line-height: 1;
+  color: #bdc3c7;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.star-rating span.active {
+  color: #f1c40f;
+}
+
+.rating-text-desc {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 600;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.modern-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+}
+
+.text-area {
+  min-height: 110px;
+  resize: vertical;
+  margin-top: 5px;
+}
+
+.custom-file-wrapper #file-input { display: none; }
+.file-drop-zone {
+  display: block;
+  padding: 15px;
+  border: 2px dashed #3498db;
+  border-radius: 8px;
+  text-align: center;
+  color: #3498db;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.btn-primary-action {
+  width: 100%;
+  padding: 15px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+.btn-primary-action:hover { background: #219150; }
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.stars-display {
+  color: #f1c40f;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.review-meta-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.review-date {
+  color: #95a5a6;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.tour-execution-info {
+  font-size: 0.85rem;
+  color: #34495e;
+  margin-bottom: 15px;
+  display: block;
+  font-style: italic;
+}
+
+.review-comment {
+  margin: 10px 0 15px 0;
+  line-height: 1.5;
+  color: #333;
+  font-size: 1rem;
+}
+
+.review-images {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.review-photo {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.review-footer {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  border-top: 1px solid #f5f5f5;
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.badge.rating {
+  background-color: #f6cf31;
+}

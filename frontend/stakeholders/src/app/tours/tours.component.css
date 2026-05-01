@@ -87,3 +87,12 @@
   font-weight: bold;
   color: #3498db;
 }
+
+.card-rating-text {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #34495e;
+}
