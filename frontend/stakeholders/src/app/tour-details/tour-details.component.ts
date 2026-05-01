@@ -97,11 +97,32 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
 
   addKeyPoint() {
     const formData = new FormData();
+    const lat = Number(this.newKeyPoint.latitude);
+    const lng = Number(this.newKeyPoint.longitude);
+
+    if (isNaN(lat) || isNaN(lng)) {
+      alert('Koordinate nisu validne!');
+      return;
+    }
+
+    // Normalize to dot decimal separator and reasonable precision to avoid
+    // locale-related issues when the backend parses multipart values.
+    const latStr = lat.toFixed(6).replace(',', '.');
+    const lngStr = lng.toFixed(6).replace(',', '.');
+
+    console.debug('Adding keypoint coords', { lat: latStr, lng: lngStr });
+
+    formData.append('Latitude', latStr);
+    formData.append('Longitude', lngStr);
+
+    // Debug: log the FormData entries so we can inspect exact payload sent
+    for (const entry of (formData as any).entries()) {
+      const [key, value] = entry as [string, any];
+      console.debug('FormData entry', key, value);
+    }
     
     formData.append('Name', this.newKeyPoint.name);
     formData.append('Description', this.newKeyPoint.description);
-    formData.append('Longitude', this.newKeyPoint.longitude.toString());
-    formData.append('Latitude', this.newKeyPoint.latitude.toString());
     formData.append('TourId', this.tourId.toString());
 
     if (this.selectedFile) {
@@ -240,8 +261,20 @@ export class TourDetailsComponent implements OnInit, AfterViewInit {
 
     formData.append('Name', this.editingKeyPoint.name);
     formData.append('Description', this.editingKeyPoint.description);
-    formData.append('Longitude', this.editingKeyPoint.longitude.toString());
-    formData.append('Latitude', this.editingKeyPoint.latitude.toString());
+    const uLat = Number(this.editingKeyPoint.latitude);
+    const uLng = Number(this.editingKeyPoint.longitude);
+
+    const uLatStr = isNaN(uLat) ? '0' : uLat.toFixed(6).replace(',', '.');
+    const uLngStr = isNaN(uLng) ? '0' : uLng.toFixed(6).replace(',', '.');
+
+    formData.append('Longitude', uLngStr);
+    formData.append('Latitude', uLatStr);
+
+    // Debug: log the FormData entries for update as well
+    for (const entry of (formData as any).entries()) {
+      const [key, value] = entry as [string, any];
+      console.debug('FormData entry (update)', key, value);
+    }
 
     if (this.selectedFile) {
       formData.append('Image', this.selectedFile, this.selectedFile.name);

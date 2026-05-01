@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using ToursService.DTOs;
 using ToursService.Services.Interfaces;
 
@@ -30,18 +31,30 @@ namespace ToursService.Controllers
             }
         }
 
-        [HttpPost("{id}/keypoint")]
-        [Consumes("multipart/form-data")]
-        public async Task<ActionResult<TourDto>> AddKeyPoint(long id, [FromForm] KeyPointDto keyPointDto)
-        {
-            try
-            {
-                if (keyPointDto.Image == null || keyPointDto.Image.Length == 0)
-                {
-                    return BadRequest("Bad image.");
-                }
 
-                string wwwRootPath = _env.WebRootPath;
+                [HttpPost("{id}/keypoint")]
+                [Consumes("multipart/form-data")]
+                public async Task<ActionResult<TourDto>> AddKeyPoint(long id, [FromForm] KeyPointDto keyPointDto)
+                {
+                    try
+                    {
+                        // Log raw form values for debugging
+                        var rawLon = Request.Form["Longitude"].ToString();
+                        var rawLat = Request.Form["Latitude"].ToString();
+                        Console.WriteLine($"Raw Longitude: '{rawLon}', Raw Latitude: '{rawLat}'");
+
+                        // Parse explicitly using invariant culture to accept dot decimals reliably
+                        if (!string.IsNullOrWhiteSpace(rawLon))
+                            keyPointDto.Longitude = double.Parse(rawLon, CultureInfo.InvariantCulture);
+                        if (!string.IsNullOrWhiteSpace(rawLat))
+                            keyPointDto.Latitude = double.Parse(rawLat, CultureInfo.InvariantCulture);
+
+                        if (keyPointDto.Image == null || keyPointDto.Image.Length == 0)
+                        {
+                            return BadRequest("Bad image.");
+                        }
+
+                        string wwwRootPath = _env.WebRootPath;
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(keyPointDto.Image.FileName);
 
                 string imagesPath = Path.Combine(wwwRootPath, "images");

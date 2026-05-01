@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-
   postgres:
     image: postgres:16
     container_name: postgres_db
@@ -10,9 +9,22 @@ services:
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: maindb
     ports:
-      - "5432:5432"
+      - "5432:5432" 
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "8000:80" # Frontend calls localhost:8000/api/...
+    depends_on:
+      - stakeholders-service
+      - blog-service
+      - tours-service
     networks:
       - app-network
 
@@ -24,8 +36,6 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
       ASPNETCORE_URLS: http://+:44307
-    ports:
-      - "44307:44307"
     depends_on:
       - postgres
     networks:
@@ -39,8 +49,6 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
       ASPNETCORE_URLS: http://+:44345
-    ports:
-      - "44345:44345"
     depends_on:
       - postgres
     networks:
@@ -54,8 +62,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/maindb
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin123
-    ports:
-      - "8080:8080"
     depends_on:
       - postgres
     networks:
@@ -66,10 +72,9 @@ services:
       context: ./frontend/stakeholders
     container_name: frontend
     ports:
-      - "80:80"
+      - "4200:80"
     depends_on:
-      - blog-service
-      - stakeholders-service
+      - api-gateway
     networks:
       - app-network
 
