@@ -15,7 +15,10 @@ import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
 
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+
 const routes: Routes = [
+  { path: 'shopping-cart', component: ShoppingCartComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

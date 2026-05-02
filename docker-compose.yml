@@ -19,12 +19,14 @@ services:
     build:
       context: ./api-gateway
     container_name: api_gateway
+    restart: on-failure
     ports:
-      - "8000:80" # Frontend calls localhost:8000/api/...
+      - "8000:80"
     depends_on:
       - stakeholders-service
       - blog-service
       - tours-service
+      - purchase-service
     networks:
       - app-network
 
@@ -33,11 +35,13 @@ services:
       context: ./backend/blog/BlogService
       dockerfile: Dockerfile
     container_name: blog_service
+    restart: on-failure
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
       ASPNETCORE_URLS: http://+:44307
     depends_on:
       - postgres
+      - tours-service
     networks:
       - app-network
 
@@ -46,11 +50,14 @@ services:
       context: ./backend/tours/ToursService  
       dockerfile: Dockerfile
     container_name: tours_service
+    restart: on-failure
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
       ASPNETCORE_URLS: http://+:44345
     depends_on:
       - postgres
+    volumes:
+      - ./tours-data/images:/app/wwwroot/images
     networks:
       - app-network
 
@@ -58,12 +65,28 @@ services:
     build:
       context: ./backend/stakeholders
     container_name: stakeholders_service
+    restart: on-failure
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/maindb
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin123
     depends_on:
       - postgres
+    networks:
+      - app-network
+
+  purchase-service:
+    build:
+      context: ./backend/purchase/PurchaseService  
+      dockerfile: Dockerfile
+    container_name: purchase_service
+    restart: on-failure
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
+      ASPNETCORE_URLS: http://+:44393
+    depends_on:
+      - postgres
+      - blog-service
     networks:
       - app-network
 

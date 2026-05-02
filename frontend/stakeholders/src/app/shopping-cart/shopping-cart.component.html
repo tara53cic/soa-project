@@ -1,0 +1,32 @@
+<div class="shopping-cart-container">
+  <div class="header">
+    <h2>Your Shopping Cart</h2>
+  </div>
+
+  <div class="order-items-list">
+    <div class="order-item-card" *ngFor="let item of orderItems">
+      <div class="img-container">
+        <img *ngIf="item.tour?.keyPoints?.length" [src]="getImageUrl(item.tour.keyPoints[0].imagePath)" alt="tour image">
+      </div>
+      <div class="card-content">
+        <h3>{{ item.tour?.name }}</h3>
+        <p>{{ item.tour?.description }}</p>
+      </div>
+      <div class="card-actions">
+        <span class="price">{{ item.price }} €</span>
+        <button class="btn-remove" (click)="removeFromCart(item.tour.id)">X</button>
+      </div>
+    </div>
+  </div>
+
+  <hr *ngIf="orderItems.length > 0">
+
+  <div class="checkout-section" *ngIf="orderItems.length > 0">
+    <div class="total">Price: <span>{{ totalPrice }} €</span></div>
+    <button class="btn-checkout" (click)="checkout()">Checkout</button>
+  </div>
+
+  <div class="empty-cart" *ngIf="orderItems.length === 0">
+    <p>Your cart is empty. Head over to the tours page to add some!</p>
+  </div>
+</div>

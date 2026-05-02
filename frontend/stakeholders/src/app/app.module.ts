@@ -21,6 +21,7 @@ import { CreateTourComponent } from './create-tour/create-tour.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ToursComponent } from './tours/tours.component';
     TourDetailsComponent,
     TourPageComponent,
     ToursComponent,
+    ShoppingCartComponent,
   ],
   imports: [
     BrowserModule,

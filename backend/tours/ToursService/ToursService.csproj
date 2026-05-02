@@ -24,4 +24,10 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+<ItemGroup>
+  <Content Include="wwwroot\**">
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+  </Content>
+</ItemGroup>
+
 </Project>

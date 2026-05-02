@@ -19,9 +19,16 @@
       </div>
 
       <div class="tour-actions">
-            <button *ngIf="user?.role?.name === 'ROLE_TOURIST'" class="btn-buy">
+            <button *ngIf="user?.role?.name === 'ROLE_TOURIST' && !hasPurchased && !inCart" class="btn-buy" (click)="addToCart()">
                 Buy Full Tour for {{ tour.price }} €
             </button>
+            <button *ngIf="user?.role?.name === 'ROLE_TOURIST' && !hasPurchased && inCart" class="btn-buy" (click)="addToCart()">
+                View Tour in Cart
+            </button>
+            <button *ngIf="user?.role?.name === 'ROLE_TOURIST' && hasPurchased" class="btn-buy" (click)="executeTour()">
+                Execute Tour
+            </button>
+
 
             <button *ngIf="tour.status === 1 && user?.role?.name === 'ROLE_GUIDE'" class="btn-archive" (click)="onArchive()">
                     Archive Tour
@@ -44,16 +51,16 @@
       
       <div class="keypoints-timeline">
         <div *ngFor="let kp of tour.keyPoints; let i = index" class="timeline-item">
-          <ng-container *ngIf="user?.role?.name !== 'ROLE_TOURIST' || i === 0">
+          <ng-container *ngIf="user?.role?.name !== 'ROLE_TOURIST' || hasPurchased || i === 0">
             <div class="kp-dot"></div>
             <div class="kp-content">
               <h4>{{ kp.name }}</h4>
               <p>{{ kp.description }}</p>
-              <img *ngIf="kp.imagePath" [src]="'https://localhost:44345/' + kp.imagePath" class="kp-img">
+              <img *ngIf="kp.imagePath" [src]="'http://localhost:8000/tours/' + kp.imagePath" class="kp-img">
             </div>
           </ng-container>
 
-          <ng-container *ngIf="user?.role?.name === 'ROLE_TOURIST' && i > 0">
+          <ng-container *ngIf="user?.role?.name === 'ROLE_TOURIST' && !hasPurchased && i > 0">
             <div class="kp-dot locked"></div>
             <div class="kp-content locked">
               <h4>Point {{ i + 1 }} - Locked</h4>
@@ -124,7 +131,7 @@
         </span>
         <p class="review-comment">{{ r.comment }}</p>
         <div class="review-images" *ngIf="r.images && r.images.length > 0">
-          <img *ngFor="let img of r.images" [src]="'https://localhost:44345/' + img" class="review-photo">
+          <img *ngFor="let img of r.images" [src]="'http://localhost:8000/tours/' + img" class="review-photo">
         </div>
         <div class="review-footer">
           <span>Posted by: {{ r.touristUsername }}</span>

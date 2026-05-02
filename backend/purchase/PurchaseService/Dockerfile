@@ -12,7 +12,5 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-RUN mkdir -p wwwroot/images
-
-EXPOSE 44345
-ENTRYPOINT ["dotnet", "ToursService.dll"]
+EXPOSE 44393
+ENTRYPOINT ["dotnet", "PurchaseService.dll"]

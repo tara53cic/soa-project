@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../services/tour.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { PurchaseService } from '../services/purchase.service';
 import * as L from 'leaflet';
 
 @Component({
@@ -18,6 +19,9 @@ export class TourPageComponent implements OnInit {
   usernames: { [key: number]: string } = {};
   averageRating: number = 0;
 
+  hasPurchased: boolean = false;
+  inCart: boolean = false;
+
   reviews: any[] = [];
   selectedFiles: File[] = [];
   newReview = {
@@ -31,6 +35,7 @@ export class TourPageComponent implements OnInit {
     private userService: UserService,
     private tourService: TourService,
     private authService: AuthService,
+    private purchaseService: PurchaseService,
     private router: Router
   ) {}
 
@@ -39,8 +44,38 @@ export class TourPageComponent implements OnInit {
     
     this.authService.getCurrentUser().subscribe(data => {
       this.user = data;
-      this.loadTour();
+      this.checkPurchaseStatus();
       this.loadReviews();
+    });
+  }
+
+  checkPurchaseStatus(): void {
+    if (this.user?.role?.name === 'ROLE_TOURIST') {
+      this.purchaseService.hasPurchasedTour(this.user.id, this.tourId).subscribe({
+        next: (has) => {
+          this.hasPurchased = has;
+          if (!this.hasPurchased) {
+             this.checkCartStatus();
+          } else {
+             this.loadTour();
+          }
+        },
+        error: () => this.loadTour()
+      });
+    } else {
+      this.loadTour();
+    }
+  }
+
+  checkCartStatus(): void {
+    this.purchaseService.getCart(this.user.id).subscribe({
+      next: (cart) => {
+        if (cart && cart.items && cart.items.some((item: any) => item.tourId === this.tourId)) {
+          this.inCart = true;
+        }
+        this.loadTour();
+      },
+      error: () => this.loadTour()
     });
   }
 
@@ -71,12 +106,14 @@ export class TourPageComponent implements OnInit {
     });
     L.Marker.prototype.options.icon = DefaultIcon;
 
+    if (!this.tour || !this.tour.keyPoints || this.tour.keyPoints.length === 0) return;
+
     const firstKP = this.tour.keyPoints[0];
     this.map = L.map('map').setView([firstKP.latitude, firstKP.longitude], 13);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 
-    if (this.user?.role?.name === 'ROLE_TOURIST') {
+    if (this.user?.role?.name === 'ROLE_TOURIST' && !this.hasPurchased) {
       L.marker([firstKP.latitude, firstKP.longitude]).addTo(this.map)
         .bindPopup('Start of the tour').openPopup();
     } else {
@@ -93,6 +130,32 @@ export class TourPageComponent implements OnInit {
         L.marker([kp.latitude, kp.longitude]).addTo(this.map).bindPopup(kp.name);
       });
     }
+  }
+
+  addToCart(): void {
+    if (this.inCart) {
+      this.router.navigate(['/shopping-cart']);
+      return;
+    }
+    
+    const orderItem = {
+      tourId: this.tour.id,
+      tourName: this.tour.name,
+      price: this.tour.price
+    };
+
+    this.purchaseService.addToCart(this.user.id, orderItem).subscribe({
+      next: () => {
+        this.inCart = true;
+        this.router.navigate(['/shopping-cart']);
+      },
+      error: (err) => console.error('Failed to add to cart', err)
+    });
+  }
+
+  executeTour(): void {
+    // Does nothing for now
+    console.log('Execute tour clicked');
   }
 
   onArchive(): void {

@@ -3,3 +3,6 @@ Update-Database -Context BlogDbContext -Project BlogService -StartupProject Blog
 
 Add-Migration -Name InitialCreate -Context ToursDbContext -Project ToursService -StartupProject ToursService
 Update-Database -Context ToursDbContext -Project ToursService -StartupProject ToursService
+
+Add-Migration -Name InitialPurchaseDb -Context PurchaseDbContext -Project PurchaseService -StartupProject PurchaseService
+Update-Database -Context PurchaseDbContext -Project PurchaseService -StartupProject PurchaseService
