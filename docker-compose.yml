@@ -17,11 +17,12 @@ services:
 
   api-gateway:
     build:
-      context: ./api-gateway
+      context: ./api-gateway/ApiGateway 
+      dockerfile: Dockerfile 
     container_name: api_gateway
     restart: on-failure
     ports:
-      - "8000:80"
+      - "8000:8080" 
     depends_on:
       - stakeholders-service
       - blog-service
