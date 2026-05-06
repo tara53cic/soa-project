@@ -1,9 +1,11 @@
-﻿using System.Xml.Linq;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.Xml.Linq;
 
 namespace BlogService.Models;
 
 public class Blog
 {
+    [BsonId]
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -11,7 +13,6 @@ public class Blog
     public string AuthorUsername { get; set; } = string.Empty;
 
     public List<BlogImage> Images { get; set; } = new();
-
     public List<Comment> Comments { get; set; } = new();
     public List<Like> Likes { get; set; } = new();
 
