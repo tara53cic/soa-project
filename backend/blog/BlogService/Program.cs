@@ -3,6 +3,12 @@ using BlogService.Repositories;
 using BlogService.Repositories.Interfaces;
 using BlogService.Services;
 using BlogService.Services.Interfaces;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+
+var serializer = new GuidSerializer(GuidRepresentation.Standard);
+BsonSerializer.RegisterSerializer(typeof(Guid), serializer);
 
 var builder = WebApplication.CreateBuilder(args);
 
