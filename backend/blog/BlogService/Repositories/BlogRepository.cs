@@ -1,59 +1,42 @@
 ﻿using BlogService.Data;
 using BlogService.Models;
 using BlogService.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace BlogService.Repositories;
 
 public class BlogRepository : IBlogRepository
 {
-    private readonly BlogDbContext _db;
+    private readonly MongoDbContext _context;
 
-    public BlogRepository(BlogDbContext db)
+    public BlogRepository(MongoDbContext context)
     {
-        _db = db;
+        _context = context;
     }
 
     public async Task<List<Blog>> GetAllAsync()
     {
-        return await _db.Blogs
-            .Include(b => b.Images)
-            .Include(b => b.Comments)
-            .Include(b => b.Likes)
-            .ToListAsync();
+        return await _context.Blogs.Find(_ => true).ToListAsync();
     }
 
     public async Task<Blog?> GetByIdAsync(Guid id)
     {
-        var blog = await _db.Blogs
-            .Include(b => b.Images)
-            .Include(b => b.Comments)
-            .Include(b => b.Likes)
-            .FirstOrDefaultAsync(b => b.Id == id);
-
-        return blog;
+        return await _context.Blogs.Find(b => b.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<Blog> CreateAsync(Blog blog)
     {
-        await _db.Blogs.AddAsync(blog);
-        await _db.SaveChangesAsync();
+        await _context.Blogs.InsertOneAsync(blog);
         return blog;
     }
 
     public async Task UpdateAsync(Blog blog)
     {
-        _db.Blogs.Update(blog);
-        await _db.SaveChangesAsync();
+        await _context.Blogs.ReplaceOneAsync(b => b.Id == blog.Id, blog);
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        var blog = await _db.Blogs.FindAsync(id);
-        if (blog != null)
-        {
-            _db.Blogs.Remove(blog);
-            await _db.SaveChangesAsync();
-        }
+        await _context.Blogs.DeleteOneAsync(b => b.Id == id);
     }
 }
