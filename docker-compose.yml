@@ -16,18 +16,29 @@ services:
     networks:
       - app-network
 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - app-network
+
   blog-service:
     build:
       context: ./backend/blog/BlogService
       dockerfile: Dockerfile
     container_name: blog_service
     environment:
-      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
+      MongoDbSettings__ConnectionString: mongodb://mongodb:27017
+      MongoDbSettings__DatabaseName: BlogDb
       ASPNETCORE_URLS: http://+:44307
     ports:
       - "44307:44307"
     depends_on:
-      - postgres
+      - mongodb
     networks:
       - app-network
 
@@ -75,6 +86,7 @@ services:
 
 volumes:
   pgdata:
+  mongodata:
 
 networks:
   app-network:
