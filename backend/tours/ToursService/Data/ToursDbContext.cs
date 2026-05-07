@@ -11,6 +11,7 @@ namespace ToursService.Data
         public DbSet<KeyPoint> KeyPoints { get; set; }
         public DbSet<TourDuration> TourDurations { get; set; }
         public DbSet<TourReview> TourReviews { get; set; }
+        public DbSet<TouristPosition> TouristPositions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -21,6 +21,8 @@ import { CreateTourComponent } from './create-tour/create-tour.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
+import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -41,8 +43,10 @@ import { ToursComponent } from './tours/tours.component';
     TourDetailsComponent,
     TourPageComponent,
     ToursComponent,
+    PositionSimulatorComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
