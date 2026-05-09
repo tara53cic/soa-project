@@ -24,6 +24,9 @@ builder.Services.AddScoped<ToursService.Services.Interfaces.ITourService, ToursS
 builder.Services.AddScoped<ToursService.Repositories.Interfaces.ITourReviewRepository, ToursService.Repositories.TourReviewRepository>();
 builder.Services.AddScoped<ToursService.Services.Interfaces.ITourReviewService, ToursService.Services.TourReviewService>();
 
+builder.Services.AddScoped<ToursService.Repositories.Interfaces.ITouristPositionRepository, ToursService.Repositories.TouristPositionRepository>();
+builder.Services.AddScoped<ToursService.Services.Interfaces.ITouristPositionService, ToursService.Services.TouristPositionService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

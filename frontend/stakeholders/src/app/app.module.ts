@@ -21,6 +21,8 @@ import { CreateTourComponent } from './create-tour/create-tour.component';
 import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
+import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { CommonModule } from '@angular/common';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
@@ -42,9 +44,11 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
     TourDetailsComponent,
     TourPageComponent,
     ToursComponent,
+    PositionSimulatorComponent,
     ShoppingCartComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
