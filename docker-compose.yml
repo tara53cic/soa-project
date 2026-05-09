@@ -53,6 +53,7 @@ services:
       ASPNETCORE_URLS: http://+:44307
     depends_on:
       - mongodb
+      - tours-service
     networks:
       - app-network
 
