@@ -4,6 +4,9 @@ import (
 	"context"
 	"follow/internal/config"
 	"follow/internal/db"
+	"follow/internal/handler"
+	"follow/internal/repository"
+	"follow/internal/service"
 	"log"
 	"net/http"
 )
@@ -15,6 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to create Neo4j driver: ", err)
 	}
+
 	defer neo4jDriver.Close(context.Background())
 
 	err = neo4jDriver.VerifyConnectivity(context.Background())
@@ -24,10 +28,24 @@ func main() {
 
 	log.Println("Connected to Neo4j successfully")
 
+	followRepository := repository.NewFollowRepository(neo4jDriver)
+
+	followService := service.NewFollowService(followRepository)
+
+	followHandler := handler.NewFollowHandler(followService)
+
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Follow service is running"))
 	})
+
+	http.HandleFunc("/follow", followHandler.FollowUser)
+
+	http.HandleFunc("/is-following", followHandler.IsFollowing)
+
+	http.HandleFunc("/following", followHandler.GetFollowing)
+
+	http.HandleFunc("/recommendations", followHandler.GetRecommendations)
 
 	log.Println("Follow service started on port " + cfg.Port)
 
