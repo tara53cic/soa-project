@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Grpc.Net.Client;
+using Microsoft.AspNetCore.Mvc;
+using ToursService.Protos;
 using System.Globalization;
 using ToursService.DTOs;
 using ToursService.Services.Interfaces;
@@ -117,17 +119,41 @@ namespace ToursService.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<TourDto> Get(long id)
+        public async Task<ActionResult<TourDto>> Get(long id)
         {
             try
             {
                 var result = _tourService.GetById(id);
                 if (result == null) return NotFound();
+
+                var touristIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
+                if (!long.TryParse(touristIdClaim, out long touristId))
+                {
+                    result.KeyPoints = result.KeyPoints.Take(1).ToList();
+                    return Ok(result);
+                }
+
+                using var channel = GrpcChannel.ForAddress("http://purchase-service:44393");
+                var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
+
+                var purchaseRequest = new HasPurchasedRequest
+                {
+                    TouristId = touristId,
+                    TourId = id
+                };
+
+                var response = await client.HasPurchasedTourAsync(purchaseRequest);
+
+                if (!response.HasPurchased)
+                {
+                    result.KeyPoints = result.KeyPoints.Take(1).ToList();
+                }
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest($"Greška pri dobavljanju ture ili RPC komunikaciji: {ex.Message}");
             }
         }
 

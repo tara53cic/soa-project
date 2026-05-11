@@ -38,6 +38,8 @@ services:
       - blog-service
       - tours-service
       - purchase-service
+    environment:
+      - DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2UNENCRYPTEDSUPPORT=true
     networks:
       - app-network
 
@@ -95,7 +97,6 @@ services:
     restart: on-failure
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
-      ASPNETCORE_URLS: http://+:44393
     depends_on:
       - postgres
       - blog-service

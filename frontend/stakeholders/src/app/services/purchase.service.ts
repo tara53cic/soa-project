@@ -43,10 +43,10 @@ export class PurchaseService {
   }
 
   checkout(touristId: number): Observable<any[]> {
-    return this.http.post<any[]>(`${this.configService.shopping_cart_url}/${touristId}/checkout`, {}, { headers: this.getHeaders() })
-      .pipe(
-        tap(() => this.cartItemCountSubject.next(0))
-      );
+    return this.http.post<any[]>(`${this.configService.checkout_url}/${touristId}`, {}, { headers: this.getHeaders() })
+    .pipe(
+      tap(() => this.cartItemCountSubject.next(0))
+    );
   }
 
   hasPurchasedTour(touristId: number, tourId: number): Observable<boolean> {

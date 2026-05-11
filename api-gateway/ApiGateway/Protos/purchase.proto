@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "ApiGateway.Protos";
+
+service PurchaseGrpc {
+  rpc Checkout (CheckoutRequest) returns (CheckoutResponse);
+}
+
+message CheckoutRequest {
+  int64 touristId = 1;
+}
+
+message CheckoutResponse {
+  repeated TourPurchaseTokenDto tokens = 1;
+}
+
+message TourPurchaseTokenDto {
+  int64 id = 1;
+  int64 tourId = 2;
+}

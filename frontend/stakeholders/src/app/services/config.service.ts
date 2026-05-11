@@ -8,6 +8,7 @@ export class ConfigService {
   private _base_url= 'http://localhost:8000/stakeholders/api';
   private _tour_base_url= 'http://localhost:8000/tours/api';
   private _purchase_base_url= 'http://localhost:8000/purchase/api';
+  private _gateway_rpc_url = 'http://localhost:8000/gateway/purchase';
 
   get login_url() { return `${this._api_url}/login`; }
   get register_url() { return `${this._api_url}/register`; }
@@ -15,5 +16,6 @@ export class ConfigService {
   get logout_url() { return `${this._api_url}/logout`; }
   get users_url() { return `${this._base_url}/users`; }
   get tours_url() { return `${this._tour_base_url}/tours`; }
-  get shopping_cart_url() { return `${this._purchase_base_url}/shopping-cart`; }
+  get shopping_cart_url() { return `${this._purchase_base_url}/shopping-cart`;}
+  get checkout_url() { return `${this._gateway_rpc_url}/checkout`; } 
 }

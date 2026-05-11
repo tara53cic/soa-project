@@ -8,6 +8,19 @@ using PurchaseService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(44393, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+
+    options.ListenAnyIP(44394, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -35,7 +48,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -46,13 +59,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseCors("AllowAngular");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGrpcService<PurchaseGrpcService>();
 
 using (var scope = app.Services.CreateScope())
 {
