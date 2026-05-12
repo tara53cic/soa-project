@@ -34,7 +34,15 @@
       </div>
 
       <div class="hero-text-box">
-        <h1 class="blog-title">{{ blog.title }}</h1>
+        <div class="title-like">
+          <h1 class="blog-title">{{ blog.title }}</h1>
+          <div class="engagement-bar">
+            <button class="like-pill" [class.liked]="isLiked" (click)="onToggleLike()">
+              <span class="like-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
+              <span class="like-count">{{ blog.likesCount }}</span>
+            </button>
+          </div>
+        </div>
         <div class="author-meta">
           <div class="avatar-circle">{{ getInitials(blog.authorUsername) }}</div>
           <div class="info">
@@ -46,14 +54,6 @@
     </div>
 
     <article class="content-body" [innerHTML]="blog.descriptionHtml"></article>
-
-    <div class="engagement-bar">
-      <button class="like-pill" [class.liked]="isLiked" (click)="onToggleLike()">
-        <span class="like-icon">{{ isLiked ? '❤️' : '🤍' }}</span>
-        <span class="like-divider"></span>
-        <span class="like-count">{{ blog.likesCount }}</span>
-      </button>
-    </div>
 
     <div class="comments-section">
       <div class="comments-header">
