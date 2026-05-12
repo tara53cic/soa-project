@@ -42,6 +42,9 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
+Console.WriteLine("Migration failed:");
+        Console.WriteLine(ex.ToString());
+        throw; // Stop application so the problem is visible
     }
 }
 

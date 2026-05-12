@@ -119,19 +119,32 @@ namespace ToursService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TourDto>> Get(long id)
+public ActionResult<TourDto> Get(long id)
+{
+    try
+    {
+        var result = _tourService.GetById(id);
+        if (result == null)
+            return NotFound();
+
+        return Ok(result);
+    }
+    catch (Exception ex)
+    {
+                return ex is KeyNotFoundException ? NotFound(ex.Message) : BadRequest(ex.Message);
+    }
+}
+        [HttpGet("{id}/tourist")]
+        public async Task<ActionResult<TourDto>> GetForTourist(
+     long id,
+     [FromBody] long touristId)
         {
             try
             {
                 var result = _tourService.GetById(id);
-                if (result == null) return NotFound();
 
-                var touristIdClaim = User.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
-                if (!long.TryParse(touristIdClaim, out long touristId))
-                {
-                    result.KeyPoints = result.KeyPoints.Take(1).ToList();
-                    return Ok(result);
-                }
+                if (result == null)
+                    return NotFound();
 
                 using var channel = GrpcChannel.ForAddress("http://purchase-service:44393");
                 var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
@@ -153,7 +166,8 @@ namespace ToursService.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Greška pri dobavljanju ture ili RPC komunikaciji: {ex.Message}");
+                return BadRequest(
+                    $"Greška pri dobavljanju ture ili RPC komunikaciji: {ex.Message}");
             }
         }
 

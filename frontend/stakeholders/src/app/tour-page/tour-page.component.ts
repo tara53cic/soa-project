@@ -80,17 +80,28 @@ export class TourPageComponent implements OnInit {
   }
 
   loadTour(): void {
-    this.tourService.getTourById(this.tourId).subscribe(data => {
-      this.tour = data;
-      setTimeout(() => {
-        const mapElement = document.getElementById('map');
-        if (mapElement) {
-          this.initMap();
-        } else {
-          console.error("Map not loaded.");
-        }
-      }, 50); 
-    });
+    if (this.user?.role?.name === 'ROLE_TOURIST') {
+      this.tourService.getTourForTourist(this.tourId, this.user.id).subscribe(data => {
+        this.tour = data;
+        this.initializeMapAfterLoad();
+      });
+    } else {
+      this.tourService.getTourById(this.tourId).subscribe(data => {
+        this.tour = data;
+        this.initializeMapAfterLoad();
+      });
+    }
+  }
+
+  private initializeMapAfterLoad(): void {
+    setTimeout(() => {
+      const mapElement = document.getElementById('map');
+      if (mapElement) {
+        this.initMap();
+      } else {
+        console.error("Map not loaded.");
+      }
+    }, 50);
   }
 
   private initMap(): void {
