@@ -135,9 +135,7 @@ public ActionResult<TourDto> Get(long id)
     }
 }
         [HttpGet("{id}/tourist")]
-        public async Task<ActionResult<TourDto>> GetForTourist(
-     long id,
-     [FromBody] long touristId)
+        public async Task<ActionResult<TourDto>> GetForTourist(long id, [FromBody] long touristId)
         {
             try
             {
