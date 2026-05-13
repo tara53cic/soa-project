@@ -13,6 +13,21 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5253, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+
+    options.ListenLocalhost(7195, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
+builder.Services.AddGrpc();
+
 builder.Services.AddDbContext<ToursDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -31,6 +46,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.MapGrpcService<ToursGrpcService>();
 
 using (var scope = app.Services.CreateScope())
 {

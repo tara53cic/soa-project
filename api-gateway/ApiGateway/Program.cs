@@ -29,6 +29,11 @@ builder.Services.AddGrpcClient<PurchaseGrpc.PurchaseGrpcClient>(o =>
     o.Address = new Uri("http://purchase_service:44394");
 });
 
+builder.Services.AddGrpcClient<ToursGrpc.ToursGrpcClient>(o =>
+{
+    o.Address = new Uri("http://localhost:7195");
+});
+
 var app = builder.Build();
 
 app.UseRouting();
