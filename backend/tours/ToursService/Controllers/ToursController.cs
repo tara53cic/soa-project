@@ -136,7 +136,7 @@ namespace ToursService.Controllers
         }
 
         [HttpGet("{id}/tourist")]
-        public async Task<ActionResult<TourDto>> GetForTourist(long id, [FromBody] long touristId)
+        public async Task<ActionResult<TourDto>> GetForTourist(long id, [FromQuery] long touristId)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace ToursService.Controllers
                 if (result == null)
                     return NotFound();
 
-                using var channel = GrpcChannel.ForAddress("http://purchase-service:44393");
+                using var channel = GrpcChannel.ForAddress("http://purchase-service:44394"); 
                 var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
 
                 var purchaseRequest = new HasPurchasedRequest
@@ -318,9 +318,10 @@ namespace ToursService.Controllers
         [HttpDelete("{id}/cart/{touristId}")]
         public async Task<IActionResult> RemoveFromPurchaseCart(long id, long touristId)
         {
+            Console.WriteLine(">>> GRPC REMOVE HIT");
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://purchase-service:44393");
+                using var channel = GrpcChannel.ForAddress("http://purchase-service:44394");
                 var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
 
                 var request = new RemoveTourRequest
