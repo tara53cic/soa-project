@@ -5,6 +5,7 @@ import (
 	"follow/internal/config"
 	"follow/internal/db"
 	"follow/internal/handler"
+	"follow/internal/middleware"
 	"follow/internal/repository"
 	"follow/internal/service"
 	"log"
@@ -39,13 +40,13 @@ func main() {
 		w.Write([]byte("Follow service is running"))
 	})
 
-	http.HandleFunc("/follow", followHandler.FollowUser)
+	http.HandleFunc("/follow", middleware.EnableCors(followHandler.FollowUser))
 
-	http.HandleFunc("/is-following", followHandler.IsFollowing)
+	http.HandleFunc("/is-following", middleware.EnableCors(followHandler.IsFollowing))
 
-	http.HandleFunc("/following", followHandler.GetFollowing)
+	http.HandleFunc("/following", middleware.EnableCors(followHandler.GetFollowing))
 
-	http.HandleFunc("/recommendations", followHandler.GetRecommendations)
+	http.HandleFunc("/recommendations", middleware.EnableCors(followHandler.GetRecommendations))
 
 	log.Println("Follow service started on port " + cfg.Port)
 

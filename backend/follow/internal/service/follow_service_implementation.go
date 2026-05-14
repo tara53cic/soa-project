@@ -18,13 +18,13 @@ func NewFollowService(repository repository.FollowRepository) FollowService {
 
 func (s *followService) FollowUser(request dto.FollowRequest) error {
 
-	if request.FollowerID == request.FollowingID {
+	if request.FollowerUsername == request.FollowingUsername {
 		return errors.New("user cannot follow themselves")
 	}
 
 	isFollowing, err := s.repository.IsFollowing(
-		request.FollowerID,
-		request.FollowingID,
+		request.FollowerUsername,
+		request.FollowingUsername,
 	)
 
 	if err != nil {
@@ -36,19 +36,19 @@ func (s *followService) FollowUser(request dto.FollowRequest) error {
 	}
 
 	return s.repository.FollowUser(
-		request.FollowerID,
-		request.FollowingID,
+		request.FollowerUsername,
+		request.FollowingUsername,
 	)
 }
 
-func (s *followService) IsFollowing(followerID int64, followingID int64) (bool, error) {
-	return s.repository.IsFollowing(followerID, followingID)
+func (s *followService) IsFollowing(followerUsername string, followingUsername string) (bool, error) {
+	return s.repository.IsFollowing(followerUsername, followingUsername)
 }
 
 func (s *followService) GetFollowing(userID int64) ([]dto.UserResponse, error) {
 	return s.repository.GetFollowing(userID)
 }
 
-func (s *followService) GetRecommendations(userID int64) ([]dto.RecommendationResponse, error) {
-	return s.repository.GetRecommendations(userID)
+func (s *followService) GetRecommendations(username string) ([]dto.RecommendationResponse, error) {
+	return s.repository.GetRecommendations(username)
 }

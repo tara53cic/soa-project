@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"follow/internal/auth"
 	"follow/internal/dto"
 	"follow/internal/service"
 	"net/http"
@@ -57,8 +58,8 @@ func (h *FollowHandler) IsFollowing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var follower int64
-	var following int64
+	var follower string
+	var following string
 
 	_, err := fmt.Sscan(followerID, &follower)
 	if err != nil {
@@ -122,21 +123,13 @@ func (h *FollowHandler) GetRecommendations(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	userIDParam := r.URL.Query().Get("userId")
-	if userIDParam == "" {
-		http.Error(w, "Missing userId parameter", http.StatusBadRequest)
-		return
-	}
-
-	var userID int64
-
-	_, err := fmt.Sscan(userIDParam, &userID)
+	username, err := auth.ExtractUsernameFromToken(r)
 	if err != nil {
-		http.Error(w, "Invalid userId", http.StatusBadRequest)
+		http.Error(w, "Unauthorized: "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
-	recommendations, err := h.service.GetRecommendations(userID)
+	recommendations, err := h.service.GetRecommendations(username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

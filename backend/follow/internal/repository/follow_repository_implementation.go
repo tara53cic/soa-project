@@ -17,7 +17,7 @@ func NewFollowRepository(driver neo4j.DriverWithContext) FollowRepository {
 	}
 }
 
-func (r *followRepository) FollowUser(followerID int64, followingID int64) error {
+func (r *followRepository) FollowUser(followerUsername string, followingUsername string) error {
 	ctx := context.Background()
 
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{})
@@ -25,14 +25,14 @@ func (r *followRepository) FollowUser(followerID int64, followingID int64) error
 
 	_, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		query := `
-			MERGE (follower:User {id: $followerId})
-			MERGE (following:User {id: $followingId})
+			MERGE (follower:User {username: $followerUsername})
+			MERGE (following:User {username: $followingUsername})
 			MERGE (follower)-[:FOLLOWS]->(following)
 		`
 
 		params := map[string]any{
-			"followerId":  followerID,
-			"followingId": followingID,
+			"followerUsername":  followerUsername,
+			"followingUsername": followingUsername,
 		}
 
 		_, err := tx.Run(ctx, query, params)
@@ -42,7 +42,7 @@ func (r *followRepository) FollowUser(followerID int64, followingID int64) error
 	return err
 }
 
-func (r *followRepository) IsFollowing(followerID int64, followingID int64) (bool, error) {
+func (r *followRepository) IsFollowing(followerUsername string, followingUsername string) (bool, error) {
 	ctx := context.Background()
 
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{})
@@ -50,13 +50,13 @@ func (r *followRepository) IsFollowing(followerID int64, followingID int64) (boo
 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		query := `
-			MATCH (follower:User {id: $followerId})-[:FOLLOWS]->(following:User {id: $followingId})
+			MATCH (follower:User {username: $followerUsername})-[:FOLLOWS]->(following:User {username: $followingUsername})
 			RETURN count(following) > 0 AS isFollowing
 		`
 
 		params := map[string]any{
-			"followerId":  followerID,
-			"followingId": followingID,
+			"followerUsername":  followerUsername,
+			"followingUsername": followingUsername,
 		}
 
 		record, err := tx.Run(ctx, query, params)
@@ -124,7 +124,7 @@ func (r *followRepository) GetFollowing(userID int64) ([]dto.UserResponse, error
 	return result.([]dto.UserResponse), nil
 }
 
-func (r *followRepository) GetRecommendations(userID int64) ([]dto.RecommendationResponse, error) {
+func (r *followRepository) GetRecommendations(username string) ([]dto.RecommendationResponse, error) {
 	ctx := context.Background()
 
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{})
@@ -132,15 +132,16 @@ func (r *followRepository) GetRecommendations(userID int64) ([]dto.Recommendatio
 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		query := `
-			MATCH (me:User {id: $userId})-[:FOLLOWS]->(:User)-[:FOLLOWS]->(recommended:User)
-			WHERE NOT (me)-[:FOLLOWS]->(recommended)
-			AND me <> recommended
-			RETURN recommended.id AS id, count(recommended) AS mutualConnections
-			ORDER BY mutualConnections DESC
-		`
+		MATCH (me:User {username: $username})-[:FOLLOWS]->(:User)-[:FOLLOWS]->(recommended:User)
+		WHERE NOT (me)-[:FOLLOWS]->(recommended)
+		AND me <> recommended
+		RETURN recommended.username AS username,
+			count(recommended) AS mutualConnections
+		ORDER BY mutualConnections DESC
+	`
 
 		params := map[string]any{
-			"userId": userID,
+			"username": username,
 		}
 
 		records, err := tx.Run(ctx, query, params)
@@ -153,11 +154,11 @@ func (r *followRepository) GetRecommendations(userID int64) ([]dto.Recommendatio
 		for records.Next(ctx) {
 			record := records.Record()
 
-			idValue, _ := record.Get("id")
+			usernameValue, _ := record.Get("username")
 			mutualValue, _ := record.Get("mutualConnections")
 
 			recommendation := dto.RecommendationResponse{
-				ID:                idValue.(int64),
+				Username:          usernameValue.(string),
 				MutualConnections: mutualValue.(int64),
 			}
 

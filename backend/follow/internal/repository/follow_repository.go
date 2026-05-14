@@ -3,8 +3,8 @@ package repository
 import "follow/internal/dto"
 
 type FollowRepository interface {
-	FollowUser(followerID int64, followingID int64) error
-	IsFollowing(followerID int64, followingID int64) (bool, error)
+	FollowUser(followerUsername string, followingUsername string) error
+	IsFollowing(followerUsername string, followingUsername string) (bool, error)
 	GetFollowing(userID int64) ([]dto.UserResponse, error)
-	GetRecommendations(userID int64) ([]dto.RecommendationResponse, error)
+	GetRecommendations(username string) ([]dto.RecommendationResponse, error)
 }
