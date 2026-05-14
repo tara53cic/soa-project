@@ -34,6 +34,10 @@ builder.Services.AddGrpcClient<ToursGrpc.ToursGrpcClient>(o =>
     o.Address = new Uri("http://localhost:7195");
 });
 
+builder.Services.AddGrpcClient<BlogGrpcService.BlogGrpcServiceClient>(o => {
+    o.Address = new Uri("http://blog_service:44307");
+});
+
 var app = builder.Build();
 
 app.UseRouting();
