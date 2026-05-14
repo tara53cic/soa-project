@@ -20,7 +20,8 @@
 	<ItemGroup>
 		<Protobuf Include="Protos\purchase.proto" GrpcServices="Client" />
 		<Protobuf Include="Protos\tours.proto" GrpcServices="Client" />
-        <Protobuf Include="Protos\blog.proto" GrpcServices="Client" />		
+        <Protobuf Include="Protos\blog.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\checkout_saga.proto" GrpcServices="Client" />
 	</ItemGroup>
 
 </Project>

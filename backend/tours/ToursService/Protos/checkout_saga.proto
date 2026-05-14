@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "ToursService.Protos";
+
+service CheckoutSagaGrpcService {
+	rpc StartCheckout (SagaCheckoutRequest) returns (SagaCheckoutResponse);
+	rpc RollbackCheckout (SagaRollbackRequest) returns (SagaRollbackResponse);
+}
+
+message SagaCheckoutRequest {
+	long touristId = 1;
+}
+
+message SagaCheckoutResponse {
+	bool success = 1;
+	string message = 2;
+	repeated long purchasedTourIds = 3;
+}
+
+message SagaRollbackRequest {
+	long touristId = 1;
+	repeated long tourIds = 2;
+}
+
+message SagaRollbackResponse {
+	bool success = 1;
+}
