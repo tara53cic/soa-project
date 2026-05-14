@@ -8,18 +8,18 @@ service CheckoutSagaGrpcService {
 }
 
 message SagaCheckoutRequest {
-	long touristId = 1;
+	int64 touristId = 1;
 }
 
 message SagaCheckoutResponse {
 	bool success = 1;
 	string message = 2;
-	repeated long purchasedTourIds = 3;
+	repeated int64 purchasedTourIds = 3;
 }
 
 message SagaRollbackRequest {
-	long touristId = 1;
-	repeated long tourIds = 2;
+	int64 touristId = 1;
+	repeated int64 tourIds = 2;
 }
 
 message SagaRollbackResponse {
