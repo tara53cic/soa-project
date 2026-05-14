@@ -12,6 +12,8 @@ BsonSerializer.RegisterSerializer(typeof(Guid), serializer);
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddGrpc();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,4 +38,5 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowAll");
 app.MapControllers();
+app.MapGrpcService<BlogGrpcServiceImpl>();
 app.Run();
