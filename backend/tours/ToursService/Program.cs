@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using ToursService.Data; 
+using ToursService.Data;
+using ToursService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.MapGrpcService<ToursGrpcService>();
+app.MapGrpcService<ToursSagaGrpcServiceImpl>();
 
 using (var scope = app.Services.CreateScope())
 {

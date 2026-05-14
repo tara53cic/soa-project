@@ -50,5 +50,15 @@ namespace PurchaseService.Repositories
             _context.OrderItems.Remove(item);
             _context.SaveChanges();
         }
+
+        public void DeleteToken(long touristId, long tourId)
+        {
+            var token = _context.OrderTokens.FirstOrDefault(t => t.TouristId == touristId && t.TourId == tourId);
+            if (token != null)
+            {
+                _context.OrderTokens.Remove(token);
+                _context.SaveChanges();
+            }
+        }
     }
 }
