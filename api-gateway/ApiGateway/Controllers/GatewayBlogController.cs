@@ -43,4 +43,18 @@ public class GatewayBlogController : ControllerBase
             return StatusCode((int)ex.StatusCode, ex.Status.Detail);
         }
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateBlogRequest request)
+    {
+        try
+        {
+            var response = await _blogGrpcClient.CreateBlogAsync(request);
+            return Ok(response);
+        }
+        catch (RpcException ex)
+        {
+            return StatusCode((int)ex.StatusCode, ex.Status.Detail);
+        }
+    }
 }

@@ -52,7 +52,8 @@ public class BlogGrpcServiceImpl : BlogGrpcService.BlogGrpcServiceBase
             Title = blog.Title,
             Description = blog.Description,
             AuthorUsername = blog.AuthorUsername,
-            CreatedAt = blog.CreatedAt.ToString("o")
+            CreatedAt = blog.CreatedAt.ToString("o"),
+            LikesCount = blog.LikesCount
         };
     }
 }
