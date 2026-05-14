@@ -38,5 +38,15 @@ namespace PurchaseService.Services
                 throw new RpcException(new Status(StatusCode.Internal, ex.Message));
             }
         }
+
+        public override Task<RemoveTourResponse> RemoveTourFromCart(RemoveTourRequest request, ServerCallContext context)
+        {
+            _cartService.RemoveItemFromCart(request.TouristId, request.TourId);
+
+            return Task.FromResult(new RemoveTourResponse
+            {
+                Success = true
+            });
+        }
     }
 }

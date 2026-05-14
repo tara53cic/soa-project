@@ -15,19 +15,19 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("checkout/{touristId}")]
-public async Task<IActionResult> RemoteCheckout(long touristId)
-{
-    try 
-    {
-        var request = new CheckoutRequest { TouristId = touristId };
-        var response = await _grpcClient.CheckoutAsync(request);
-        return Ok(response.Tokens);
-    }
-    catch (Exception ex)
-    {
+        public async Task<IActionResult> RemoteCheckout(long touristId)
+        {
+            try 
+            {
+                var request = new CheckoutRequest { TouristId = touristId };
+                var response = await _grpcClient.CheckoutAsync(request);
+                return Ok(response.Tokens);
+            }
+            catch (Exception ex)
+            {
         
-        return StatusCode(500, new { error = ex.Message, detail = ex.InnerException?.Message });
-    }
-}
+                return StatusCode(500, new { error = ex.Message, detail = ex.InnerException?.Message });
+            }
+        }
     }
 }

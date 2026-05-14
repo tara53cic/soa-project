@@ -5,6 +5,7 @@ option csharp_namespace = "PurchaseService.Protos";
 service PurchaseGrpc {
   rpc HasPurchasedTour (HasPurchasedRequest) returns (HasPurchasedResponse);
   rpc Checkout (CheckoutRequest) returns (CheckoutResponse);
+  rpc RemoveTourFromCart (RemoveTourRequest) returns (RemoveTourResponse);
 }
 
 message HasPurchasedRequest {
@@ -28,4 +29,13 @@ message TourPurchaseTokenDto {
   int64 id = 1;
   int64 tourId = 2;
 
+}
+
+message RemoveTourRequest {
+  int64 touristId = 1;
+  int64 tourId = 2;
+}
+
+message RemoveTourResponse {
+  bool success = 1;
 }

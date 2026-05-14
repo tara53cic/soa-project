@@ -119,21 +119,22 @@ namespace ToursService.Controllers
         }
 
         [HttpGet("{id}")]
-public ActionResult<TourDto> Get(long id)
-{
-    try
-    {
-        var result = _tourService.GetById(id);
-        if (result == null)
-            return NotFound();
+        public ActionResult<TourDto> Get(long id)
+        {
+            try
+            {
+                var result = _tourService.GetById(id);
+                if (result == null)
+                    return NotFound();
 
-        return Ok(result);
-    }
-    catch (Exception ex)
-    {
-                return ex is KeyNotFoundException ? NotFound(ex.Message) : BadRequest(ex.Message);
-    }
-}
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                        return ex is KeyNotFoundException ? NotFound(ex.Message) : BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{id}/tourist")]
         public async Task<ActionResult<TourDto>> GetForTourist(long id, [FromBody] long touristId)
         {
@@ -311,6 +312,35 @@ public ActionResult<TourDto> Get(long id)
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}/cart/{touristId}")]
+        public async Task<IActionResult> RemoveFromPurchaseCart(long id, long touristId)
+        {
+            try
+            {
+                using var channel = GrpcChannel.ForAddress("http://purchase-service:44393");
+                var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
+
+                var request = new RemoveTourRequest
+                {
+                    TouristId = touristId,
+                    TourId = id
+                };
+
+                var response = await client.RemoveTourFromCartAsync(request);
+
+                if (response.Success)
+                {
+                    return Ok(new { message = "Tour successfully removed from cart using gRPC." });
+                }
+
+                return BadRequest("Unsuccessfully removal.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"gRPC error: {ex.Message}");
             }
         }
     }

@@ -38,9 +38,8 @@
 </ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="Protos\tours.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\tours.proto" GrpcServices="Both" />
 		<Protobuf Include="Protos\purchase.proto" GrpcServices="Client" />
-		<Protobuf Include="Protos\tours.proto" GrpcServices="Server" />
 	</ItemGroup>
 
 </Project>
