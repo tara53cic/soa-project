@@ -1,6 +1,7 @@
-﻿using Grpc.Core;
+﻿using BlogService.DTOs;
 using BlogService.Protos;
 using BlogService.Services.Interfaces;
+using Grpc.Core;
 
 namespace BlogService.Services;
 
@@ -30,6 +31,28 @@ public class BlogGrpcServiceImpl : BlogGrpcService.BlogGrpcServiceBase
             AuthorUsername = blog.AuthorUsername,
             CreatedAt = blog.CreatedAt.ToString("o"),
             LikesCount = blog.LikesCount
+        };
+    }
+
+    public override async Task<BlogResponse> CreateBlog(CreateBlogRequest request, ServerCallContext context)
+    {
+        var dto = new CreateBlogDto
+        {
+            Title = request.Title,
+            Description = request.Description,
+            AuthorUsername = request.AuthorUsername,
+            ImageUrls = request.ImageUrls.ToList()
+        };
+
+        var blog = await _blogService.CreateAsync(dto);
+
+        return new BlogResponse
+        {
+            Id = blog.Id.ToString(),
+            Title = blog.Title,
+            Description = blog.Description,
+            AuthorUsername = blog.AuthorUsername,
+            CreatedAt = blog.CreatedAt.ToString("o")
         };
     }
 }
