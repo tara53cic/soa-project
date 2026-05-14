@@ -1,14 +1,18 @@
 <div class="explore-container">
   <header class="explore-header">
     <h1>Explore New Adventures</h1>
-    <p>Discover professional tours guided by experts</p>
   </header>
 
+  <div class="tabs-container" *ngIf="user?.role?.name === 'ROLE_TOURIST'">
+    <button class="tab-btn" [class.active]="activeTab === 'available'" (click)="setTab('available')">Available Tours</button>
+    <button class="tab-btn" [class.active]="activeTab === 'purchased'" (click)="setTab('purchased')">Purchased Tours</button>
+  </div>
+
   <div class="tour-grid">
-    <div class="tour-card" *ngFor="let tour of tours" (click)="viewTourDetails(tour.id)">
+    <div class="tour-card" *ngFor="let tour of displayedTours" (click)="viewTourDetails(tour.id)">
       <div class="card-image">
         <img *ngIf="tour.keyPoints && tour.keyPoints[0]?.imagePath" 
-             [src]="'https://localhost:44345/' + tour.keyPoints[0].imagePath" 
+             [src]="'http://localhost:8000/tours/' + tour.keyPoints[0].imagePath" 
              alt="Tour preview">
         <div class="price-tag">{{ tour.price }} €</div>
       </div>
@@ -33,7 +37,7 @@
     </div>
   </div>
 
-  <div class="empty-state" *ngIf="tours.length === 0">
+  <div class="empty-state" *ngIf="displayedTours.length === 0">
     <p>No tours available at the moment. Check back later!</p>
   </div>
 </div>

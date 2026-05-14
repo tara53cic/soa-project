@@ -27,7 +27,7 @@
 
     <ul class="duration-list">
       <li *ngFor="let d of tour.duration">
-        {{ d.travelType === 0 ? 'Walking' : 'Bicycle' }}: {{ d.minutes }} min
+        {{ d.travelType === 0 ? 'Walking' : (d.travelType === 1 ? 'Bicycle' : 'Car') }}: {{ d.minutes }} min
       </li>
     </ul>
 

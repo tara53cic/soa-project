@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Grpc.Net.Client;
+using Microsoft.AspNetCore.Mvc;
+using ToursService.Protos;
+using System.Globalization;
 using ToursService.DTOs;
 using ToursService.Services.Interfaces;
 
@@ -33,18 +36,30 @@ namespace ToursService.Controllers
             }
         }
 
-        [HttpPost("{id}/keypoint")]
-        [Consumes("multipart/form-data")]
-        public async Task<ActionResult<TourDto>> AddKeyPoint(long id, [FromForm] KeyPointDto keyPointDto)
-        {
-            try
-            {
-                if (keyPointDto.Image == null || keyPointDto.Image.Length == 0)
-                {
-                    return BadRequest("Bad image.");
-                }
 
-                string wwwRootPath = _env.WebRootPath;
+                [HttpPost("{id}/keypoint")]
+                [Consumes("multipart/form-data")]
+                public async Task<ActionResult<TourDto>> AddKeyPoint(long id, [FromForm] KeyPointDto keyPointDto)
+                {
+                    try
+                    {
+                        // Log raw form values for debugging
+                        var rawLon = Request.Form["Longitude"].ToString();
+                        var rawLat = Request.Form["Latitude"].ToString();
+                        Console.WriteLine($"Raw Longitude: '{rawLon}', Raw Latitude: '{rawLat}'");
+
+                        // Parse explicitly using invariant culture to accept dot decimals reliably
+                        if (!string.IsNullOrWhiteSpace(rawLon))
+                            keyPointDto.Longitude = double.Parse(rawLon, CultureInfo.InvariantCulture);
+                        if (!string.IsNullOrWhiteSpace(rawLat))
+                            keyPointDto.Latitude = double.Parse(rawLat, CultureInfo.InvariantCulture);
+
+                        if (keyPointDto.Image == null || keyPointDto.Image.Length == 0)
+                        {
+                            return BadRequest("Bad image.");
+                        }
+
+                        string wwwRootPath = _env.WebRootPath;
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(keyPointDto.Image.FileName);
 
                 string imagesPath = Path.Combine(wwwRootPath, "images");
@@ -109,12 +124,49 @@ namespace ToursService.Controllers
             try
             {
                 var result = _tourService.GetById(id);
-                if (result == null) return NotFound();
+                if (result == null)
+                    return NotFound();
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                        return ex is KeyNotFoundException ? NotFound(ex.Message) : BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/tourist")]
+        public async Task<ActionResult<TourDto>> GetForTourist(long id, [FromQuery] long touristId)
+        {
+            try
+            {
+                var result = _tourService.GetById(id);
+
+                if (result == null)
+                    return NotFound();
+
+                using var channel = GrpcChannel.ForAddress("http://purchase-service:44394"); 
+                var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
+
+                var purchaseRequest = new HasPurchasedRequest
+                {
+                    TouristId = touristId,
+                    TourId = id
+                };
+
+                var response = await client.HasPurchasedTourAsync(purchaseRequest);
+
+                if (!response.HasPurchased)
+                {
+                    result.KeyPoints = result.KeyPoints.Take(1).ToList();
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(
+                    $"Greška pri dobavljanju ture ili RPC komunikaciji: {ex.Message}");
             }
         }
 
@@ -260,6 +312,36 @@ namespace ToursService.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}/cart/{touristId}")]
+        public async Task<IActionResult> RemoveFromPurchaseCart(long id, long touristId)
+        {
+            Console.WriteLine(">>> GRPC REMOVE HIT");
+            try
+            {
+                using var channel = GrpcChannel.ForAddress("http://purchase-service:44394");
+                var client = new PurchaseGrpc.PurchaseGrpcClient(channel);
+
+                var request = new RemoveTourRequest
+                {
+                    TouristId = touristId,
+                    TourId = id
+                };
+
+                var response = await client.RemoveTourFromCartAsync(request);
+
+                if (response.Success)
+                {
+                    return Ok(new { message = "Tour successfully removed from cart using gRPC." });
+                }
+
+                return BadRequest("Unsuccessfully removal.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"gRPC error: {ex.Message}");
             }
         }
     }

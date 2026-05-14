@@ -52,6 +52,18 @@ export class TourService {
         });
     }
 
+    getTourForTourist(tourId: number, touristId: number): Observable<any> {
+        return this.http.get<any>(
+            `${this.config.tours_url}/${tourId}/tourist`,
+            {
+                params: {
+                    touristId: touristId
+                },
+                headers: this.getHeaders()
+            }
+        );
+    }
+
     updatePrice(tourId: number, price: number): Observable<any> {
         return this.http.patch(`${this.config.tours_url}/${tourId}/price`, price);   
     }

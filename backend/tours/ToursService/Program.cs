@@ -13,6 +13,21 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(44345, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+
+    options.ListenAnyIP(44344, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+});
+
+builder.Services.AddGrpc();
+
 builder.Services.AddDbContext<ToursDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -32,6 +47,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.MapGrpcService<ToursGrpcService>();
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -42,6 +59,9 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
+Console.WriteLine("Migration failed:");
+        Console.WriteLine(ex.ToString());
+        throw; // Stop application so the problem is visible
     }
 }
 
@@ -63,5 +83,6 @@ app.UseCors("AllowAngular");
 
 app.UseAuthorization();
 app.MapControllers();
+
 
 app.Run();

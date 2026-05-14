@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "ApiGateway.Protos";
+
+service ToursGrpc {
+  rpc GetTourById (TourRequest) returns (TourResponse);
+}
+
+message TourRequest {
+  int64 id = 1;
+}
+
+message TourResponse {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+}
