@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "ApiGateway.Protos";
+
+service BlogGrpcService {
+	rpc GetBlogById (GetBlogRequest) returns (BlogResponse);
+}
+
+message GetBlogRequest {
+	string id = 1;
+	string username = 2;
+}
+
+message BlogResponse {
+	string id = 1;
+	string title = 2;
+	string description = 3;
+	string author_username = 4;
+	string created_at = 5;
+	int32 likes_count = 6;
+}

@@ -17,13 +17,10 @@
     <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Protos\" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<Protobuf Include="Protos\purchase.proto" GrpcServices="Client" />
 		<Protobuf Include="Protos\tours.proto" GrpcServices="Client" />
+        <Protobuf Include="Protos\blog.proto" GrpcServices="Client" />		
 	</ItemGroup>
 
 </Project>
