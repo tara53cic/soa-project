@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApiGateway.Controllers;
 
 [ApiController]
-[Route("api/blog-details")]
+[Route("gateway/blogs")]
 public class GatewayBlogController : ControllerBase
 {
     private readonly BlogGrpcService.BlogGrpcServiceClient _blogGrpcClient;
@@ -20,27 +20,14 @@ public class GatewayBlogController : ControllerBase
     {
         try
         {
-            var request = new GetBlogRequest
-            {
-                Id = id,
-                Username = username ?? ""
-            };
-
+            var request = new GetBlogRequest { Id = id, Username = username ?? "" };
             var response = await _blogGrpcClient.GetBlogByIdAsync(request);
 
-            return Ok(new
-            {
-                id = response.Id,
-                title = response.Title,
-                description = response.Description,
-                authorUsername = response.AuthorUsername,
-                createdAt = response.CreatedAt,
-                likesCount = response.LikesCount
-            });
+            return Ok(response);
         }
-        catch (RpcException ex)
+        catch (Exception ex)
         {
-            return StatusCode((int)ex.StatusCode, ex.Status.Detail);
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 
@@ -52,9 +39,9 @@ public class GatewayBlogController : ControllerBase
             var response = await _blogGrpcClient.CreateBlogAsync(request);
             return Ok(response);
         }
-        catch (RpcException ex)
+        catch (Exception ex)
         {
-            return StatusCode((int)ex.StatusCode, ex.Status.Detail);
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 }
