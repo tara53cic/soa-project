@@ -90,7 +90,7 @@ public class BlogService : IBlogService
     public async Task<List<BlogResponseDto>> GetFeedAsync(string username)
     {
         var followingUsers = await _httpClient.GetFromJsonAsync<List<UserResponseDto>>(
-            $"http://localhost:8083/following?username={username}");
+            $"http://follow-service:8083/following?username={username}");
 
         var followingUsernames = followingUsers?
             .Select(u => u.Username)

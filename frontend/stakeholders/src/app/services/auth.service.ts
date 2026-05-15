@@ -28,11 +28,11 @@ export class AuthService {
 
   return this.http.post(this.config.login_url, loginData).pipe(
     tap((res: any) => {
-      this.loggedIn.next(true);
       localStorage.setItem('isLoggedIn', 'true');
       if (res.accessToken) {
         localStorage.setItem('jwt', res.accessToken);
       }
+      this.loggedIn.next(true);
     })
   );
   }

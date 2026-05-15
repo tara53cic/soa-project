@@ -10,6 +10,7 @@ import (
 	"follow/internal/service"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -22,9 +23,18 @@ func main() {
 
 	defer neo4jDriver.Close(context.Background())
 
-	err = neo4jDriver.VerifyConnectivity(context.Background())
+	maxRetries := 15
+	for i := 0; i < maxRetries; i++ {
+		err = neo4jDriver.VerifyConnectivity(context.Background())
+		if err == nil {
+			break
+		}
+		log.Printf("Failed to connect to Neo4j, retrying in 2 seconds... (%d/%d): %v\n", i+1, maxRetries, err)
+		time.Sleep(2 * time.Second)
+	}
+
 	if err != nil {
-		log.Fatal("Failed to connect to Neo4j: ", err)
+		log.Fatal("Failed to connect to Neo4j after retries: ", err)
 	}
 
 	log.Println("Connected to Neo4j successfully")

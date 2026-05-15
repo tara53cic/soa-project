@@ -16,6 +16,12 @@ func ExtractUsernameFromToken(r *http.Request) (string, error) {
 	}
 
 	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+	tokenString = strings.TrimSpace(tokenString)
+	tokenString = strings.Trim(tokenString, `"`) // Remove quotes if any
+
+	if tokenString == "" || tokenString == "null" {
+		return "", errors.New("missing or empty token")
+	}
 
 	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
 	if err != nil {

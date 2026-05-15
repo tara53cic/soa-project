@@ -9,7 +9,7 @@ import { HttpHeaders } from '@angular/common/http';
     providedIn: 'root'
 })
 export class FollowService {
-    private apiUrl = 'http://localhost:8083';
+    private apiUrl = 'http://localhost:8000/follow';
 
     constructor(private http: HttpClient) {}
 
@@ -55,13 +55,13 @@ export class FollowService {
         const token = localStorage.getItem('jwt');
 
         return this.http.get<any[]>(
-            '${this.apiUrl}/recommendations',
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        );
+    `${this.apiUrl}/recommendations`,
+    {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+);
     }
 
     private getUsernameFromToken(): string | null {
