@@ -38,6 +38,16 @@ builder.Services.AddGrpcClient<BlogGrpcService.BlogGrpcServiceClient>(o => {
     o.Address = new Uri("http://blog_service:44307");
 });
 
+builder.Services.AddGrpcClient<CheckoutSagaGrpcService.CheckoutSagaGrpcServiceClient>("PurchaseSagaClient", o =>
+{
+    o.Address = new Uri("http://purchase_service:44394");
+});
+
+builder.Services.AddGrpcClient<CheckoutSagaGrpcService.CheckoutSagaGrpcServiceClient>("ToursSagaClient", o =>
+{
+    o.Address = new Uri("http://tours_service:44344");
+});
+
 var app = builder.Build();
 
 app.UseRouting();
