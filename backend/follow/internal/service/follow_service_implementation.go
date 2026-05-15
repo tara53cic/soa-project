@@ -45,8 +45,8 @@ func (s *followService) IsFollowing(followerUsername string, followingUsername s
 	return s.repository.IsFollowing(followerUsername, followingUsername)
 }
 
-func (s *followService) GetFollowing(userID int64) ([]dto.UserResponse, error) {
-	return s.repository.GetFollowing(userID)
+func (s *followService) GetFollowing(username string) ([]dto.UserResponse, error) {
+	return s.repository.GetFollowing(username)
 }
 
 func (s *followService) GetRecommendations(username string) ([]dto.RecommendationResponse, error) {

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { TourService } from '../services/tour.service';
 import { FollowService } from '../services/follow.service';
+import { BlogService } from '../services/blog.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +26,8 @@ export class HomeComponent implements OnInit {
       this.isLoggedIn = status;
       this.loadFeaturedTours();
       this.loadRecommendedProfiles();
+      //this.loadBlogsFeed();
+      
       const token = localStorage.getItem('jwt');
 
       if (status && token) {
@@ -86,11 +90,14 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  followUser(userId: number): void {
-    this.followService.follow(userId).subscribe({
+  followUser(username: string): void {
+    this.followService.follow(username).subscribe({
       next: () => {
         this.recommendedProfiles =
-          this.recommendedProfiles.filter(user => user.id !== userId);
+          this.recommendedProfiles.filter(user => user.username !== username);
+
+        this.loadRecommendedProfiles();
+        //this.loadBlogsFeed();
       },
       error: (err) => console.error(err)
     });
@@ -99,4 +106,6 @@ export class HomeComponent implements OnInit {
   getInitials(username: string): string {
     return username ? username.substring(0, 2).toUpperCase() : 'AU';
   }
+
+  
 }

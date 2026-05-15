@@ -79,7 +79,7 @@ func (r *followRepository) IsFollowing(followerUsername string, followingUsernam
 	return result.(bool), nil
 }
 
-func (r *followRepository) GetFollowing(userID int64) ([]dto.UserResponse, error) {
+func (r *followRepository) GetFollowing(username string) ([]dto.UserResponse, error) {
 	ctx := context.Background()
 
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{})
@@ -87,12 +87,12 @@ func (r *followRepository) GetFollowing(userID int64) ([]dto.UserResponse, error
 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		query := `
-			MATCH (:User {id: $userId})-[:FOLLOWS]->(following:User)
-			RETURN following.id AS id
+			MATCH (:User {username: $username})-[:FOLLOWS]->(following:User)
+			RETURN following.username AS username
 		`
 
 		params := map[string]any{
-			"userId": userID,
+			"username": username,
 		}
 
 		records, err := tx.Run(ctx, query, params)
@@ -105,16 +105,26 @@ func (r *followRepository) GetFollowing(userID int64) ([]dto.UserResponse, error
 		for records.Next(ctx) {
 			record := records.Record()
 
-			idValue, _ := record.Get("id")
-
-			user := dto.UserResponse{
-				ID: idValue.(int64),
+			usernameValue, ok := record.Get("username")
+			if !ok {
+				continue
 			}
 
-			users = append(users, user)
+			usernameString, ok := usernameValue.(string)
+			if !ok {
+				continue
+			}
+
+			users = append(users, dto.UserResponse{
+				Username: usernameString,
+			})
 		}
 
-		return users, records.Err()
+		if err := records.Err(); err != nil {
+			return nil, err
+		}
+
+		return users, nil
 	})
 
 	if err != nil {

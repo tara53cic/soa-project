@@ -94,20 +94,13 @@ func (h *FollowHandler) GetFollowing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userIDParam := r.URL.Query().Get("userId")
-	if userIDParam == "" {
-		http.Error(w, "Missing userId parameter", http.StatusBadRequest)
+	username := r.URL.Query().Get("username")
+	if username == "" {
+		http.Error(w, "Missing username parameter", http.StatusBadRequest)
 		return
 	}
 
-	var userID int64
-	_, err := fmt.Sscan(userIDParam, &userID)
-	if err != nil {
-		http.Error(w, "Invalid userId", http.StatusBadRequest)
-		return
-	}
-
-	users, err := h.service.GetFollowing(userID)
+	users, err := h.service.GetFollowing(username)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

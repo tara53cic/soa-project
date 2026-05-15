@@ -70,30 +70,31 @@
     <div class="recommended-profiles">
       <div class="section-header">
         <h3>Recommended Profiles</h3>
+         <button routerLink="/profiles" class="btn-view-all">View All Profiles &rarr;</button>
       </div>
 
       <div class="profiles-grid">
         <div class="profile-card" *ngFor="let profile of recommendedProfiles">
-          <div class="profile-left">
-            <img
-              *ngIf="profile.profileImage"
-              [src]="profile.profileImage"
-              alt="Profile image"
-              class="profile-image"
-            />
-            <div class="avatar-circle" *ngIf="!profile.profileImage">
+
+          <div class="profile-top">
+            <div class="avatar-circle">
               {{ getInitials(profile.username) }}
             </div>
-            <div class="profile-info">
+            <div class="profile-username">
               <h3>@{{ profile.username }}</h3>
             </div>
           </div>
+
+          <button class="follow-btn" (click)="followUser(profile.username)">
+            Follow
+          </button>
+
         </div>
       </div>
     </div>
 
     <div *ngIf="recommendedProfiles.length === 0" class="placeholder-card">
-      <p>Follow users to get personalized recommendations.</p>
+      <p>No recommended users to follow. </p>
     </div>
     
     <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">

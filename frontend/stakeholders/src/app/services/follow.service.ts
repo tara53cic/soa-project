@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { HttpParams } from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root'
@@ -9,18 +10,46 @@ export class FollowService {
 
     constructor(private http: HttpClient) {}
 
-    follow(userId: number) {
-        return this.http.post(`${this.apiUrl}/${userId}`, {});
+    follow(followingUsername: string) {
+        const followerUsername = this.getUsernameFromToken();
+        const token = localStorage.getItem('jwt');
+
+        return this.http.post(
+        `${this.apiUrl}/follow`,
+        {
+            followerUsername: followerUsername,
+            followingUsername: followingUsername
+        },
+        {
+            headers: {
+            Authorization: `Bearer ${token}`
+            },
+            responseType: 'text'
+        }
+        );
     }
 
-    isFollowing(userId: number) {
-        return this.http.get<boolean>(`${this.apiUrl}/${userId}/is-following`);
+    isFollowing(followingUsername: string) {
+        const followerUsername = this.getUsernameFromToken();
+        const token = localStorage.getItem('jwt');
+
+        const params = new HttpParams()
+        .set('followerUsername', followerUsername || '')
+        .set('followingUsername', followingUsername);
+
+        return this.http.get<{ isFollowing: boolean }>(
+        `${this.apiUrl}/is-following`,
+        {
+            params,
+            headers: {
+            Authorization: `Bearer ${token}`
+            }
+        }
+        );
     }
 
     getRecommendations() {
         const token = localStorage.getItem('jwt');
-
-        console.log('JWT TOKEN:', token);
 
         return this.http.get<any[]>(
             'http://localhost:8083/recommendations',
@@ -30,5 +59,14 @@ export class FollowService {
                 }
             }
         );
+    }
+
+    private getUsernameFromToken(): string | null {
+        const token = localStorage.getItem('jwt');
+
+        if (!token) return null;
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.sub;
     }
 }
