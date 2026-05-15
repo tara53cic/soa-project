@@ -1,0 +1,101 @@
+.profiles-list-section {
+    padding: 30px 50px;
+    overflow: hidden;
+}
+
+.btn-back {
+    background: none;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: #007bff;
+    color: white;
+}
+
+.back-nav {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.profiles-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.profiles-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.profile-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 22px;
+
+    background: white;
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.profile-username {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.follow-btn {
+    color: #007bff;
+    background-color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 10px 18px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 110px;
+    text-align: center;
+}
+
+.follow-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.follow-btn.following {
+    background: none;
+    border: none;
+    color:#205083;
+    cursor: default;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

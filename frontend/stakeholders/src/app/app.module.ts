@@ -23,6 +23,7 @@ import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 import { CommonModule } from '@angular/common';
+import { ProfilesListComponent } from './profiles-list/profiles-list.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({

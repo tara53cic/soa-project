@@ -41,4 +41,11 @@ public class BlogController : ControllerBase
         var blog = await _blogService.CreateAsync(request);
         return CreatedAtAction(nameof(GetById), new { id = blog.Id }, blog);
     }
+
+    [HttpGet("feed")]
+    public async Task<IActionResult> GetFeed([FromQuery] string username)
+    {
+        var blogs = await _blogService.GetFeedAsync(username);
+        return Ok(blogs);
+    }
 }

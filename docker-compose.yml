@@ -25,6 +25,17 @@ services:
     networks:
       - app-network
 
+  neo4j:
+    image: neo4j:5
+    container_name: neo4j_db
+    environment:
+      NEO4J_AUTH: neo4j/password123
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4jdata:/data
+
   api-gateway:
     build:
       context: ./api-gateway/ApiGateway 
@@ -56,6 +67,23 @@ services:
     depends_on:
       - mongodb
       - tours-service
+    networks:
+      - app-network
+  
+  follow-service:
+    build:
+      context: ./backend/follow
+      dockerfile: Dockerfile
+    container_name: follow_service
+    environment:
+      PORT: 8083
+      NEO4J_URI: neo4j://neo4j:7687
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: password123
+    ports:
+      - "8083:8083"
+    depends_on:
+      - neo4j
     networks:
       - app-network
 
@@ -120,6 +148,7 @@ services:
 volumes:
   pgdata:
   mongodata:
+  neo4jdata:
 
 networks:
   app-network:
