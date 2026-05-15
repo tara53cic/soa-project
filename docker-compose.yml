@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-
   postgres:
     image: postgres:16
     container_name: postgres_db
@@ -10,7 +9,7 @@ services:
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: maindb
     ports:
-      - "5432:5432"
+      - "5432:5432" 
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -36,6 +35,22 @@ services:
       - "7687:7687"
     volumes:
       - neo4jdata:/data
+
+  api-gateway:
+    build:
+      context: ./api-gateway/ApiGateway 
+      dockerfile: Dockerfile 
+    container_name: api_gateway
+    restart: on-failure
+    ports:
+      - "8000:8080" 
+    depends_on:
+      - stakeholders-service
+      - blog-service
+      - tours-service
+      - purchase-service
+    environment:
+      - DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2UNENCRYPTEDSUPPORT=true
     networks:
       - app-network
 
@@ -44,14 +59,14 @@ services:
       context: ./backend/blog/BlogService
       dockerfile: Dockerfile
     container_name: blog_service
+    restart: on-failure
     environment:
       MongoDbSettings__ConnectionString: mongodb://mongodb:27017
       MongoDbSettings__DatabaseName: BlogDb
       ASPNETCORE_URLS: http://+:44307
-    ports:
-      - "44307:44307"
     depends_on:
       - mongodb
+      - tours-service
     networks:
       - app-network
   
@@ -77,13 +92,17 @@ services:
       context: ./backend/tours/ToursService  
       dockerfile: Dockerfile
     container_name: tours_service
+    restart: on-failure
     environment:
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
-      ASPNETCORE_URLS: http://+:44345
-    ports:
-      - "44345:44345"
+      ASPNETCORE_URLS: http://+:44345;http://+:44344
     depends_on:
       - postgres
+    ports:
+      - "44345:44345"
+      - "44344:44344"
+    volumes:
+      - ./tours-data/images:/app/wwwroot/images
     networks:
       - app-network
 
@@ -91,14 +110,27 @@ services:
     build:
       context: ./backend/stakeholders
     container_name: stakeholders_service
+    restart: on-failure
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/maindb
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin123
-    ports:
-      - "8080:8080"
     depends_on:
       - postgres
+    networks:
+      - app-network
+
+  purchase-service:
+    build:
+      context: ./backend/purchase/PurchaseService  
+      dockerfile: Dockerfile
+    container_name: purchase_service
+    restart: on-failure
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=maindb;Username=admin;Password=admin123
+    depends_on:
+      - postgres
+      - blog-service
     networks:
       - app-network
 
@@ -107,10 +139,9 @@ services:
       context: ./frontend/stakeholders
     container_name: frontend
     ports:
-      - "80:80"
+      - "4200:80"
     depends_on:
-      - blog-service
-      - stakeholders-service
+      - api-gateway
     networks:
       - app-network
 

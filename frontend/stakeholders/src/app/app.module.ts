@@ -24,6 +24,7 @@ import { ToursComponent } from './tours/tours.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
 import { CommonModule } from '@angular/common';
 import { ProfilesListComponent } from './profiles-list/profiles-list.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ProfilesListComponent } from './profiles-list/profiles-list.component';
     TourPageComponent,
     ToursComponent,
     PositionSimulatorComponent,
+    ShoppingCartComponent,
   ],
   imports: [
     CommonModule,

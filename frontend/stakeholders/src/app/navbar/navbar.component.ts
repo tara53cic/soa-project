@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { PurchaseService } from '../services/purchase.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,8 +11,13 @@ import { AuthService } from '../services/auth.service';
 export class NavbarComponent implements OnInit { 
   user: any;
   isLoggedIn = false;
+  cartItemCount = 0;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private purchaseService: PurchaseService
+  ) {}
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe(
@@ -20,11 +26,17 @@ export class NavbarComponent implements OnInit {
     this.authService.getCurrentUser().subscribe({
       next: (data) => {
         this.user = data;
+        if (this.user && this.user.role?.name === 'ROLE_TOURIST') {
+          this.purchaseService.getCart(this.user.id).subscribe();
+          this.purchaseService.cartItemCount$.subscribe(count => {
+            this.cartItemCount = count;
+          });
+        }
       },
       error: (err) => {
         console.log("Error loading user.", err);
       }
-    })
+    });
   }
 
   logout(): void {

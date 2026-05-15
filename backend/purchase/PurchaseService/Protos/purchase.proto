@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option csharp_namespace = "PurchaseService.Protos";
+
+service PurchaseGrpc {
+  rpc HasPurchasedTour (HasPurchasedRequest) returns (HasPurchasedResponse);
+  rpc Checkout (CheckoutRequest) returns (CheckoutResponse);
+  rpc RemoveTourFromCart (RemoveTourRequest) returns (RemoveTourResponse);
+}
+
+message HasPurchasedRequest {
+  int64 touristId = 1;
+  int64 tourId = 2;
+}
+
+message HasPurchasedResponse {
+  bool hasPurchased = 1;
+}
+
+message CheckoutRequest {
+  int64 touristId = 1;
+}
+
+message CheckoutResponse {
+  repeated TourPurchaseTokenDto tokens = 1;
+}
+
+message TourPurchaseTokenDto {
+  int64 id = 1;
+  int64 tourId = 2;
+
+}
+
+message RemoveTourRequest {
+  int64 touristId = 1;
+  int64 tourId = 2;
+}
+
+message RemoveTourResponse {
+  bool success = 1;
+}
