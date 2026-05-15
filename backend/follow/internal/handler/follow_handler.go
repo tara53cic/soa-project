@@ -131,3 +131,23 @@ func (h *FollowHandler) GetRecommendations(w http.ResponseWriter, r *http.Reques
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(recommendations)
 }
+
+func (h *FollowHandler) GetAllProfilesWithFollowStatus(w http.ResponseWriter, r *http.Request) {
+
+	loggedUsername := r.URL.Query().Get("username")
+
+	if loggedUsername == "" {
+		http.Error(w, "username is required", http.StatusBadRequest)
+		return
+	}
+
+	profiles, err := h.service.GetAllProfilesWithFollowStatus(loggedUsername)
+
+	if err != nil {
+		http.Error(w, "failed to fetch profiles", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(profiles)
+}

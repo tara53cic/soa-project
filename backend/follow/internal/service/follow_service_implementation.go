@@ -52,3 +52,7 @@ func (s *followService) GetFollowing(username string) ([]dto.UserResponse, error
 func (s *followService) GetRecommendations(username string) ([]dto.RecommendationResponse, error) {
 	return s.repository.GetRecommendations(username)
 }
+
+func (s *followService) GetAllProfilesWithFollowStatus(loggedUsername string) ([]dto.ProfileFollowStatusResponse, error) {
+	return s.repository.GetAllProfilesWithFollowStatus(loggedUsername)
+}

@@ -48,6 +48,8 @@ func main() {
 
 	http.HandleFunc("/recommendations", middleware.EnableCors(followHandler.GetRecommendations))
 
+	http.HandleFunc("/profiles", middleware.EnableCors(followHandler.GetAllProfilesWithFollowStatus))
+
 	log.Println("Follow service started on port " + cfg.Port)
 
 	err = http.ListenAndServe(":"+cfg.Port, nil)

@@ -184,3 +184,55 @@ func (r *followRepository) GetRecommendations(username string) ([]dto.Recommenda
 
 	return result.([]dto.RecommendationResponse), nil
 }
+
+func (r *followRepository) GetAllProfilesWithFollowStatus(loggedUsername string) ([]dto.ProfileFollowStatusResponse, error) {
+	ctx := context.Background()
+
+	session := r.driver.NewSession(ctx, neo4j.SessionConfig{})
+	defer session.Close(ctx)
+
+	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
+
+		query := `
+			MATCH (me:User {username: $loggedUsername})
+			MATCH (u:User)
+			WHERE u.username <> $loggedUsername
+			RETURN 
+				u.username AS username,
+				EXISTS((me)-[:FOLLOWS]->(u)) AS following
+			ORDER BY username
+		`
+
+		params := map[string]any{
+			"loggedUsername": loggedUsername,
+		}
+
+		records, err := tx.Run(ctx, query, params)
+		if err != nil {
+			return nil, err
+		}
+
+		var profiles []dto.ProfileFollowStatusResponse
+
+		for records.Next(ctx) {
+
+			record := records.Record()
+
+			username, _ := record.Get("username")
+			following, _ := record.Get("following")
+
+			profiles = append(profiles, dto.ProfileFollowStatusResponse{
+				Username:  username.(string),
+				Following: following.(bool),
+			})
+		}
+
+		return profiles, records.Err()
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result.([]dto.ProfileFollowStatusResponse), nil
+}

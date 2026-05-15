@@ -15,6 +15,7 @@ import { TourDetailsComponent } from './tour-details/tour-details.component';
 import { TourPageComponent } from './tour-page/tour-page.component';
 import { ToursComponent } from './tours/tours.component';
 import { PositionSimulatorComponent } from './position-simulator/position-simulator.component';
+import { ProfilesListComponent } from './profiles-list/profiles-list.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -32,7 +33,8 @@ const routes: Routes = [
   { path: 'tour-details/:id', component: TourDetailsComponent },
   { path: 'tour-page/:id', component: TourPageComponent },
   { path: 'tours', component: ToursComponent },
-  { path: 'position-simulator', component: PositionSimulatorComponent }
+  { path: 'position-simulator', component: PositionSimulatorComponent },
+  { path: 'profiles', component: ProfilesListComponent}
 ];
 
 @NgModule({

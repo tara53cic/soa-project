@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
       this.isLoggedIn = status;
       this.loadFeaturedTours();
       this.loadRecommendedProfiles();
-      //this.loadBlogsFeed();
       
       const token = localStorage.getItem('jwt');
 
@@ -97,7 +96,6 @@ export class HomeComponent implements OnInit {
           this.recommendedProfiles.filter(user => user.username !== username);
 
         this.loadRecommendedProfiles();
-        //this.loadBlogsFeed();
       },
       error: (err) => console.error(err)
     });
@@ -106,6 +104,4 @@ export class HomeComponent implements OnInit {
   getInitials(username: string): string {
     return username ? username.substring(0, 2).toUpperCase() : 'AU';
   }
-
-  
 }

@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { HttpParams } from "@angular/common/http";
+import { ProfileFollowStatus } from "../models/profiles-follow-status.model"; 
+import { Observable } from "rxjs";
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -52,7 +55,7 @@ export class FollowService {
         const token = localStorage.getItem('jwt');
 
         return this.http.get<any[]>(
-            'http://localhost:8083/recommendations',
+            '${this.apiUrl}/recommendations',
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -68,5 +71,30 @@ export class FollowService {
 
         const payload = JSON.parse(atob(token.split('.')[1]));
         return payload.sub;
+    }
+
+    getAllProfilesWithFollowStatus(): Observable<ProfileFollowStatus[]> {
+        const username = this.getUsernameFromToken();
+        const token = localStorage.getItem('jwt');
+
+        const params = new HttpParams()
+            .set('username', username || '');
+
+        return this.http.get<ProfileFollowStatus[]>(
+            `${this.apiUrl}/profiles`,
+                {
+                    params,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+        );
+    }
+
+    private headers(): HttpHeaders {
+        const token = localStorage.getItem('jwt');
+        return new HttpHeaders({
+            Authorization: `Bearer ${token}`
+        });
     }
 }

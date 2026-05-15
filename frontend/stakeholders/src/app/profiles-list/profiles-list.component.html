@@ -1,0 +1,31 @@
+<div class="profiles-list-section">
+    <div class="back-nav">
+        <button class="btn-back" (click)="goBack()">
+            ← Back to Home
+        </button>
+    </div> 
+    
+    <div class="sections-header">
+        <h2 class="profiles-title">User profiles</h2>
+    </div>
+
+    <div class="profiles-grid">
+        <div class="profile-card" *ngFor="let profile of profiles">
+
+            <div class="profile-username">
+                @{{ profile.username }}
+            </div>
+
+            <button
+                class="follow-btn"
+                [class.following]="profile.following"
+                [disabled]="profile.following"
+                (click)="follow(profile)">
+
+                {{ profile.following ? 'Following' : 'Follow' }}
+
+            </button>
+
+        </div>
+    </div>
+</div>
