@@ -142,13 +142,15 @@ func (r *followRepository) GetRecommendations(username string) ([]dto.Recommenda
 
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		query := `
-		MATCH (me:User {username: $username})-[:FOLLOWS]->(:User)-[:FOLLOWS]->(recommended:User)
-		WHERE NOT (me)-[:FOLLOWS]->(recommended)
-		AND me <> recommended
-		RETURN recommended.username AS username,
-			count(recommended) AS mutualConnections
-		ORDER BY mutualConnections DESC
-	`
+			MATCH (u:User)
+			WHERE u.username <> $username
+			  AND NOT EXISTS { MATCH (:User {username: $username})-[:FOLLOWS]->(u) }
+			OPTIONAL MATCH (:User {username: $username})-[:FOLLOWS]->(:User)-[r:FOLLOWS]->(u)
+			RETURN u.username AS username,
+				COUNT(r) AS mutualConnections
+			ORDER BY mutualConnections DESC
+			LIMIT 10
+		`
 
 		params := map[string]any{
 			"username": username,
@@ -194,12 +196,11 @@ func (r *followRepository) GetAllProfilesWithFollowStatus(loggedUsername string)
 	result, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 
 		query := `
-			MATCH (me:User {username: $loggedUsername})
 			MATCH (u:User)
 			WHERE u.username <> $loggedUsername
 			RETURN 
 				u.username AS username,
-				EXISTS((me)-[:FOLLOWS]->(u)) AS following
+				EXISTS { MATCH (:User {username: $loggedUsername})-[:FOLLOWS]->(u) } AS following
 			ORDER BY username
 		`
 

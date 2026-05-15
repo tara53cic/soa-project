@@ -35,6 +35,8 @@ services:
       - "7687:7687"
     volumes:
       - neo4jdata:/data
+    networks:
+      - app-network
 
   api-gateway:
     build:
@@ -67,6 +69,7 @@ services:
     depends_on:
       - mongodb
       - tours-service
+      - follow-service
     networks:
       - app-network
   
@@ -115,8 +118,12 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/maindb
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin123
+      - SPRING_NEO4J_URI=bolt://neo4j:7687
+      - SPRING_NEO4J_AUTHENTICATION_USERNAME=neo4j
+      - SPRING_NEO4J_AUTHENTICATION_PASSWORD=password123
     depends_on:
       - postgres
+      - neo4j
     networks:
       - app-network
 
