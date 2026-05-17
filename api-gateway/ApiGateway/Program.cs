@@ -50,12 +50,12 @@ builder.Services.AddGrpcClient<CheckoutSagaGrpcService.CheckoutSagaGrpcServiceCl
 
 builder.Services.AddGrpcClient<ApiGateway.Protos.BlockSagaGrpcService.BlockSagaGrpcServiceClient>("StakeholdersSagaClient", o =>
 {
-    o.Address = new Uri("http://stakeholders_service:6565");
+    o.Address = new Uri("http://stakeholders-service:9090");
 });
 
 builder.Services.AddGrpcClient<ApiGateway.Protos.BlockSagaGrpcService.BlockSagaGrpcServiceClient>("FollowSagaClient", o =>
 {
-    o.Address = new Uri("http://follow_service:8084");
+    o.Address = new Uri("http://follow-service:8084");
 });
 
 var app = builder.Build();

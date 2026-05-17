@@ -1,5 +1,5 @@
 package com.soa.stakeholders.service;
 
 public interface BlockSagaGrpcService {
-    void executeBlockSync(String username, boolean isBlocked);
+    void executeBlockSync(Long userId, boolean isBlocked);
 }

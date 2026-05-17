@@ -238,17 +238,17 @@ func (r *followRepository) GetAllProfilesWithFollowStatus(loggedUsername string)
 	return result.([]dto.ProfileFollowStatusResponse), nil
 }
 
-func (r *followRepository) SetUserBlockStatus(username string, isBlocked bool) error {
+func (r *followRepository) SetUserBlockStatus(userId int64, isBlocked bool) error {
 	ctx := context.Background()
 	session := r.driver.NewSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 
 	_, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		query := `
-			MERGE (u:User {username: $username})
+			MERGE (u:User {userId: $userId})
 			SET u.isBlocked = $isBlocked
 		`
-		params := map[string]any{"username": username, "isBlocked": isBlocked}
+		params := map[string]any{"userId": userId, "isBlocked": isBlocked}
 		_, err := tx.Run(ctx, query, params)
 		return nil, err
 	})

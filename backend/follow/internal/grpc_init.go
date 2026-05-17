@@ -12,7 +12,7 @@ import (
 )
 
 type BlockSagaGrpcServer struct {
-	block_saga.UnimplementedBlockSagaServiceServer
+	block_saga.UnimplementedBlockSagaGrpcServiceServer
 	followService service.FollowService
 }
 
@@ -28,7 +28,7 @@ func StartGrpcServer(followService service.FollowService) {
 		followService: followService,
 	}
 
-	block_saga.RegisterBlockSagaServiceServer(grpcServer, server)
+	block_saga.RegisterBlockSagaGrpcServiceServer(grpcServer, server)
 
 	go func() {
 		log.Println("gRPC server started successfully on port 8084")
@@ -43,7 +43,7 @@ func (s *BlockSagaGrpcServer) SyncUserBlockStatus(
 	req *block_saga.BlockStatusRequest,
 ) (*block_saga.BlockStatusResponse, error) {
 
-	err := s.followService.SetUserBlockStatus(req.GetUsername(), req.GetIsBlocked())
+	err := s.followService.SetUserBlockStatus(req.GetUserId(), req.GetIsBlocked())
 	if err != nil {
 		return &block_saga.BlockStatusResponse{
 			Success: false,

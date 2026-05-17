@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ApiGateway.Controllers
 {
     [ApiController]
-    [Route("api/gateway/block-saga")]
+    [Route("saga/block-user")]
     public class SagaBlockController : ControllerBase
     {
         private readonly BlockSagaGrpcService.BlockSagaGrpcServiceClient _stakeholdersClient;
@@ -19,12 +19,12 @@ namespace ApiGateway.Controllers
             _followClient = clientFactory.CreateClient<BlockSagaGrpcService.BlockSagaGrpcServiceClient>("FollowSagaClient");
         }
 
-        [HttpPost("{username}")]
-        public async Task<IActionResult> ExecuteBlockSaga(string username, [FromQuery] bool isBlocked)
+        [HttpPost("{userId}")]
+        public async Task<IActionResult> ExecuteBlockSaga([FromRoute] long userId, [FromQuery] bool isBlocked)
         {
             var stakeholdersResponse = await _stakeholdersClient.SyncUserBlockStatusAsync(new BlockStatusRequest
             {
-                Username = username,
+                UserId = userId,
                 IsBlocked = isBlocked
             });
 
@@ -37,7 +37,7 @@ namespace ApiGateway.Controllers
             {
                 var followResponse = await _followClient.SyncUserBlockStatusAsync(new BlockStatusRequest
                 {
-                    Username = username,
+                    UserId = userId,
                     IsBlocked = isBlocked
                 });
 
@@ -52,7 +52,7 @@ namespace ApiGateway.Controllers
             {
                 await _stakeholdersClient.SyncUserBlockStatusAsync(new BlockStatusRequest
                 {
-                    Username = username,
+                    UserId = userId,
                     IsBlocked = !isBlocked 
                 });
 

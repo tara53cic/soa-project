@@ -22,9 +22,13 @@ export class UserService {
     return this.http.get<User>(url, { headers: this.headers() });
   }
 
-  blockUser(id: number, block: boolean) {
-    const url = `${this.config.users_url}/${id}/block?block=${block}`;
-    return this.http.put(url, {}, { headers: this.headers(), responseType: 'text' });
+  //blockUser(id: number, block: boolean) {
+  //  const url = `${this.config.users_url}/${id}/block?block=${block}`;
+  //  return this.http.put(url, {}, { headers: this.headers(), responseType: 'text' });
+  //} 
+  blockUser(id: number, block: boolean): Observable<any> {
+    const url = `http://localhost:8000/saga/block-user/${id}?isBlocked=${block}`;
+    return this.http.post(url, {}, { headers: this.headers() });
   }
 
   updateProfile(userData: any): Observable<any> {

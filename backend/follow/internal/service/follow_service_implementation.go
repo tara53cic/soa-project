@@ -57,6 +57,6 @@ func (s *followService) GetAllProfilesWithFollowStatus(loggedUsername string) ([
 	return s.repository.GetAllProfilesWithFollowStatus(loggedUsername)
 }
 
-func (s *followService) SetUserBlockStatus(username string, isBlocked bool) error {
-	return s.repository.SetUserBlockStatus(username, isBlocked)
+func (s *followService) SetUserBlockStatus(userId int64, isBlocked bool) error {
+	return s.repository.SetUserBlockStatus(userId, isBlocked)
 }
