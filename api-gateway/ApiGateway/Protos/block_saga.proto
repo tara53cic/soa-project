@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "ApiGateway.Protos";
+
+package saga;
+
+service BlockSagaGrpcService {
+	rpc SyncUserBlockStatus (BlockStatusRequest) returns (BlockStatusResponse);
+}
+
+message BlockStatusRequest {
+	string username = 1;
+	bool isBlocked = 2;
+}
+
+message BlockStatusResponse {
+	bool success = 1;
+	string message = 2;
+}
