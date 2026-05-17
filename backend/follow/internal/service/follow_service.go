@@ -8,4 +8,5 @@ type FollowService interface {
 	GetFollowing(username string) ([]dto.UserResponse, error)
 	GetRecommendations(username string) ([]dto.RecommendationResponse, error)
 	GetAllProfilesWithFollowStatus(loggedUsername string) ([]dto.ProfileFollowStatusResponse, error)
+	SetUserBlockStatus(username string, isBlocked bool) error
 }

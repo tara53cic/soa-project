@@ -91,4 +91,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public User toggleUserBlockAndSync(Long id, boolean block) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        user.setBlocked(block);
+        return userRepository.save(user);
+    }
 }
