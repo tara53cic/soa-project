@@ -24,9 +24,11 @@ builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 
-builder.Services.AddScoped<IBlogService, BlogService.Services.BlogService>();
+//builder.Services.AddScoped<IBlogService, BlogService.Services.BlogService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ILikeService, LikeService>();
+
+builder.Services.AddHttpClient<IBlogService, BlogService.Services.BlogService>();
 
 builder.Services.AddCors(opt =>
     opt.AddPolicy("AllowAll", p =>

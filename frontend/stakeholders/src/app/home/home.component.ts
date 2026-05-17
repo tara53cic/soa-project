@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { TourService } from '../services/tour.service';
+import { FollowService } from '../services/follow.service';
+import { jwtDecode } from 'jwt-decode';
 import { PurchaseService } from '../services/purchase.service';
 import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators'; 
 
 @Component({
   selector: 'app-home',
@@ -14,17 +16,22 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   isAdmin = false;
   featuredTours: any[] = [];
+  recommendedProfiles: any[] = [];
   user: any;
 
   constructor(
      private authService: AuthService, 
      private tourService: TourService,
-     private purchaseService: PurchaseService
+     private purchaseService: PurchaseService,
+     private followService: FollowService
   ) {}
+
 
   ngOnInit(): void {
     this.authService.isLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
+      this.loadFeaturedTours();
+      this.loadRecommendedProfiles();
       const token = localStorage.getItem('jwt');
 
       if (status && token) {
@@ -96,5 +103,32 @@ export class HomeComponent implements OnInit {
     if (difficulty === 1 || difficulty === 'MEDIUM') return 'MEDIUM';
     if (difficulty === 2 || difficulty === 'HARD') return 'HARD';
     return 'UNKNOWN';
+  }
+
+  loadRecommendedProfiles(): void {
+    this.followService.getRecommendations().subscribe({
+      next: (profiles) => {
+        this.recommendedProfiles = profiles;
+      },
+      error: (err: any) => {
+        console.error(err)
+      }
+    });
+  }
+
+  followUser(username: string): void {
+    this.followService.follow(username).subscribe({
+      next: () => {
+        this.recommendedProfiles =
+          this.recommendedProfiles.filter(user => user.username !== username);
+
+        this.loadRecommendedProfiles();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  getInitials(username: string): string {
+    return username ? username.substring(0, 2).toUpperCase() : 'AU';
   }
 }

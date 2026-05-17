@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Blog } from '../../models/blog.model';
 import { BlogService } from '../../services/blog.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-blog-list',
@@ -19,7 +20,23 @@ export class BlogListComponent implements OnInit {
   constructor(private blogService: BlogService, private router: Router) {}
 
   ngOnInit(): void {
-    this.blogService.getAll().subscribe({
+    const token = localStorage.getItem('jwt');
+
+    if (!token) {
+      this.error = 'User not logged in.';
+      this.isLoading = false;
+      return;
+    }
+
+    const decodedToken: any = jwtDecode(token);
+    console.log(decodedToken);
+
+    const username =
+      decodedToken.username ||
+      decodedToken.unique_name ||
+      decodedToken.sub;
+
+    this.blogService.getFeed(username).subscribe({
       next: (data) => { 
         this.blogs = data;
         this.displayBlogs = (this.limit > 0) ? this.blogs.slice(0, this.limit) : this.blogs;
@@ -52,5 +69,21 @@ export class BlogListComponent implements OnInit {
 
   goToBlog(id: string): void {
     this.router.navigate(['/blogs', id]);
+  }
+
+  loadBlogsFeed(): void {
+    const token = localStorage.getItem('jwt');
+
+    if (!token) return;
+
+    const decodedToken: any = jwtDecode(token);
+    const username = decodedToken.username || decodedToken.unique_name || decodedToken.sub;
+
+    this.blogService.getFeed(username).subscribe({
+      next: (blogs) => {
+        this.blogs = blogs;
+        this.displayBlogs = this.limit > 0 ? blogs.slice(0, this.limit) : blogs;
+      }
+    });
   }
 }

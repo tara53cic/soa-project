@@ -41,4 +41,10 @@ export class BlogService {
     return this.http.post<{ liked: boolean }>(`${this.baseUrl}/blogs/${blogId}/likes?username=${username}`, {});
   }
 
+  getFeed(username: string): Observable<Blog[]> {
+    return this.http.get<Blog[]>(`${this.baseUrl}/blogs/feed`, {
+      params: { username }
+    });
+  }
+
 }

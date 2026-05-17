@@ -27,6 +27,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private Neo4jUserService neo4jUserService;
+
     @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
@@ -62,7 +65,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Role role = roleService.findByName("ROLE_" + userRequest.getRoleName().toUpperCase());
         u.setRole(role);
 
-        return userRepository.save(u);
+        User savedUser = userRepository.save(u);
+
+        neo4jUserService.createUser(savedUser.getUsername());
+
+        return savedUser;
     }
 
     @Override

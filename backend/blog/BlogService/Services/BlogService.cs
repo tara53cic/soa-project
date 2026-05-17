@@ -3,19 +3,22 @@ using BlogService.Models;
 using BlogService.Repositories.Interfaces;
 using BlogService.Services.Interfaces;
 using Markdig;
+using System.Net.Http.Json;
 
 namespace BlogService.Services;
 
 public class BlogService : IBlogService
 {
     private readonly IBlogRepository _blogRepo;
+    private readonly HttpClient _httpClient;
 
     private static readonly MarkdownPipeline Pipeline =
         new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
 
-    public BlogService(IBlogRepository blogRepo)
+    public BlogService(IBlogRepository blogRepo, HttpClient httpClient)
     {
         _blogRepo = blogRepo;
+        _httpClient = httpClient;
     }
 
     public async Task<List<BlogResponseDto>> GetAllAsync(string? username = null)
@@ -82,7 +85,28 @@ public class BlogService : IBlogService
 
             LikesCount = blog.Likes.Count
         };
+    }
 
+    public async Task<List<BlogResponseDto>> GetFeedAsync(string username)
+    {
+        var followingUsers = await _httpClient.GetFromJsonAsync<List<UserResponseDto>>(
+            $"http://follow-service:8083/following?username={username}");
 
+        var followingUsernames = followingUsers?
+            .Select(u => u.Username)
+            .ToList() ?? new List<string>();
+
+        var blogs = await _blogRepo.GetAllAsync();
+
+        return blogs
+             .Where(b => followingUsernames.Contains(b.AuthorUsername) || b.AuthorUsername == username)
+             .OrderByDescending(b => b.CreatedAt)
+             .Select(blog =>
+             {
+                 var dto = ToResponse(blog);
+                 dto.IsLikedByCurrentUser = blog.Likes.Any(l => l.Username == username);
+                 return dto;
+             })
+             .ToList();
     }
 }
