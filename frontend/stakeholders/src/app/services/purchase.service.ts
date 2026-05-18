@@ -43,7 +43,7 @@ export class PurchaseService {
   }
 
   checkout(touristId: number): Observable<any[]> {
-    return this.http.post<any[]>(`${this.configService.checkout_url}/${touristId}`, {}, { headers: this.getHeaders() })
+    return this.http.post<any[]>(this.configService.checkout_url(touristId), {}, { headers: this.getHeaders() })
     .pipe(
       tap(() => this.cartItemCountSubject.next(0))
     );

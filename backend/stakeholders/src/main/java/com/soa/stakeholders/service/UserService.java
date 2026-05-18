@@ -15,4 +15,5 @@ public interface UserService {
     User save(UserRegistrationDto userRequest);
     User save(User user);
     User update(Long id, UserDTO userDto);
+    User toggleUserBlockAndSync(Long id, boolean block);
 }

@@ -101,16 +101,17 @@ export class TourService {
     }
 
     updateTouristPosition(position: TouristPosition): Observable<TouristPosition> {
-        const url = this.config.tours_url.replace('/tours', '/tourist/position');
-        return this.http.post<TouristPosition>(url, position, { 
-            headers: this.getHeaders() 
-        });
+        return this.http.post<TouristPosition>(
+            this.config.tourist_position_url,
+            position,
+            { headers: this.getHeaders() }
+        );
     }
 
     getTouristPosition(touristId: number): Observable<TouristPosition> {
-        const url = this.config.tours_url.replace('/tours', '/tourist/position');
-        return this.http.get<TouristPosition>(`${url}/${touristId}`, { 
-            headers: this.getHeaders() 
-        });
+        return this.http.get<TouristPosition>(
+            `${this.config.tourist_position_url}/${touristId}`,
+            { headers: this.getHeaders() }
+        );
     }
 }

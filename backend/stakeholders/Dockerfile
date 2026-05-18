@@ -12,5 +12,6 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 EXPOSE 8080
+EXPOSE 9090
 
 ENTRYPOINT ["java", "-jar", "target/stakeholders-0.0.1-SNAPSHOT.jar"]

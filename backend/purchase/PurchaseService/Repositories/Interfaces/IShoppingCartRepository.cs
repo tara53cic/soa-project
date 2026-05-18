@@ -11,5 +11,6 @@ namespace PurchaseService.Repositories.Interfaces
         bool HasPurchasedTour(long touristId, long tourId);
         void SaveTokens(List<TourPurchaseToken> tokens);
         void RemoveOrderItem(OrderItem item);
+        void DeleteToken(long touristId, long tourId);
     }
 }

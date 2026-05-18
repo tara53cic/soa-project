@@ -48,9 +48,10 @@ public class UserController {
     @PutMapping("/{id}/block")
     @PreAuthorize("hasRole('ADMIN')")
     public void toggleBlock(@PathVariable Long id, @RequestParam boolean block) {
-        User user = userService.findById(id);
-        user.setBlocked(block);
-        userService.save(user);
+        // User user = userService.findById(id);
+        // user.setBlocked(block);
+        // userService.save(user);
+        userService.toggleUserBlockAndSync(id, block);
     }
 
     @PutMapping("/profile")

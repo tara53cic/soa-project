@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"follow/internal"
 	"follow/internal/config"
 	"follow/internal/db"
 	"follow/internal/handler"
@@ -61,6 +62,8 @@ func main() {
 	http.HandleFunc("/profiles", middleware.EnableCors(followHandler.GetAllProfilesWithFollowStatus))
 
 	log.Println("Follow service started on port " + cfg.Port)
+
+	internal.StartGrpcServer(followService)
 
 	err = http.ListenAndServe(":"+cfg.Port, nil)
 	if err != nil {

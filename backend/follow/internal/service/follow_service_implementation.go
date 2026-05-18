@@ -56,3 +56,7 @@ func (s *followService) GetRecommendations(username string) ([]dto.Recommendatio
 func (s *followService) GetAllProfilesWithFollowStatus(loggedUsername string) ([]dto.ProfileFollowStatusResponse, error) {
 	return s.repository.GetAllProfilesWithFollowStatus(loggedUsername)
 }
+
+func (s *followService) SetUserBlockStatus(userId int64, isBlocked bool) error {
+	return s.repository.SetUserBlockStatus(userId, isBlocked)
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "follow/internal/grpc/block_saga";
+
+package saga;
+
+service BlockSagaGrpcService {
+  rpc SyncUserBlockStatus (BlockStatusRequest) returns (BlockStatusResponse);
+}
+
+message BlockStatusRequest {
+  int64 userId = 1;
+  bool isBlocked = 2;
+}
+
+message BlockStatusResponse {
+  bool success = 1;
+  string message = 2;
+}

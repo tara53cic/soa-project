@@ -66,6 +66,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapGrpcService<PurchaseGrpcService>();
+app.MapGrpcService<CheckoutSagaGrpcServiceImpl>();
 
 using (var scope = app.Services.CreateScope())
 {

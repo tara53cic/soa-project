@@ -38,7 +38,7 @@ export class CreateTourComponent {
     this.tourService.createTour(tourData).subscribe({
       next: (createdTour) => {
         if (shouldRedirectToDetails) {
-          this.router.navigate(['/tour-details']);          
+          this.router.navigate(['/tour-details', createdTour.id]);        
         } else {
           this.router.navigate(['/my-tours']);
         }

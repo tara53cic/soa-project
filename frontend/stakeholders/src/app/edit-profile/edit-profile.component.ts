@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -10,12 +11,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class EditProfileComponent implements OnInit {
   editForm: FormGroup;
-  private readonly baseUrl = 'http://localhost:8080/api/users';
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService
   ) {
     this.editForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -35,7 +36,7 @@ export class EditProfileComponent implements OnInit {
     const token = localStorage.getItem('jwt');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get(`${this.baseUrl}/whoami`, { headers }).subscribe({
+    this.http.get(this.configService.whoami_url,{ headers }).subscribe({
       next: (user: any) => {
         this.editForm.patchValue({
           firstName: user.firstName,
@@ -77,7 +78,7 @@ export class EditProfileComponent implements OnInit {
         profilePicture: this.editForm.value.profilePicture || null
       };
 
-      this.http.put(`${this.baseUrl}/profile`, updateData, { headers }).subscribe({
+      this.http.put(`${this.configService.users_url}/profile`, updateData, { headers }).subscribe({
         next: () => {
           this.router.navigate(['/profile']).then(() => {
             window.location.reload();

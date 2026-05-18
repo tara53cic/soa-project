@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "ApiGateway.Protos";
+
+service CheckoutSagaGrpcService {
+	rpc StartCheckout (SagaCheckoutRequest) returns (SagaCheckoutResponse);
+	rpc RollbackCheckout (SagaRollbackRequest) returns (SagaRollbackResponse);
+}
+
+message SagaCheckoutRequest {
+	int64 touristId = 1;
+}
+
+message SagaCheckoutResponse {
+	bool success = 1;
+	string message = 2;
+	repeated int64 purchasedTourIds = 3;
+}
+
+message SagaRollbackRequest {
+	int64 touristId = 1;
+	repeated int64 tourIds = 2;
+}
+
+message SagaRollbackResponse {
+	bool success = 1;
+}

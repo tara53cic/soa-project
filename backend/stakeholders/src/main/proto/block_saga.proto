@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.soa.stakeholders.grpc";
+option java_outer_classname = "BlockSagaProto";
+
+package saga;
+
+service BlockSagaGrpcService {
+  rpc SyncUserBlockStatus (BlockStatusRequest) returns (BlockStatusResponse);
+}
+
+message BlockStatusRequest {
+  int64 userId = 1;
+  bool isBlocked = 2;
+}
+
+message BlockStatusResponse {
+  bool success = 1;
+  string message = 2;
+}
