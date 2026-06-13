@@ -1,5 +1,11 @@
 version: "3.7"
 
+x-logging: &fluent-bit
+  driver: fluentd
+  options:
+    fluentd-address: ${FLUENT_BIT_ADDRESS}:24224
+    tag: "{{.Name}}"
+
 services:
   postgres:
     image: postgres:16
@@ -60,8 +66,10 @@ services:
       - follow-service
     environment:
       - DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2UNENCRYPTEDSUPPORT=true
+    logging: *fluent-bit
     networks:
       - app-network
+      - monitoring
 
   blog-service:
     build:
@@ -77,8 +85,10 @@ services:
       - mongodb
       - tours-service
       - follow-service
+    logging: *fluent-bit
     networks:
       - app-network
+      - monitoring
   
   follow-service:
     build:
@@ -96,8 +106,10 @@ services:
     depends_on:
       neo4j:
         condition: service_healthy
+    logging: *fluent-bit
     networks:
       - app-network
+      - monitoring
 
   tours-service:
     build:
@@ -115,8 +127,10 @@ services:
       - "44344:44344"
     volumes:
       - ./tours-data/images:/app/wwwroot/images
+    logging: *fluent-bit
     networks:
       - app-network
+      - monitoring
 
   stakeholders-service:
     build:
@@ -139,8 +153,10 @@ services:
         condition: service_started
       neo4j:
         condition: service_healthy
+    logging: *fluent-bit
     networks:
       - app-network
+      - monitoring
 
   purchase-service:
     build:
@@ -153,8 +169,10 @@ services:
     depends_on:
       - postgres
       - blog-service
+    logging: *fluent-bit
     networks:
       - app-network
+      - monitoring
 
   frontend:
     build:
@@ -174,7 +192,8 @@ services:
       - "16686:16686" 
       - "4318:4318"   
     networks:
-      - app-network   
+      - app-network  
+      - monitoring 
 
 volumes:
   pgdata:
@@ -184,3 +203,5 @@ volumes:
 networks:
   app-network:
     driver: bridge
+  monitoring:
+    external: true
