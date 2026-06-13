@@ -3,6 +3,8 @@ version: "3.7"
 services:
   loki:
     image: grafana/loki:main-5206e3a
+    ports:
+      - "3100:3100" 
     networks:
       - monitoring
 
